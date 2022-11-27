@@ -1,0 +1,118 @@
+server:
+  port: 8000
+
+
+spring:
+  application:
+    name: gateway-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/sg_blog?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  main:
+    allow-bean-definition-overriding: true
+  # nacos 服务发现
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+    # 网关
+    gateway:
+      # 启用开关(默认开启)
+      enabled: true
+      # 路由数组[路由 就是指定当请求满足什么条件的时候转到哪个微服务] --本质就是反向代理
+      routes:
+        # 当前路由的标识, 要求唯一
+        - id: user-service
+          # lb指的是从 nacos 中按照名称获取微服务,并遵循负载均衡策略路由请求(动态路由)
+          uri: lb://user-service
+
+          order: 10 # 路由的优先级，数字越小代表路由的优先级越高(最小为0)
+          predicates: # 断言(就是路由转发要满足的条件)
+            - Path=/user-service/**             # 当请求路径满足Path指定的规则时,才进行路由转发
+          filters: # 过滤器,请求在传递过程中可以通过过滤器对其进行一定的修改
+            - StripPrefix=1              # 转发之前去掉1层路径(去除原始请求路径中的前1级路径，即/user-service)
+
+        # 我们⾃定义的路由 ID，保持唯⼀
+        - id: gateway-service
+          # ⽬标服务地址（部署多实例,不能加子路径）
+          # uri: http://localhost:8000 # 指定具体的微服务地址(原真实服务地址还是可以访问,如果要限制走网关可以加token验证机制)
+          #          uri: https://www.baidu.com # 指定具体的微服务地址
+          uri: lb://gateway-service
+          # gateway⽹关从服务注册中⼼获取实例信息然后负载后路由
+          # 断⾔：路由条件，Predicate 接受⼀个输⼊参数，返回⼀个布尔值结果。该接⼝包含多种默认⽅法来将 Predicate 组合成其他复杂的逻辑（⽐如：与，或，⾮）。
+          predicates:
+            # 当请求的路径为http://localhost:9070/looptest/gateway/api/hello时,
+            # 转发到http://localhost:9070/gateway/api/hello
+            # - Path=/** # 本身就是基于path的反向代理
+            - Path=/gateway/**
+          filters: # 过滤器,请求在传递过程中可以通过过滤器对其进行一定的修改
+            # 转发之前去掉1层路径(去除原始请求路径中的前1级路径，即/test)
+            - StripPrefix=1
+            # burstCapacity，令牌桶总容量。
+            # replenishRate，令牌桶每秒填充平均速率。
+            # key-resolver，用于限流的键的解析器的 Bean 对象的名字。它使用 SpEL 表达式根据#{@beanName}从 Spring 容器中获取 Bean 对象。
+            - name: RequestRateLimiter
+              args:
+                key-resolver: '#{@hostAddrKeyResolver}'
+                redis-rate-limiter.replenishRate: 1
+                redis-rate-limiter.burstCapacity: 3
+        - id: oauth2-auth
+          uri: lb://oauth2-auth
+          predicates:
+            - Path=/oauth2-auth/**
+          filters:
+            - StripPrefix=1
+
+        - id: article-service
+          uri: lb://article-service
+          predicates:
+            - Path=/article-service/**
+          filters:
+            - StripPrefix=1
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  redis:
+    database: 0
+    port: 6379
+    host: localhost
+    password:
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    # 日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: delFlag
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      id-type: auto
+
+
+jwt:
+  tokenHeader: Authorization #JWT存储的请求头
+  secret: blog-admin-secret #JWT加解密使用的密钥
+  expiration: 604800 #JWT的超期限时间(60*60*24*7)
+  tokenHead: 'Bearer '  #JWT负载中拿到开头
+
+secure:
+  ignored:
+    urls: #安全路径白名单
+      - /swagger-ui.html
+      - /swagger-resources/**
+      - /swagger/**
+      - /**/v2/api-docs
+      - /**/*.js
+      - /**/*.css
+      - /**/*.png
+      - /**/*.ico
+      - /webjars/springfox-swagger-ui/**
+      - /actuator/**
+      - /druid/**
+      - /user/login
+      - /user/register
+      - /user/info
+      - /user/logout
+      - /minio/upload
