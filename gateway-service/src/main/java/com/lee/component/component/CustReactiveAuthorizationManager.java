@@ -6,7 +6,6 @@ import com.lee.service.ResourceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.ReactiveAuthorizationManager;
 import org.springframework.security.core.Authentication;
@@ -20,7 +19,6 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
 
 /**
  * 权限校验
@@ -53,7 +51,7 @@ public class CustReactiveAuthorizationManager implements ReactiveAuthorizationMa
                 if (authority.getAuthority().equals(needAuthority)) {
                     return new AuthorizationDecision(true);
                 }
-//对客户端访问路径与用户角色进行匹配
+            //对客户端访问路径与用户角色进行匹配
             }
             return new AuthorizationDecision(false);
         }).defaultIfEmpty(new AuthorizationDecision(false));
@@ -65,7 +63,7 @@ public class CustReactiveAuthorizationManager implements ReactiveAuthorizationMa
         map = new HashMap<>();
         List<Resource> resources = resourceService.list();
         for (Resource resource : resources) {
-            map.put(resource.getUrl(), resource.getId().toString());
+            map.put(resource.getUrl(), resource.getUid());
         }
     }
 }

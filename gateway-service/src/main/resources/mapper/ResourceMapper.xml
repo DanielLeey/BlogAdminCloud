@@ -4,9 +4,9 @@
 
 
     <select id="getResourcesByUserId" resultType="com.lee.domain.Resource">
-        select a.* from sys_resource a
+        select a.* from t_sys_resource a
         left join sys_role_resource_relation b
-        on a.id = b.resource_id
+        on a.uid = b.resource_id
         left join sys_user_role_relation c
         on b.role_id = c.role_id
         where c.user_id = #{id};

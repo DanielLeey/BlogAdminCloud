@@ -43,7 +43,7 @@ public class SecurityUser implements UserDetails {
         this.setEnabled(userDTO.getStatus() == 0);
         if (userDTO.getResources() != null) {
             authorities = new ArrayList<>();
-            userDTO.getResources().forEach(resource -> authorities.add(new SimpleGrantedAuthority(resource.getId().toString())));
+            userDTO.getResources().forEach(resource -> authorities.add(new SimpleGrantedAuthority(resource.getUid())));
         }
     }
 
