@@ -2,21 +2,18 @@ package com.lee.controller;
 
 
 import com.lee.api.CommonResult;
-import com.lee.domain.User;
+import com.lee.domain.UserQuery;
 import com.lee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Controller
-@RequestMapping("/user")
+@RestController
+@RequestMapping("/auth")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -26,15 +23,16 @@ public class UserController {
     private String tokenHead;
 
     /**
-     * 登录以后返回token
-     * @param
-     * @param result
+     * Content-Type 为 x-www-form-urlencoded
+     * 实体类接收 或者 @RequestParam接收（接收表单）
+     * Content-Type 为 application/json
+     * 使用@RequestBody接收json
+     * @param userQuery
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    @ResponseBody
-    public CommonResult login(@RequestBody User user) {
-        String token = userService.login(user.getUserName(), user.getPassword());
+    public CommonResult login(UserQuery userQuery) {
+        String token = userService.login(userQuery.getUsername(), userQuery.getPassword());
         if (token == null) {
             return CommonResult.validateFailed("用户名或密码错误");
         }
@@ -43,8 +41,25 @@ public class UserController {
         return CommonResult.success(tokenMap);
     }
 
+    /**
+     * 获取网站名称
+     * @return
+     */
+    @RequestMapping(value = "/getWebSiteName", method = RequestMethod.GET)
+    public CommonResult getWebSiteName() {
+        return CommonResult.success("Lee Blog Admin");
+    }
+
+    /**
+     * 获取token返回用户的信息
+     * @return
+     */
+/*    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public CommonResult info() {
+
+    }*/
+
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    @ResponseBody
     public CommonResult test() {
         return CommonResult.success("test");
     }

@@ -46,9 +46,11 @@ public class WebfluxSecurityConfig {
 
     // security的鉴权排除列表
     private static final String[] excludedAuthPages = {
-            "/user/login", "/health", "/api/socket/**", "/base-core/product/try1",
+            "/auth/login", "/health", "/api/socket/**", "/base-core/product/try1",
             "/swagger-ui/**", "/swagger-resources/**",
-            "/v2/api-docs", "/webjars/**", "/doc.html"
+            "/v2/api-docs", "/webjars/**", "/doc.html",
+            "/admin/auth/login", "/admin/auth/*", "/admin/auth/getWebSiteName",
+            "/auth/*", "/auth/getWebSiteName"
     };
 
     @Bean

@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 
-@FeignClient(value = "article-service")
+@FeignClient(value = "article-service", path = "/api/article")
 public interface ArticleFeignService {
 
-    @RequestMapping(value = "/api/article/getArticle/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/getArticle/{id}", method = RequestMethod.GET)
     CommonResult<ArticleDTO> getArticleById(@PathVariable(value = "id") String id);
 }
