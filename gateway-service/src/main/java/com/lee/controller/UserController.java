@@ -9,6 +9,7 @@ import com.lee.service.UserService;
 import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
@@ -72,16 +73,17 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/info", method = RequestMethod.GET)
-    public CommonResult info() {
-        Role role = roleService.getById(5);
-        RoleDTO roleDTO = RoleDTO.builder().uid(role.getUid()).createTime(role.getCreateTime()).updateTime(role.getUpdateTime())
-                .roleName(role.getRoleName()).status(role.getStatus()).summary(role.getSummary()).build();
-        List<Resource> list = resourceService.list();
-        List<String> urls = list.stream().map(resource -> resource.getUid()).collect(Collectors.toList());
-        roleDTO.setCategoryMenuUids(urls);
-        List<RoleDTO> roles = new ArrayList<>();
-        roles.add(roleDTO);
-        UserInfoVO userInfoVO = new UserInfoVO("", roles);
+    public CommonResult info(@RequestHeader HttpHeaders httpHeaders) {
+        String username = Objects.requireNonNull(httpHeaders.get("USERNAME")).get(0);
+        final User user = userService.getUserByUsername(username);
+        List<Role> roles = roleService.getByUserId(user.getId());
+        final List<RoleDTO> roleDTOS = roles.stream().map(role -> {
+            List<Resource> resources = resourceService.getResourcesByRoleId(role.getUid());
+            List<String> categoryMenuUids = resources.stream().map(Resource::getUid).collect(Collectors.toList());
+            return RoleDTO.builder().uid(role.getUid()).createTime(role.getCreateTime()).updateTime(role.getUpdateTime())
+                    .roleName(role.getRoleName()).status(role.getStatus()).summary(role.getSummary()).categoryMenuUids(categoryMenuUids).build();
+        }).collect(Collectors.toList());
+        UserInfoVO userInfoVO = new UserInfoVO("", roleDTOS);
         return CommonResult.success(userInfoVO);
     }
 

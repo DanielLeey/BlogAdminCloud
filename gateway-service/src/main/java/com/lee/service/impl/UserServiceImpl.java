@@ -51,9 +51,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new UsernameNotFoundException("用户名或密码错误");
         }
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        //UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         // 获取认证后的对象
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        //SecurityContextHolder.getContext().setAuthentication(authentication);
         // 通过认证后的对象，生成jwt Token，sub：username
         return jwtTokenUtil.generateToken(userDetails);
     }

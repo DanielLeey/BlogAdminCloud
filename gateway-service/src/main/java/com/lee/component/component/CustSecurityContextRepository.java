@@ -55,6 +55,8 @@ public class CustSecurityContextRepository implements ServerSecurityContextRepos
                 String authToken = authHeader.substring(7);
                 String username = jwtTokenUtil.getUserNameFromToken(authToken);
                 if (StrUtil.isNotBlank(username)) {
+                    //添加请求头
+                    serverWebExchange.getRequest().mutate().header("USERNAME", username).build();
                     //token能正常解析，表示token有效并对应数据库已知用户
                     Authentication newAuthentication = new UsernamePasswordAuthenticationToken(username, username);
                     return custReactiveAuthenticationManager.authenticate(newAuthentication).map(SecurityContextImpl::new);

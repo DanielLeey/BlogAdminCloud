@@ -11,4 +11,10 @@
         on b.role_id = c.role_id
         where c.user_id = #{id};
     </select>
+    <select id="getResourcesByRoleId" resultType="com.lee.domain.Resource">
+        select b.* from sys_role_resource_relation a
+        left join t_sys_resource b
+        on a.resource_id = b.uid
+        where a.role_id = #{id};
+    </select>
 </mapper>

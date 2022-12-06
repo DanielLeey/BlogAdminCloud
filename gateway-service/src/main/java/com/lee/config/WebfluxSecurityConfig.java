@@ -74,8 +74,8 @@ public class WebfluxSecurityConfig {
                 // 认证成功
                 .and().formLogin().authenticationSuccessHandler(loginSuccessHandler)
                 // 登陆验证失败
-                .and().formLogin().authenticationFailureHandler(loginFailureHandler);
-        // 为了支持jwt 自定义了这个类
+                .authenticationFailureHandler(loginFailureHandler);
+        // 为了支持jwt 自定义了这个类，从请求头中获取token
         http.securityContextRepository(custSecurityContextRepository);
         return http.build();
     }
