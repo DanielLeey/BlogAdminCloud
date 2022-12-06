@@ -46,11 +46,10 @@ public class WebfluxSecurityConfig {
 
     // security的鉴权排除列表
     private static final String[] excludedAuthPages = {
-            "/auth/login", "/health", "/api/socket/**", "/base-core/product/try1",
+            "/health", "/api/socket/**", "/base-core/product/try1",
             "/swagger-ui/**", "/swagger-resources/**",
             "/v2/api-docs", "/webjars/**", "/doc.html",
-            "/admin/auth/login", "/admin/auth/*", "/admin/auth/getWebSiteName",
-            "/auth/*", "/auth/getWebSiteName"
+            "/admin/auth/login", "/admin/auth/getWebSiteName", "/auth/getWebSiteName"
     };
 
     @Bean
@@ -72,7 +71,7 @@ public class WebfluxSecurityConfig {
                 .and().exceptionHandling().accessDeniedHandler(customServerAccessDeniedHandler)
 
                 // 认证成功
-                .and().formLogin().authenticationSuccessHandler(loginSuccessHandler)
+                .and().formLogin().loginPage("/auth/login").authenticationSuccessHandler(loginSuccessHandler)
                 // 登陆验证失败
                 .authenticationFailureHandler(loginFailureHandler);
         // 为了支持jwt 自定义了这个类，从请求头中获取token

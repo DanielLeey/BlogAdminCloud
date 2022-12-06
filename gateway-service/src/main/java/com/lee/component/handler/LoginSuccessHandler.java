@@ -1,10 +1,8 @@
 package com.lee.component.handler;
 
-import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
 import com.lee.api.CommonResult;
 import com.lee.domain.SecurityUser;
-import com.lee.domain.User;
 import com.lee.utils.JwtTokenUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +21,6 @@ import reactor.netty.ByteBufFlux;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 登录成功时调用的自定义处理类<br>
