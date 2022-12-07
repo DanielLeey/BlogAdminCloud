@@ -1,11 +1,13 @@
 package com.lee.component.component;
 
 import cn.hutool.core.collection.CollUtil;
-import com.lee.api.ResourceFeignService;
 import com.lee.domain.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.ReactiveAuthorizationManager;
 import org.springframework.security.core.Authentication;
@@ -31,7 +33,7 @@ public class CustReactiveAuthorizationManager implements ReactiveAuthorizationMa
     private Map<String, String> map;
 
     @Autowired
-    private ResourceFeignService resourceService;
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public Mono<AuthorizationDecision> check(Mono<Authentication> authentication, AuthorizationContext authorizationContext) {
@@ -51,7 +53,7 @@ public class CustReactiveAuthorizationManager implements ReactiveAuthorizationMa
                 if (authority.getAuthority().equals(needAuthority)) {
                     return new AuthorizationDecision(true);
                 }
-            //对客户端访问路径与用户角色进行匹配
+                //对客户端访问路径与用户角色进行匹配
             }
             return new AuthorizationDecision(false);
         }).defaultIfEmpty(new AuthorizationDecision(false));
@@ -61,7 +63,9 @@ public class CustReactiveAuthorizationManager implements ReactiveAuthorizationMa
     @Override
     public void afterPropertiesSet() throws Exception {
         map = new HashMap<>();
-        List<Resource> resources = resourceService.list();
+        String resourcesQuery = "SELECT * FROM T_SYS_RESOURCE";
+        RowMapper<Resource> resourceRowMapper = new BeanPropertyRowMapper<Resource>(Resource.class);
+        List<Resource> resources = jdbcTemplate.query(resourcesQuery, resourceRowMapper);
         for (Resource resource : resources) {
             map.put(resource.getUrl(), resource.getUid());
         }

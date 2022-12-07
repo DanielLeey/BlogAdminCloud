@@ -78,19 +78,6 @@ spring:
     host: localhost
     password:
 
-mybatis-plus:
-  mapper-locations: classpath:mapper/*.xml
-  configuration:
-    # 日志
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  global-config:
-    db-config:
-      logic-delete-field: delFlag
-      logic-delete-value: 1
-      logic-not-delete-value: 0
-      id-type: auto
-
-
 jwt:
   tokenHeader: Authorization #JWT存储的请求头
   secret: blog-admin-secret #JWT加解密使用的密钥
