@@ -1,8 +1,8 @@
 package com.lee.component.component;
 
 import cn.hutool.core.collection.CollUtil;
+import com.lee.api.ResourceFeignService;
 import com.lee.domain.Resource;
-import com.lee.service.ResourceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class CustReactiveAuthorizationManager implements ReactiveAuthorizationMa
     private Map<String, String> map;
 
     @Autowired
-    private ResourceService resourceService;
+    private ResourceFeignService resourceService;
 
     @Override
     public Mono<AuthorizationDecision> check(Mono<Authentication> authentication, AuthorizationContext authorizationContext) {

@@ -1,4 +1,4 @@
-package com.lee.constant;
+package com.lee.common.constant;
 
 /**
  * @author Lee

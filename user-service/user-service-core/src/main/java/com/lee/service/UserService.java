@@ -7,5 +7,4 @@ public interface UserService extends IService<User> {
 
     User getUserByUsername(String username);
 
-    String login(String username, String password);
 }

@@ -1,6 +1,6 @@
 package com.lee.controller;
 
-import com.lee.api.CommonResult;
+import com.lee.common.api.CommonResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

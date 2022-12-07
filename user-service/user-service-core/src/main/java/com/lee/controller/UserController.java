@@ -1,33 +1,22 @@
 package com.lee.controller;
 
 
-import com.lee.api.CommonResult;
+import com.lee.common.api.CommonResult;
 import com.lee.domain.*;
 import com.lee.service.ResourceService;
 import com.lee.service.RoleService;
 import com.lee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/auth")
 public class UserController {
-
-    @Value("${jwt.tokenHeader}")
-    private String tokenHeader;
-    @Value("${jwt.tokenHead}")
-    private String tokenHead;
 
     @Autowired
     private UserService userService;
@@ -48,13 +37,18 @@ public class UserController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public CommonResult login(UserQuery userQuery) {
-        String token = userService.login(userQuery.getUsername(), userQuery.getPassword());
-        if (token == null) {
-            return CommonResult.validateFailed("用户名或密码错误");
-        }
-        Map<String, String> tokenMap = new HashMap<>();
-        tokenMap.put("token", tokenHead + token);
-        return CommonResult.success(tokenMap);
+//        String token = userService.login(userQuery.getUsername(), userQuery.getPassword());
+//        if (token == null) {
+//            return CommonResult.validateFailed("用户名或密码错误");
+//        }
+//        Map<String, String> tokenMap = new HashMap<>();
+//        tokenMap.put("token", tokenHead + token);
+        return CommonResult.success("ok");
+    }
+
+    @GetMapping(value = "/getUserByUsername/{username}")
+    public User getUserByUsername(@PathVariable("username") String username) {
+        return userService.getUserByUsername(username);
     }
 
     /**

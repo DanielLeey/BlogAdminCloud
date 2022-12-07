@@ -1,7 +1,7 @@
 package com.lee.component.handler;
 
 import cn.hutool.json.JSONUtil;
-import com.lee.api.CommonResult;
+import com.lee.common.api.CommonResult;
 import com.lee.domain.SecurityUser;
 import com.lee.utils.JwtTokenUtil;
 import org.slf4j.Logger;
@@ -38,9 +38,9 @@ public class LoginSuccessHandler implements ServerAuthenticationSuccessHandler {
     public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange, Authentication authentication) {
         //返回token
         SecurityUser user = (SecurityUser) authentication.getPrincipal();
-        String token= jwtTokenUtil.generateToken(user);
+        String token = jwtTokenUtil.generateToken(user);
         HashMap<String, String> hashMap = new HashMap<String, String>();
-        hashMap.put(HttpHeaders.AUTHORIZATION, "Bearer " +token);
+        hashMap.put(HttpHeaders.AUTHORIZATION, "Bearer " + token);
 
 
         ServerWebExchange exchange = webFilterExchange.getExchange();
@@ -65,7 +65,7 @@ public class LoginSuccessHandler implements ServerAuthenticationSuccessHandler {
         try {
             ret = response.writeAndFlushWith(Flux.just(ByteBufFlux.just(response.bufferFactory().wrap(json.getBytes("UTF-8")))));
         } catch (UnsupportedEncodingException e) {
-            LOGGER.error("error:",e);
+            LOGGER.error("error:", e);
         }
         return ret;
     }

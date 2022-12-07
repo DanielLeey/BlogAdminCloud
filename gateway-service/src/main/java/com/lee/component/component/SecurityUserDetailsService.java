@@ -1,12 +1,12 @@
 package com.lee.component.component;
 
-import com.lee.constant.MessageConstant;
+import com.lee.api.ResourceFeignService;
+import com.lee.api.UserFeignService;
+import com.lee.common.constant.MessageConstant;
 import com.lee.domain.Resource;
 import com.lee.domain.SecurityUser;
 import com.lee.domain.User;
 import com.lee.domain.UserDTO;
-import com.lee.service.ResourceService;
-import com.lee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.CredentialsExpiredException;
@@ -24,10 +24,10 @@ import java.util.List;
 public class SecurityUserDetailsService implements ReactiveUserDetailsService {
 
     @Autowired
-    private UserService userService;
+    private UserFeignService userService;
 
     @Autowired
-    private ResourceService resourceService;
+    private ResourceFeignService resourceService;
 
     @Override
     public Mono<UserDetails> findByUsername(String username) {

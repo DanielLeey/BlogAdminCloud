@@ -1,8 +1,8 @@
 package com.lee.component.handler;
 
 import cn.hutool.json.JSONUtil;
-import com.lee.api.CommonResult;
-import com.lee.api.ResultCode;
+import com.lee.common.api.CommonResult;
+import com.lee.common.api.ResultCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

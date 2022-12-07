@@ -1,10 +1,8 @@
 package com.lee.component.handler;
 
-import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
-import com.lee.api.CommonResult;
-import com.lee.api.ResultCode;
-import com.lee.constant.MessageConstant;
+import com.lee.common.api.CommonResult;
+import com.lee.common.api.ResultCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -27,6 +25,7 @@ import java.io.UnsupportedEncodingException;
 @Component
 public class LoginFailureHandler implements ServerAuthenticationFailureHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginFailureHandler.class);
+
     @Override
     public Mono<Void> onAuthenticationFailure(WebFilterExchange webFilterExchange, AuthenticationException e) {
         ServerHttpResponse response = webFilterExchange.getExchange().getResponse();
@@ -40,7 +39,7 @@ public class LoginFailureHandler implements ServerAuthenticationFailureHandler {
         try {
             ret = response.writeAndFlushWith(Flux.just(ByteBufFlux.just(response.bufferFactory().wrap(json.getBytes("UTF-8")))));
         } catch (UnsupportedEncodingException err) {
-            LOGGER.error("error:",err);
+            LOGGER.error("error:", err);
         }
         return ret;
     }

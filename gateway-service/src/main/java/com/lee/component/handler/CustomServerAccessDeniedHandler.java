@@ -1,8 +1,7 @@
 package com.lee.component.handler;
 
-import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
-import com.lee.api.CommonResult;
+import com.lee.common.api.CommonResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -25,6 +24,7 @@ import java.io.UnsupportedEncodingException;
 @Component
 public class CustomServerAccessDeniedHandler implements ServerAccessDeniedHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(CustomServerAccessDeniedHandler.class);
+
     @Override
     public Mono<Void> handle(ServerWebExchange serverWebExchange, AccessDeniedException e) {
         ServerHttpResponse response = serverWebExchange.getResponse();
@@ -32,12 +32,12 @@ public class CustomServerAccessDeniedHandler implements ServerAccessDeniedHandle
         response.setStatusCode(HttpStatus.FORBIDDEN);//放回403
         CommonResult<String> res = CommonResult.forbidden(e.getMessage());
         //RestResponse<String> res = new RestResponse<String>(RestStatusCode.BAD_REQUEST.code(), e.getMessage());
-        String json= JSONUtil.toJsonStr(res);//关键
+        String json = JSONUtil.toJsonStr(res);//关键
         Mono<Void> ret = null;
         try {
             ret = response.writeAndFlushWith(Flux.just(ByteBufFlux.just(response.bufferFactory().wrap(json.getBytes("UTF-8")))));
         } catch (UnsupportedEncodingException err) {
-            LOGGER.error("error:",err);
+            LOGGER.error("error:", err);
         }
         return ret;
     }
