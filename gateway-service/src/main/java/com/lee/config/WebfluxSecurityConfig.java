@@ -49,7 +49,7 @@ public class WebfluxSecurityConfig {
             "/health", "/api/socket/**", "/base-core/product/try1",
             "/swagger-ui/**", "/swagger-resources/**",
             "/v2/api-docs", "/webjars/**", "/doc.html",
-            "/admin/auth/login", "/admin/auth/getWebSiteName", "/auth/getWebSiteName"
+            "/admin/auth/login", "/user-service/auth/getWebSiteName"
     };
 
     @Bean
