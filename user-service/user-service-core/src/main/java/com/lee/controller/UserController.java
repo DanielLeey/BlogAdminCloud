@@ -66,8 +66,7 @@ public class UserController {
      */
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public CommonResult info(@RequestHeader HttpHeaders httpHeaders) {
-        String username = Objects.requireNonNull(httpHeaders.get("USERNAME")).get(0);
-        final User user = userService.getUserByUsername(username);
+        final User user = getUser(httpHeaders);
         List<Role> roles = roleService.getByUserId(user.getId());
         final List<RoleDTO> roleDTOS = roles.stream().map(role -> {
             List<Resource> resources = resourceService.getResourcesByRoleId(role.getUid());
@@ -77,6 +76,17 @@ public class UserController {
         }).collect(Collectors.toList());
         UserInfoVO userInfoVO = new UserInfoVO("", roleDTOS);
         return CommonResult.success(userInfoVO);
+    }
+
+    private User getUser(HttpHeaders httpHeaders) {
+        String username = Objects.requireNonNull(httpHeaders.get("USERNAME")).get(0);
+        final User user = userService.getUserByUsername(username);
+        return user;
+    }
+
+    @GetMapping("/getMenu")
+    public CommonResult getMenu() {
+        User user = getUser(httpHeaders);
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)

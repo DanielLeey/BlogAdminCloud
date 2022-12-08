@@ -40,7 +40,7 @@ public class LoginSuccessHandler implements ServerAuthenticationSuccessHandler {
         SecurityUser user = (SecurityUser) authentication.getPrincipal();
         String token = jwtTokenUtil.generateToken(user);
         HashMap<String, String> hashMap = new HashMap<String, String>();
-        hashMap.put(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+        hashMap.put("token", "Bearer " + token);
 
 
         ServerWebExchange exchange = webFilterExchange.getExchange();

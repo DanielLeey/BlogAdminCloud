@@ -29,7 +29,7 @@ spring:
 
           order: 10 # 路由的优先级，数字越小代表路由的优先级越高(最小为0)
           predicates: # 断言(就是路由转发要满足的条件)
-            - Path=/user-service/**             # 当请求路径满足Path指定的规则时,才进行路由转发
+            - Path=/admin/**             # 当请求路径满足Path指定的规则时,才进行路由转发
           filters: # 过滤器,请求在传递过程中可以通过过滤器对其进行一定的修改
             - StripPrefix=1              # 转发之前去掉1层路径(去除原始请求路径中的前1级路径，即/user-service)
 
@@ -45,7 +45,7 @@ spring:
             # 当请求的路径为http://localhost:9070/looptest/gateway/api/hello时,
             # 转发到http://localhost:9070/gateway/api/hello
             # - Path=/** # 本身就是基于path的反向代理
-            - Path=/admin/**
+            - Path=/gateway/**
           filters: # 过滤器,请求在传递过程中可以通过过滤器对其进行一定的修改
             # 转发之前去掉1层路径(去除原始请求路径中的前1级路径，即/test)
             - StripPrefix=1

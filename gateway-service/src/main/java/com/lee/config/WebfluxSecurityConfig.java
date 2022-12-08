@@ -49,9 +49,9 @@ public class WebfluxSecurityConfig {
             "/health", "/api/socket/**", "/base-core/product/try1",
             "/swagger-ui/**", "/swagger-resources/**",
             "/v2/api-docs", "/webjars/**", "/doc.html",
-            "/admin/auth/login", "/user-service/auth/getWebSiteName"
+            "/gateway/auth/login", "/admin/auth/getWebSiteName"
     };
-
+    // "/admin/auth/**"
     @Bean
     SecurityWebFilterChain webFluxSecurityFilterChain(ServerHttpSecurity http) throws Exception {
         http.csrf().disable()
