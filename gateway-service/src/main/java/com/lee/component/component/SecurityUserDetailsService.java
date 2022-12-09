@@ -1,6 +1,8 @@
 package com.lee.component.component;
 
+import cn.hutool.core.util.ObjUtil;
 import com.lee.common.constant.MessageConstant;
+import com.lee.utils.RedisUtils;
 import com.lee.domain.Resource;
 import com.lee.domain.SecurityUser;
 import com.lee.domain.User;
@@ -29,6 +31,14 @@ public class SecurityUserDetailsService implements ReactiveUserDetailsService {
 
     @Override
     public Mono<UserDetails> findByUsername(String username) {
+        SecurityUser securityUser = null;
+        if (RedisUtils.hasKey("USERNAME:" + username)) {
+            securityUser = (SecurityUser) RedisUtils.get("USERNAME:" + username);
+            if (ObjUtil.isNotEmpty(securityUser)) {
+                return getUserDetailsMono(securityUser);
+            }
+        }
+
         //获取username的用户和资源权限，返回SecurityUser（UserDetails）
         String userQuery = "SELECT * FROM SYS_USER WHERE USER_NAME = ?";
         RowMapper<User> userRowMapper = new BeanPropertyRowMapper<User>(User.class);
@@ -41,7 +51,13 @@ public class SecurityUserDetailsService implements ReactiveUserDetailsService {
         RowMapper<Resource> resourceRowMapper = new BeanPropertyRowMapper<Resource>(Resource.class);
         List<Resource> resources = jdbcTemplate.query(resourceQuery, resourceRowMapper, user.getId());
         UserDTO userDTO = new UserDTO(user.getId(), user.getUserName(), user.getPassword(), Integer.parseInt(user.getStatus()), resources);
-        SecurityUser securityUser = new SecurityUser(userDTO);
+        securityUser = new SecurityUser(userDTO);
+        RedisUtils.set("USERNAME:" + username, securityUser);
+        return getUserDetailsMono(securityUser);
+
+    }
+
+    private Mono<UserDetails> getUserDetailsMono(SecurityUser securityUser) {
         if (!securityUser.isEnabled()) {
             throw new DisabledException(MessageConstant.ACCOUNT_DISABLED);
         } else if (!securityUser.isAccountNonLocked()) {
@@ -53,6 +69,5 @@ public class SecurityUserDetailsService implements ReactiveUserDetailsService {
         }
 
         return Mono.just(securityUser);
-
     }
 }

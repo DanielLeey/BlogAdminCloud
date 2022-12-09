@@ -26,7 +26,7 @@ public class UserFilter implements Filter {
             @Override
             public String[] getParameterValues(String name) {
                 if (name.equals("loginUserId")) {
-                    return new String[] { userId .toString() };
+                    return new String[] { username.toString() };
                 }
                 return super.getParameterValues(name);
             }
@@ -41,6 +41,6 @@ public class UserFilter implements Filter {
                 return Collections.enumeration(paramNames);
             }
         };
-        chain.doFilter(requestWrapper, httpResponse);
+        filterChain.doFilter(requestWrapper, httpResponse);
     }
 }

@@ -86,7 +86,7 @@ public class UserController {
 
     @GetMapping("/getMenu")
     public CommonResult getMenu() {
-        User user = getUser(httpHeaders);
+        return  null;
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)

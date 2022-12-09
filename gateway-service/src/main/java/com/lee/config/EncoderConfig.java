@@ -5,14 +5,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * @Author: liyansong
+ * @Date: 2022/12/9 17:32
+ * @Version: 1.0
+ */
 @Configuration
-public class EncodeConfig {
-    /**
-     * SpringSecurity定义的用于对密码进行编码及比对的接口，目前使用的是BCryptPasswordEncoder；
-     * @return
-     */
+public class EncoderConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
