@@ -5,6 +5,8 @@ import com.lee.domain.Resource;
 import com.lee.domain.SecurityUser;
 import com.lee.domain.User;
 import com.lee.domain.UserDTO;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 @Component("securityUserDetailsService")
+@Slf4j
 public class SecurityUserDetailsService implements ReactiveUserDetailsService {
 
     @Autowired
@@ -53,6 +56,7 @@ public class SecurityUserDetailsService implements ReactiveUserDetailsService {
         UserDTO userDTO = new UserDTO(user.getId(), user.getUserName(), user.getPassword(), user.getStatus(), resources);
         SecurityUser securityUser = new SecurityUser(user, resources);
         Mono<Boolean> set = reactiveRedisTemplate.opsForValue().set("USERNAME:" + username, securityUser);
+        set.subscribe(aBoolean -> log.info("USERNAME:{}，写入redis", username));
         return getUserDetailsMono(securityUser);
 
     }

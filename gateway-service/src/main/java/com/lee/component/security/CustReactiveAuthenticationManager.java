@@ -47,7 +47,7 @@ public class CustReactiveAuthenticationManager implements ReactiveAuthentication
                     }
                     Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                     return auth;
-                }).switchIfEmpty(securityUserDetailsService.findByUsername(username).map(user -> {
+                }).switchIfEmpty(Mono.defer(() -> securityUserDetailsService.findByUsername(username).map(user -> {
                     if (user == null) {
                         throw new DisabledException("账户不可用");
                     }
@@ -66,7 +66,7 @@ public class CustReactiveAuthenticationManager implements ReactiveAuthentication
                     }
                     Authentication auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                     return auth;
-                }));
+                })));
 
         /*Mono<UserDetails> userDetails = securityUserDetailsService.findByUsername(username);
         UserDetails user = userDetails.block();
