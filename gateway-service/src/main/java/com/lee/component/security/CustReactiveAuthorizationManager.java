@@ -1,4 +1,4 @@
-package com.lee.component.component;
+package com.lee.component.security;
 
 import cn.hutool.core.collection.CollUtil;
 import com.lee.domain.Resource;

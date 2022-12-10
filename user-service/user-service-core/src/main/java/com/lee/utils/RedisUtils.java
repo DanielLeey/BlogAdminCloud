@@ -1,7 +1,6 @@
 package com.lee.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -16,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class RedisUtils {
 
     @Autowired
-    private static ReactiveRedisTemplate<String, Object> redisTemplate;
+    private static RedisTemplate<String, Object> redisTemplate;
     // =============================common============================
 
     /**

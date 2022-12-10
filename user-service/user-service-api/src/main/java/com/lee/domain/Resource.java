@@ -8,14 +8,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author Lee
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @TableName("t_sys_resource")
-public class Resource {
+public class Resource implements Serializable {
+    private static final long serialVersionUID = 8225613436167457222L;
     //主键
     @TableId
     //唯一uid@TableId

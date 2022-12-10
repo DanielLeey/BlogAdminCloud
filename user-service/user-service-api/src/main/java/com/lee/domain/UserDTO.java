@@ -20,7 +20,7 @@ public class UserDTO {
 
     private String password;
 
-    private Integer status;
+    private String status;
 
     private List<Resource> resources;
 }

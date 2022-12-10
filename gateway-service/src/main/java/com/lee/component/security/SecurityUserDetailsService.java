@@ -1,13 +1,12 @@
-package com.lee.component.component;
+package com.lee.component.security;
 
-import cn.hutool.core.util.ObjUtil;
 import com.lee.common.constant.MessageConstant;
-import com.lee.utils.RedisUtils;
 import com.lee.domain.Resource;
 import com.lee.domain.SecurityUser;
 import com.lee.domain.User;
 import com.lee.domain.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -22,6 +21,7 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 @Component("securityUserDetailsService")
 public class SecurityUserDetailsService implements ReactiveUserDetailsService {
@@ -29,16 +29,16 @@ public class SecurityUserDetailsService implements ReactiveUserDetailsService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private ReactiveRedisTemplate reactiveRedisTemplate;
+
+
+    public Mono<SecurityUser> getUserFromRedis(String username) {
+        return (Mono<SecurityUser>) reactiveRedisTemplate.opsForValue().get("USERNAME:" + username);
+    }
+
     @Override
     public Mono<UserDetails> findByUsername(String username) {
-        SecurityUser securityUser = null;
-        if (RedisUtils.hasKey("USERNAME:" + username)) {
-            securityUser = (SecurityUser) RedisUtils.get("USERNAME:" + username);
-            if (ObjUtil.isNotEmpty(securityUser)) {
-                return getUserDetailsMono(securityUser);
-            }
-        }
-
         //获取username的用户和资源权限，返回SecurityUser（UserDetails）
         String userQuery = "SELECT * FROM SYS_USER WHERE USER_NAME = ?";
         RowMapper<User> userRowMapper = new BeanPropertyRowMapper<User>(User.class);
@@ -47,12 +47,12 @@ public class SecurityUserDetailsService implements ReactiveUserDetailsService {
             throw new UsernameNotFoundException(MessageConstant.USERNAME_PASSWORD_ERROR);
         }
         String resourceQuery = "select a.* from t_sys_resource a left join sys_role_resource_relation b on a.uid = b.resource_id " +
-                               "left join sys_user_role_relation c on b.role_id = c.role_id where c.user_id = ?";
+                "left join sys_user_role_relation c on b.role_id = c.role_id where c.user_id = ?";
         RowMapper<Resource> resourceRowMapper = new BeanPropertyRowMapper<Resource>(Resource.class);
         List<Resource> resources = jdbcTemplate.query(resourceQuery, resourceRowMapper, user.getId());
-        UserDTO userDTO = new UserDTO(user.getId(), user.getUserName(), user.getPassword(), Integer.parseInt(user.getStatus()), resources);
-        securityUser = new SecurityUser(userDTO);
-        RedisUtils.set("USERNAME:" + username, securityUser);
+        UserDTO userDTO = new UserDTO(user.getId(), user.getUserName(), user.getPassword(), user.getStatus(), resources);
+        SecurityUser securityUser = new SecurityUser(user, resources);
+        Mono<Boolean> set = reactiveRedisTemplate.opsForValue().set("USERNAME:" + username, securityUser);
         return getUserDetailsMono(securityUser);
 
     }

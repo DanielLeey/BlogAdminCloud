@@ -1,4 +1,4 @@
-package com.lee.component.component;
+package com.lee.component.security;
 
 import cn.hutool.core.util.StrUtil;
 import com.lee.utils.JwtTokenUtil;

@@ -1,8 +1,8 @@
 package com.lee.config;
 
 
-import com.lee.component.component.CustReactiveAuthorizationManager;
-import com.lee.component.component.CustSecurityContextRepository;
+import com.lee.component.security.CustReactiveAuthorizationManager;
+import com.lee.component.security.CustSecurityContextRepository;
 import com.lee.component.handler.CustomHttpBasicServerAuthenticationEntryPoint;
 import com.lee.component.handler.CustomServerAccessDeniedHandler;
 import com.lee.component.handler.LoginFailureHandler;
@@ -12,8 +12,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
 @EnableWebFluxSecurity
