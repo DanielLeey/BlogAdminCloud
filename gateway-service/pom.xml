@@ -56,11 +56,7 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>5.8.6</version>
-        </dependency>
+
         <!-- 使用Security实现登录授权，认证鉴权 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
