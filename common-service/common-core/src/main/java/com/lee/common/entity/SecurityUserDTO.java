@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class SecurityUser implements Serializable {
+public class SecurityUserDTO implements Serializable {
 
     private static final long serialVersionUID = -6762199222888946110L;
 

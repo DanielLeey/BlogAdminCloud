@@ -5,7 +5,7 @@ import cn.hutool.core.util.ObjUtil;
 import com.lee.common.api.CommonResult;
 import com.lee.common.entity.Resource;
 import com.lee.common.entity.Role;
-import com.lee.common.entity.SecurityUser;
+import com.lee.common.entity.SecurityUserDTO;
 import com.lee.common.entity.User;
 import com.lee.domain.*;
 import com.lee.service.ResourceService;
@@ -33,6 +33,9 @@ public class UserController {
     @Autowired
     private ResourceService resourceService;
 
+    @Autowired
+    private RedisUtils redisUtils;
+
     /**
      * Content-Type 为 x-www-form-urlencoded
      * 实体类接收 或者 @RequestParam接收（接收表单）
@@ -44,12 +47,7 @@ public class UserController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public CommonResult login(UserQuery userQuery) {
-//        String token = userService.login(userQuery.getUsername(), userQuery.getPassword());
-//        if (token == null) {
-//            return CommonResult.validateFailed("用户名或密码错误");
-//        }
-//        Map<String, String> tokenMap = new HashMap<>();
-//        tokenMap.put("token", tokenHead + token);
+        String aaa = (String) redisUtils.get("aaa");
         return CommonResult.success("ok");
     }
 
@@ -89,9 +87,9 @@ public class UserController {
 
     private User getUser(HttpHeaders httpHeaders) {
         String username = Objects.requireNonNull(httpHeaders.get("USERNAME")).get(0);
-        SecurityUser securityUser = (SecurityUser) RedisUtils.get("USERNAME:" + username);
-        if (ObjUtil.isNotEmpty(securityUser)) {
-            return securityUser.getUser();
+        SecurityUserDTO securityUserDTO = (SecurityUserDTO) redisUtils.get("USERNAME:" + username);
+        if (ObjUtil.isNotEmpty(securityUserDTO)) {
+            return securityUserDTO.getUser();
         }
         return userService.getUserByUsername(username);
     }

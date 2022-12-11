@@ -1,10 +1,13 @@
 package com.lee.component.security;
 
+import com.google.errorprone.annotations.Var;
 import com.lee.common.constant.MessageConstant;
 import com.lee.common.entity.Resource;
+import com.lee.common.entity.SecurityUserDTO;
 import com.lee.common.entity.User;
 import com.lee.domain.SecurityUser;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -34,7 +37,10 @@ public class SecurityUserDetailsService implements ReactiveUserDetailsService {
 
 
     public Mono<SecurityUser> getUserFromRedis(String username) {
-        return (Mono<SecurityUser>) reactiveRedisTemplate.opsForValue().get("USERNAME:" + username);
+        Mono<SecurityUserDTO> securityUserMono = (Mono<SecurityUserDTO>) reactiveRedisTemplate.opsForValue().get("USERNAME:" + username);
+        return  securityUserMono.map(securityUserDTO -> {
+            return new SecurityUser(securityUserDTO.getUser(), securityUserDTO.getResources());
+        });
     }
 
     @Override
@@ -52,7 +58,8 @@ public class SecurityUserDetailsService implements ReactiveUserDetailsService {
         List<Resource> resources = jdbcTemplate.query(resourceQuery, resourceRowMapper, user.getId());
 
         SecurityUser securityUser = new SecurityUser(user, resources);
-        Mono<Boolean> set = reactiveRedisTemplate.opsForValue().set("USERNAME:" + username, securityUser);
+        SecurityUserDTO securityUserDTO = new SecurityUserDTO(user, resources);
+        Mono<Boolean> set = reactiveRedisTemplate.opsForValue().set("USERNAME:" + username, securityUserDTO);
         set.subscribe(aBoolean -> log.info("USERNAME:{}，写入redis", username));
         return getUserDetailsMono(securityUser);
 
