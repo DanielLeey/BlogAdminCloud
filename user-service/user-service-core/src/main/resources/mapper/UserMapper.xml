@@ -3,7 +3,7 @@
 <mapper namespace="com.lee.dao.UserMapper">
 
 
-    <select id="getUserByUsername" resultType="com.lee.domain.User">
-
+    <select id="getUserByUsername" resultType="com.lee.common.entity.User">
+        select * from sys_user where user_name = #{username};
     </select>
 </mapper>

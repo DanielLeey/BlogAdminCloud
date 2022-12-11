@@ -1,12 +1,10 @@
 package com.lee.component.security;
 
 import com.lee.common.constant.MessageConstant;
-import com.lee.domain.Resource;
+import com.lee.common.entity.Resource;
+import com.lee.common.entity.User;
 import com.lee.domain.SecurityUser;
-import com.lee.domain.User;
-import com.lee.domain.UserDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -23,7 +21,6 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 @Component("securityUserDetailsService")
 @Slf4j
@@ -53,7 +50,7 @@ public class SecurityUserDetailsService implements ReactiveUserDetailsService {
                 "left join sys_user_role_relation c on b.role_id = c.role_id where c.user_id = ?";
         RowMapper<Resource> resourceRowMapper = new BeanPropertyRowMapper<Resource>(Resource.class);
         List<Resource> resources = jdbcTemplate.query(resourceQuery, resourceRowMapper, user.getId());
-        UserDTO userDTO = new UserDTO(user.getId(), user.getUserName(), user.getPassword(), user.getStatus(), resources);
+
         SecurityUser securityUser = new SecurityUser(user, resources);
         Mono<Boolean> set = reactiveRedisTemplate.opsForValue().set("USERNAME:" + username, securityUser);
         set.subscribe(aBoolean -> log.info("USERNAME:{}，写入redis", username));

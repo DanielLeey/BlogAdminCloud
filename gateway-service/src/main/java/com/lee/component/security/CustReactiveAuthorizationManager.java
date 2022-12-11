@@ -1,7 +1,7 @@
 package com.lee.component.security;
 
 import cn.hutool.core.collection.CollUtil;
-import com.lee.domain.Resource;
+import com.lee.common.entity.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;

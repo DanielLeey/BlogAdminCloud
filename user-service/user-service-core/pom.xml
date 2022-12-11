@@ -13,12 +13,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.lee</groupId>
-            <artifactId>common-core</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <artifactId>user-service-api</artifactId>
             <groupId>com.lee</groupId>
             <version>1.0-SNAPSHOT</version>

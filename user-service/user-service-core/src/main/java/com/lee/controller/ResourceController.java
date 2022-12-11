@@ -1,6 +1,6 @@
 package com.lee.controller;
 
-import com.lee.domain.Resource;
+import com.lee.common.entity.Resource;
 import com.lee.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

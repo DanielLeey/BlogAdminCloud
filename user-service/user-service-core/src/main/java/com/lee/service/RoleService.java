@@ -1,7 +1,7 @@
 package com.lee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.lee.domain.Role;
+import com.lee.common.entity.Role;
 
 import java.util.List;
 

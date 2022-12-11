@@ -3,7 +3,7 @@
 <mapper namespace="com.lee.dao.RoleMapper">
 
 
-    <select id="getRoleByUserId" resultType="com.lee.domain.Role">
+    <select id="getRoleByUserId" resultType="com.lee.common.entity.Role">
         select b.* from sys_user_role_relation a
         inner join sys_role b
         on a.role_id = b.uid

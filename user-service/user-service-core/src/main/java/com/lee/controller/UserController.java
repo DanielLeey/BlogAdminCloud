@@ -1,7 +1,12 @@
 package com.lee.controller;
 
 
+import cn.hutool.core.util.ObjUtil;
 import com.lee.common.api.CommonResult;
+import com.lee.common.entity.Resource;
+import com.lee.common.entity.Role;
+import com.lee.common.entity.SecurityUser;
+import com.lee.common.entity.User;
 import com.lee.domain.*;
 import com.lee.service.ResourceService;
 import com.lee.service.RoleService;
@@ -85,8 +90,10 @@ public class UserController {
     private User getUser(HttpHeaders httpHeaders) {
         String username = Objects.requireNonNull(httpHeaders.get("USERNAME")).get(0);
         SecurityUser securityUser = (SecurityUser) RedisUtils.get("USERNAME:" + username);
-        final User user = userService.getUserByUsername(username);
-        return user;
+        if (ObjUtil.isNotEmpty(securityUser)) {
+            return securityUser.getUser();
+        }
+        return userService.getUserByUsername(username);
     }
 
     @GetMapping("/getMenu")

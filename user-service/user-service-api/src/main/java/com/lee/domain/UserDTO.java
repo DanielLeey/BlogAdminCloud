@@ -1,5 +1,6 @@
 package com.lee.domain;
 
+import com.lee.common.entity.Resource;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
