@@ -1,4 +1,4 @@
-package com.lee.domain;
+package com.lee.common.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -12,7 +12,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- *
  * @author Lee
  */
 @Data
@@ -27,7 +26,6 @@ public class User implements Serializable {
     private Long id;
     //用户名
     private String userName;
-
     //昵称
     private String nickName;
     //密码
@@ -47,12 +45,12 @@ public class User implements Serializable {
     //创建人的用户id
     private Long createBy;
     //创建时间
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
     //更新人
     private Long updateBy;
     //更新时间
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
     //删除标志（0代表未删除，1代表已删除）
     private Integer delFlag;

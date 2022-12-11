@@ -6,6 +6,7 @@ import com.lee.domain.*;
 import com.lee.service.ResourceService;
 import com.lee.service.RoleService;
 import com.lee.service.UserService;
+import com.lee.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,7 @@ public class UserController {
      * 实体类接收 或者 @RequestParam接收（接收表单）
      * Content-Type 为 application/json
      * 使用@RequestBody接收json
+     *
      * @param userQuery
      * @return
      */
@@ -53,6 +55,7 @@ public class UserController {
 
     /**
      * 获取网站名称
+     *
      * @return
      */
     @RequestMapping(value = "/getWebSiteName", method = RequestMethod.GET)
@@ -62,6 +65,7 @@ public class UserController {
 
     /**
      * 获取token返回用户的信息
+     *
      * @return
      */
     @RequestMapping(value = "/info", method = RequestMethod.GET)
@@ -80,13 +84,14 @@ public class UserController {
 
     private User getUser(HttpHeaders httpHeaders) {
         String username = Objects.requireNonNull(httpHeaders.get("USERNAME")).get(0);
+        SecurityUser securityUser = (SecurityUser) RedisUtils.get("USERNAME:" + username);
         final User user = userService.getUserByUsername(username);
         return user;
     }
 
     @GetMapping("/getMenu")
     public CommonResult getMenu() {
-        return  null;
+        return null;
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)

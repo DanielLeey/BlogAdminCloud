@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 /**
  * 根据token来判断用户权限
  * 实现ServerSecurityContextRepository类的主要目的是实现load方法
- * 这个方法实际上是传递一个Authentication对象供后面ReactiveAuthorizationManager<AuthorizationContext>来判断用户权限
+ * 这个方法实际上是传递一个Authentication对象供后面ReactiveAuthenticationManager去认证
  *
  * @author Lee
  */
@@ -47,7 +47,7 @@ public class CustSecurityContextRepository implements ServerSecurityContextRepos
                 String authToken = authHeader.substring(7);
                 String username = jwtTokenUtil.getUserNameFromToken(authToken);
                 if (StrUtil.isNotBlank(username)) {
-                    //添加请求头
+                    //添加请求头，其他模块能够从请求头获取用户USERNAME，再从redis或db中获取
                     serverWebExchange.getRequest().mutate().header("USERNAME", username).build();
                     //token能正常解析，表示token有效并对应数据库已知用户
                     Authentication newAuthentication = new UsernamePasswordAuthenticationToken(username, null);

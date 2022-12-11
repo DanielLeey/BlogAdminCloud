@@ -25,6 +25,8 @@ import java.util.Map;
 /**
  * 权限校验
  * 由于SpringGateWay基于WebFlux，所以SpringSecruity很多原有写法，都得改为WebFlux的方式才能生效！
+ * 从路径获取所需权限，Authentication 获取用户所有权限，查看有没有
+ *
  */
 @Slf4j
 @Component
