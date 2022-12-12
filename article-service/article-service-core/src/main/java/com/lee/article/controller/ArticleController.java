@@ -2,7 +2,7 @@ package com.lee.article.controller;
 
 import com.lee.article.service.ArticleService;
 import com.lee.common.api.CommonResult;
-import com.lee.dto.ArticleDTO;
+import com.lee.common.entity.ArticleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

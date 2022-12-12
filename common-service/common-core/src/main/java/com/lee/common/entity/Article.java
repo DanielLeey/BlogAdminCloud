@@ -1,4 +1,4 @@
-package com.lee.entity;
+package com.lee.common.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;

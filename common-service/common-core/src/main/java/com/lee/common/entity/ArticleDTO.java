@@ -1,4 +1,4 @@
-package com.lee.dto;
+package com.lee.common.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
