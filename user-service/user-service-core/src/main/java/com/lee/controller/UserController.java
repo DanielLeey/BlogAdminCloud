@@ -74,8 +74,7 @@ public class UserController {
      */
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public CommonResult info(@RequestHeader HttpHeaders httpHeaders) {
-        User user1 = UserThreadHolder.get();
-        final User user = getUser(httpHeaders);
+        User user = UserThreadHolder.get();
         List<Role> roles = roleService.getByUserId(user.getId());
         final List<RoleDTO> roleDTOS = roles.stream().map(role -> {
             List<Resource> resources = resourceService.getResourcesByRoleId(role.getUid());
@@ -97,8 +96,8 @@ public class UserController {
     }
 
     @GetMapping("/getMenu")
-    public CommonResult getMenu(@RequestHeader HttpHeaders httpHeaders) {
-        User user = getUser(httpHeaders);
+    public CommonResult getMenu() {
+        User user = UserThreadHolder.get();
         List<Resource> parentList = resourceService.getResourcesByUserIdAndLevel(user.getId(), 1);
         List<Resource> sonList = resourceService.getResourcesByUserIdAndLevel(user.getId(), 2);
         List<Resource> buttonList = resourceService.getResourcesByUserIdAndLevel(user.getId(), 3);

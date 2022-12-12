@@ -25,6 +25,7 @@ import java.io.IOException;
  * @Author: liyansong
  * @Date: 2022/12/8 17:22
  * @Version: 1.0
+ * 从请求头中的USERNAME在redis中获取用户，放入ThreadLocal
  */
 
 @Component
