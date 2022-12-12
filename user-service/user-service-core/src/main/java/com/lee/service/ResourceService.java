@@ -10,4 +10,6 @@ public interface ResourceService extends IService<Resource> {
     List<Resource> getResourcesByUserId(Long id);
 
     List<Resource> getResourcesByRoleId(Long uid);
+
+    List<Resource> getResourcesByUserIdAndLevel(Long id, int level);
 }

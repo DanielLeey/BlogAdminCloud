@@ -24,4 +24,9 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
     public List<Resource> getResourcesByRoleId(Long uid) {
         return resourceMapper.getResourcesByRoleId(uid);
     }
+
+    @Override
+    public List<Resource> getResourcesByUserIdAndLevel(Long userId, int level) {
+        return resourceMapper.getResourcesByUserIdAndLevel(userId, level);
+    }
 }

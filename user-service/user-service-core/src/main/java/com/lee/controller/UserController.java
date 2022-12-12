@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -95,8 +96,17 @@ public class UserController {
     }
 
     @GetMapping("/getMenu")
-    public CommonResult getMenu() {
-        return null;
+    public CommonResult getMenu(@RequestHeader HttpHeaders httpHeaders) {
+        User user = getUser(httpHeaders);
+        List<Resource> parentList = resourceService.getResourcesByUserIdAndLevel(user.getId(), 1);
+        List<Resource> sonList = resourceService.getResourcesByUserIdAndLevel(user.getId(), 2);
+        List<Resource> buttonList = resourceService.getResourcesByUserIdAndLevel(user.getId(), 3);
+        MenuVO data = MenuVO.builder()
+                            .parentList(parentList)
+                            .sonList(sonList)
+                            .buttonList(buttonList)
+                            .build();
+        return CommonResult.success(data);
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
