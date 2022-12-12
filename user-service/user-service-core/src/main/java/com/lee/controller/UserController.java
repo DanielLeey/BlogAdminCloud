@@ -74,6 +74,7 @@ public class UserController {
      */
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public CommonResult info(@RequestHeader HttpHeaders httpHeaders) {
+        User user1 = UserThreadHolder.get();
         final User user = getUser(httpHeaders);
         List<Role> roles = roleService.getByUserId(user.getId());
         final List<RoleDTO> roleDTOS = roles.stream().map(role -> {
