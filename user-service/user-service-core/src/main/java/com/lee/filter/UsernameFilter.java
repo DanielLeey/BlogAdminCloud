@@ -1,4 +1,4 @@
-package com.lee.component.filter;
+package com.lee.filter;
 
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;

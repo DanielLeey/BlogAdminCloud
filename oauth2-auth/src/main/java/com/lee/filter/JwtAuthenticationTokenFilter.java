@@ -1,4 +1,4 @@
-package com.lee.component.filter;
+package com.lee.filter;
 
 import com.lee.utils.JwtTokenUtil;
 import org.slf4j.Logger;

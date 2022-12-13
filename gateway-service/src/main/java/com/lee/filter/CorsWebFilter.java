@@ -1,4 +1,4 @@
-package com.lee.component.filter;
+package com.lee.filter;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

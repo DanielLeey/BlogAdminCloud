@@ -52,7 +52,8 @@ public class WebfluxSecurityConfig {
             "/gateway/auth/login",
             "/admin/auth/getWebSiteName",
             "/admin/auth/info",
-            "/admin/auth/getMenu"
+            "/admin/auth/getMenu",
+            "/admin/index/init"
     };
     // "/admin/auth/**"
     @Bean

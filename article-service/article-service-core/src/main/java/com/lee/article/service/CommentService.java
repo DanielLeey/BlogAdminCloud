@@ -1,4 +1,7 @@
 package com.lee.article.service;
 
-public interface CommentService {
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.lee.common.entity.Comment;
+
+public interface CommentService extends IService<Comment> {
 }
