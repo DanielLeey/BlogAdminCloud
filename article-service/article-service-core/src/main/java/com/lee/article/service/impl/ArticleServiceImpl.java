@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.article.dao.ArticleMapper;
 import com.lee.article.service.ArticleService;
 import com.lee.common.api.CommonResult;
-import com.lee.common.entity.ArticleDTO;
+import com.lee.common.dto.ArticleDTO;
 import com.lee.common.entity.Article;
 import org.springframework.stereotype.Service;
 

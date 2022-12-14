@@ -2,7 +2,7 @@ package com.lee.filter;
 
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
-import com.lee.common.entity.SecurityUserDTO;
+import com.lee.common.dto.SecurityUserDTO;
 import com.lee.domain.UserThreadHolder;
 import com.lee.service.UserService;
 import com.lee.utils.RedisUtils;

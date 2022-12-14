@@ -1,4 +1,4 @@
-package com.lee.common.entity;
+package com.lee.common.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

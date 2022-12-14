@@ -51,7 +51,7 @@ public class WebfluxSecurityConfig {
             "/v2/api-docs", "/webjars/**", "/doc.html",
             "/gateway/auth/login",
             "/admin/auth/getWebSiteName",
-            "/admin/auth/info",
+            /*"/admin/auth/info",*/
             "/admin/auth/getMenu",
             "/admin/index/init"
     };

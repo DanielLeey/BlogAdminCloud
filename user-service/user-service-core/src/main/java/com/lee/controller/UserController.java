@@ -2,12 +2,10 @@ package com.lee.controller;
 
 
 import cn.hutool.core.util.ObjUtil;
-import com.lee.api.CommentFeignService;
-import com.lee.api.ResourceFeignService;
 import com.lee.common.api.CommonResult;
 import com.lee.common.entity.Resource;
 import com.lee.common.entity.Role;
-import com.lee.common.entity.SecurityUserDTO;
+import com.lee.common.dto.SecurityUserDTO;
 import com.lee.common.entity.User;
 import com.lee.domain.*;
 import com.lee.service.ResourceService;
@@ -18,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;

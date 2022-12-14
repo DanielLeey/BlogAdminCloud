@@ -1,7 +1,7 @@
 package com.lee.api;
 
 import com.lee.common.api.CommonResult;
-import com.lee.common.entity.ArticleDTO;
+import com.lee.common.dto.ArticleDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

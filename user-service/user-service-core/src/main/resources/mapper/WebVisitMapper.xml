@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "<http://mybatis.org/dtd/mybatis-3-mapper.dtd>">
+<mapper namespace="com.lee.dao.WebVisitMapper">
+
+
+    <select id="getPVByWeek" resultType="java.util.Map">
+        SELECT DISTINCT DATE_FORMAT(create_time, '%Y-%m-%d') DATE, COUNT(uid) COUNT
+        FROM  t_web_visit
+        where create_time &gt;= #{startDate} AND create_time &lt;= #{endDate}
+        GROUP BY DATE_FORMAT(create_time, '%Y-%m-%d')
+        ORDER BY DATE ASC;
+    </select>
+    <select id="getUVByWeek" resultType="java.util.Map">
+        SELECT DATE, COUNT(IP) AS COUNT FROM (
+            SELECT DATE_FORMAT(create_time, '%Y-%m-%d') DATE, ip
+            FROM t_web_visit
+            WHERE create_time &gt;= #{startDate} AND create_time &lt;= #{endDate}
+            GROUP BY DATE_FORMAT(create_time, '%Y-%m-%d'),ip
+        ) TEMP
+        GROUP BY DATE
+        ORDER BY DATE ASC;
+    </select>
+</mapper>

@@ -1,13 +1,11 @@
 package com.lee.component.security;
 
-import com.google.errorprone.annotations.Var;
 import com.lee.common.constant.MessageConstant;
 import com.lee.common.entity.Resource;
-import com.lee.common.entity.SecurityUserDTO;
+import com.lee.common.dto.SecurityUserDTO;
 import com.lee.common.entity.User;
 import com.lee.domain.SecurityUser;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;

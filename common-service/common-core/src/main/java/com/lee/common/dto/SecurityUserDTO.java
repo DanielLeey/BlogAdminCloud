@@ -1,5 +1,7 @@
-package com.lee.common.entity;
+package com.lee.common.dto;
 
+import com.lee.common.entity.Resource;
+import com.lee.common.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
