@@ -6,7 +6,7 @@
     <select id="getPVByWeek" resultType="java.util.Map">
         SELECT DISTINCT DATE_FORMAT(create_time, '%Y-%m-%d') DATE, COUNT(uid) COUNT
         FROM  t_web_visit
-        where create_time &gt;= #{startDate} AND create_time &lt;= #{endDate}
+        where create_time &gt;= #{startDate} AND create_time &lt; #{endDate}
         GROUP BY DATE_FORMAT(create_time, '%Y-%m-%d')
         ORDER BY DATE ASC;
     </select>
@@ -14,7 +14,7 @@
         SELECT DATE, COUNT(IP) AS COUNT FROM (
             SELECT DATE_FORMAT(create_time, '%Y-%m-%d') DATE, ip
             FROM t_web_visit
-            WHERE create_time &gt;= #{startDate} AND create_time &lt;= #{endDate}
+            WHERE create_time &gt;= #{startDate} AND create_time &lt; #{endDate}
             GROUP BY DATE_FORMAT(create_time, '%Y-%m-%d'),ip
         ) TEMP
         GROUP BY DATE

@@ -53,7 +53,8 @@ public class WebfluxSecurityConfig {
             "/admin/auth/getWebSiteName",
             /*"/admin/auth/info",*/
             "/admin/auth/getMenu",
-            "/admin/index/init"
+            "/admin/index/init",
+            "/admin/index/getVisitByWeek"
     };
     // "/admin/auth/**"
     @Bean
