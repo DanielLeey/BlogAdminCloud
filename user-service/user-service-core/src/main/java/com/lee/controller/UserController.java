@@ -68,11 +68,11 @@ public class UserController {
 
     /**
      * 获取token返回用户的信息
-     *
+     * @RequestHeader HttpHeaders httpHeaders
      * @return
      */
     @RequestMapping(value = "/info", method = RequestMethod.GET)
-    public CommonResult info(@RequestHeader HttpHeaders httpHeaders) {
+    public CommonResult info() {
         User user = UserThreadHolder.get();
         List<Role> roles = roleService.getByUserId(user.getId());
         final List<RoleDTO> roleDTOS = roles.stream().map(role -> {
@@ -85,6 +85,11 @@ public class UserController {
         return CommonResult.success(userInfoVO);
     }
 
+    /**
+     * 从请求头中获取username
+     * @param httpHeaders
+     * @return
+     */
     private User getUser(HttpHeaders httpHeaders) {
         String username = Objects.requireNonNull(httpHeaders.get("USERNAME")).get(0);
         SecurityUserDTO securityUserDTO = (SecurityUserDTO) redisUtils.get("USERNAME:" + username);

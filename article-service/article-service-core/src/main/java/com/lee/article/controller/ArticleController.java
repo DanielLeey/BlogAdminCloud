@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/article")
 public class ArticleController {
@@ -28,5 +30,10 @@ public class ArticleController {
         LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Article::getStatus, 0);
         return articleService.count(wrapper);
+    }
+
+    @GetMapping("/getArticleByUserId/{uid}/{startDate}/{endDate}")
+    public List<Article> getArticleByUserId(@PathVariable(value = "uid") String uid, @PathVariable(value = "startDate") String startDate, @PathVariable(value = "endDate") String endDate) {
+        return articleService.getArticleByUserId(uid, startDate, endDate);
     }
 }

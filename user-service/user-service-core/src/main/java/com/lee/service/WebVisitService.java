@@ -1,8 +1,12 @@
 package com.lee.service;
 
+import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lee.common.bo.VisitByWeekBO;
 import com.lee.common.entity.WebVisit;
+import com.lee.domain.BlogContributeCountBO;
+
+import java.util.List;
 
 /**
  * @Author: liyansong
@@ -21,4 +25,13 @@ public interface WebVisitService extends IService<WebVisit> {
      * 注：PV表示访问量   UV表示独立用户数
      */
     VisitByWeekBO getVisitByWeek();
+
+    /**
+     *
+     * @param id 用户id
+     * @param startDate 开始日期
+     * @param endDate 结束日期
+     * @return
+     */
+    BlogContributeCountBO getBlogContributeCount(Long id, DateTime startDate, DateTime endDate);
 }

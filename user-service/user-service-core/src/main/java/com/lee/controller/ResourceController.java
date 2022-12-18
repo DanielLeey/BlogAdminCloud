@@ -31,4 +31,5 @@ public class ResourceController {
     public List<Resource> list() {
         return resourceService.list();
     }
+
 }

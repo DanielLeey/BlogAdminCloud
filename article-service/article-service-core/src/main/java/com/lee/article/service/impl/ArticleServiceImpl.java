@@ -7,11 +7,16 @@ import com.lee.article.service.ArticleService;
 import com.lee.common.api.CommonResult;
 import com.lee.common.dto.ArticleDTO;
 import com.lee.common.entity.Article;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service("articleService")
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
 
+    @Autowired
+    private ArticleMapper articleMapper;
 
     @Override
     public CommonResult<ArticleDTO> getArticleById(String id) {
@@ -20,5 +25,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         Article article = getOne(wrapper);
         ArticleDTO articleDTO = new ArticleDTO(article.getId(), article.getTitle());
         return CommonResult.success(articleDTO);
+    }
+
+    @Override
+    public List<Article> getArticleByUserId(String uid, String startDate, String endDate) {
+        LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Article::getCreateBy, uid);
+        wrapper.between(Article::getCreateTime, startDate, endDate);
+        return articleMapper.selectList(wrapper);
     }
 }

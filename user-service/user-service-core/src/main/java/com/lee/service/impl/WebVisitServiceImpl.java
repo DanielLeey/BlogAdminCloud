@@ -3,20 +3,21 @@ package com.lee.service.impl;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lee.api.ArticleFeignService;
 import com.lee.common.bo.VisitByWeekBO;
+import com.lee.common.entity.Article;
 import com.lee.common.entity.WebVisit;
 import com.lee.dao.WebVisitMapper;
+import com.lee.domain.BlogContributeCountBO;
 import com.lee.service.WebVisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,6 +31,9 @@ public class WebVisitServiceImpl extends ServiceImpl<WebVisitMapper, WebVisit> i
 
     @Autowired
     private WebVisitMapper webVisitMapper;
+
+    @Autowired
+    private ArticleFeignService articleFeignService;
 
     @Override
     public VisitByWeekBO getVisitByWeek() {
@@ -74,6 +78,38 @@ public class WebVisitServiceImpl extends ServiceImpl<WebVisitMapper, WebVisit> i
             uvList = finalUvList;
         }
         return VisitByWeekBO.builder().date(date).pv(pvList).uv(uvList).build();
+    }
+
+    @Override
+    public BlogContributeCountBO getBlogContributeCount(Long id, DateTime startDate, DateTime endDate) {
+        List<Article> articleList = articleFeignService.getArticleByUserId(id.toString(), startDate.toString(), endDate.toString());
+        // 记录每天 写的 文章数量
+        Map<String, Integer> articleDateMap = new LinkedHashMap<>();
+        long days = DateUtil.between(startDate, endDate, DateUnit.DAY);
+        Stream.iterate(startDate, day -> DateUtil.offsetDay(day, 1))
+                .limit(days + 1)
+                .map(day -> DateUtil.format(day, "yyyy-MM-dd"))
+                .forEach(new Consumer<String>() {
+                    @Override
+                    public void accept(String date) {
+                        articleDateMap.put(date, 0);
+                    }});
+        for (Article article : articleList) {
+            String articleDate = DateUtil.format(article.getCreateTime(), "yyyy-MM-dd");
+            Integer dateCount = articleDateMap.getOrDefault(articleDate, 0);
+            articleDateMap.put(articleDate, ++dateCount);
+        }
+        List<List<Object>> res = new ArrayList<>();
+        articleDateMap.forEach(new BiConsumer<String, Integer>() {
+            @Override
+            public void accept(String date, Integer count) {
+                List<Object> list = new ArrayList<>();
+                list.add(date);
+                list.add(count);
+                res.add(list);
+            }
+        });
+        return BlogContributeCountBO.builder().blogContributeCount(res).build();
     }
 
     private List<String> getWeek(DateTime startDate, DateTime endDate) {
