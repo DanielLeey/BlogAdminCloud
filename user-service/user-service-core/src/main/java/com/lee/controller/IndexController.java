@@ -7,6 +7,8 @@ import com.lee.api.ArticleFeignService;
 import com.lee.api.CommentFeignService;
 import com.lee.common.api.CommonResult;
 import com.lee.common.bo.VisitByWeekBO;
+import com.lee.common.dto.BlogCountByBlogSortDTO;
+import com.lee.common.dto.BlogCountByTagDTO;
 import com.lee.common.entity.User;
 import com.lee.common.vo.InitVO;
 import com.lee.domain.BlogContributeCountBO;
@@ -14,16 +16,15 @@ import com.lee.domain.BlogContributeCountVO;
 import com.lee.domain.UserThreadHolder;
 import com.lee.service.UserService;
 import com.lee.service.WebVisitService;
-import org.apache.ibatis.javassist.expr.NewArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: liyansong
@@ -65,6 +66,7 @@ public class IndexController {
     /**
      * contributeDate: 日历的起止日
      * blogContributeCount： 数组，arr[0]日期，arr[1]写文章的数量
+     *
      * @return
      */
     @GetMapping(value = "/getBlogContributeCount")
@@ -79,9 +81,30 @@ public class IndexController {
         User user = UserThreadHolder.get();
         BlogContributeCountBO blogContributeCount = webVisitService.getBlogContributeCount(user.getId(), startDate, curDate);
         BlogContributeCountVO blogContributeCountVO = BlogContributeCountVO.builder()
-                                                                            .contributeDate(contributeDate)
-                                                                            .blogContributeCount(blogContributeCount.getBlogContributeCount())
-                                                                            .build();
+                .contributeDate(contributeDate)
+                .blogContributeCount(blogContributeCount.getBlogContributeCount())
+                .build();
         return CommonResult.success(blogContributeCountVO);
+    }
+
+    /**
+     * 查询该分类下文章的数量
+     *
+     * @return
+     */
+    @GetMapping(value = "/getBlogCountByBlogSort")
+    public CommonResult getBlogCountByBlogSort() {
+        BlogCountByBlogSortDTO blogCountByBlogSortDTO = webVisitService.getBlogCountByBlogSort();
+                return CommonResult.success(blogCountByBlogSortDTO.getList());
+    }
+
+    /**
+     * 查询该标签下文章的数量
+     * @return
+     */
+    @GetMapping(value = "/getBlogCountByTag")
+    public CommonResult getBlogCountByTag() {
+        BlogCountByTagDTO blogCountByTagDTO = webVisitService.getBlogCountByTag();
+        return CommonResult.success(blogCountByTagDTO.getList());
     }
 }

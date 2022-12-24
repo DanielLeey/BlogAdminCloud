@@ -67,7 +67,7 @@ spring:
         - id: article-service
           uri: lb://article-service
           predicates:
-            - Path=/article-service/**
+            - Path=/article/**
           filters:
             - StripPrefix=1
   jackson:

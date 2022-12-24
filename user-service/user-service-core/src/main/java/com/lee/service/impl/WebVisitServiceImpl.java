@@ -6,7 +6,9 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.api.ArticleFeignService;
+import com.lee.common.dto.BlogCountByBlogSortDTO;
 import com.lee.common.bo.VisitByWeekBO;
+import com.lee.common.dto.BlogCountByTagDTO;
 import com.lee.common.entity.Article;
 import com.lee.common.entity.WebVisit;
 import com.lee.dao.WebVisitMapper;
@@ -93,7 +95,8 @@ public class WebVisitServiceImpl extends ServiceImpl<WebVisitMapper, WebVisit> i
                     @Override
                     public void accept(String date) {
                         articleDateMap.put(date, 0);
-                    }});
+                    }
+                });
         for (Article article : articleList) {
             String articleDate = DateUtil.format(article.getCreateTime(), "yyyy-MM-dd");
             Integer dateCount = articleDateMap.getOrDefault(articleDate, 0);
@@ -110,6 +113,16 @@ public class WebVisitServiceImpl extends ServiceImpl<WebVisitMapper, WebVisit> i
             }
         });
         return BlogContributeCountBO.builder().blogContributeCount(res).build();
+    }
+
+    @Override
+    public BlogCountByBlogSortDTO getBlogCountByBlogSort() {
+        return articleFeignService.getBlogCountByBlogSort();
+    }
+
+    @Override
+    public BlogCountByTagDTO getBlogCountByTag() {
+        return articleFeignService.getBlogCountByTag();
     }
 
     private List<String> getWeek(DateTime startDate, DateTime endDate) {
