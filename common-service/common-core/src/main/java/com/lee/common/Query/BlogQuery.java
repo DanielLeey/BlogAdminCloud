@@ -24,9 +24,9 @@ public class BlogQuery {
 
     private String levelKeyword;
 
-    private Boolean isPublish;
+    private String isPublish;
 
-    private Boolean isOriginal;
+    private String isOriginal;
 
     private String type;
 

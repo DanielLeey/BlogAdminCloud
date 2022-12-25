@@ -54,7 +54,10 @@ public class WebfluxSecurityConfig {
             /*"/admin/auth/info",*/
             "/admin/auth/getMenu",
             "/admin/index/**",
-            "/article/blog/getList"
+            "/article/blog/**",
+            "/article/blogSort/**",
+            "/article/tag/**",
+            "/admin/sysDictData/**"
     };
     // "/admin/auth/**"
     @Bean

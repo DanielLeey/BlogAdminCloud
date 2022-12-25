@@ -41,10 +41,16 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         if (StrUtil.isNotBlank(blogQuery.getBlogSortUid())) {
             wrapper.eq(Blog::getBlogSortUid, blogQuery.getBlogSortUid());
         }
-        if (ObjectUtil.isNotEmpty(blogQuery.getIsOriginal())) {
+        if (StrUtil.isNotBlank(blogQuery.getTagUid())) {
+            wrapper.eq(Blog::getTagUid, blogQuery.getTagUid());
+        }
+        if (StrUtil.isNotBlank(blogQuery.getBlogSortUid())) {
+            wrapper.eq(Blog::getBlogSortUid, blogQuery.getBlogSortUid());
+        }
+        if (StrUtil.isNotEmpty(blogQuery.getIsOriginal())) {
             wrapper.eq(Blog::getIsOriginal, blogQuery.getIsOriginal());
         }
-        if (ObjectUtil.isNotEmpty(blogQuery.getIsPublish())) {
+        if (StrUtil.isNotEmpty(blogQuery.getIsPublish())) {
             wrapper.eq(Blog::getIsPublish, blogQuery.getIsPublish());
         }
         if (StrUtil.isNotBlank(blogQuery.getLevelKeyword())) {

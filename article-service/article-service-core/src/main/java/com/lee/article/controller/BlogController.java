@@ -27,10 +27,14 @@ public class BlogController {
 
     @PostMapping("/getList")
     public CommonResult getBlogList(@RequestBody BlogQuery blogQuery) {
-        final int count = blogService.count();
         List<BlogListRecordBO> blogList = blogService.getBlogList(blogQuery);
-        BlogListVO blogListVO = BlogListVO.builder().current(blogQuery.getCurrentPage())
-                .size(blogQuery.getPageSize()).total(count).records(blogList).isSearchCount(true).optimizeCountsql(true).build();
+        final BlogListVO blogListVO = new BlogListVO();
+        blogListVO.setCurrent(blogQuery.getCurrentPage());
+        blogListVO.setSize(blogQuery.getPageSize());
+        blogListVO.setTotal(blogList.size());
+        blogListVO.setRecords(blogList);
+        blogListVO.setIsSearchCount(true);
+        blogListVO.setOptimizeCountsql(true);
         return CommonResult.success(blogListVO);
     }
 }

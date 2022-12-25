@@ -2,6 +2,8 @@ package com.lee.article.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lee.common.bo.BlogCountByTagBO;
+import com.lee.common.bo.TagListRecordBO;
+import com.lee.common.entity.BaseQuery;
 import com.lee.common.entity.Tag;
 
 import java.util.List;
@@ -14,4 +16,6 @@ import java.util.List;
 public interface TagService extends IService<Tag> {
 
     List<BlogCountByTagBO> getBlogCountByTag();
+
+    List<TagListRecordBO> getTagList(BaseQuery baseQuery);
 }
