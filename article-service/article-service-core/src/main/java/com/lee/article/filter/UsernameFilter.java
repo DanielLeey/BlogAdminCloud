@@ -1,11 +1,11 @@
-package com.lee.filter;
+package com.lee.article.filter;
 
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
-import com.lee.common.dto.SecurityUserDTO;
+import com.lee.api.UserFeignService;
+import com.lee.article.utils.RedisUtils;
 import com.lee.common.ThreadHolder.UserThreadHolder;
-import com.lee.service.UserService;
-import com.lee.utils.RedisUtils;
+import com.lee.common.dto.SecurityUserDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
@@ -37,7 +37,7 @@ public class UsernameFilter extends GenericFilterBean {
     private RedisUtils redisUtils;
 
     @Autowired
-    private UserService userService;
+    private UserFeignService userfeginService;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -51,7 +51,7 @@ public class UsernameFilter extends GenericFilterBean {
             if (ObjUtil.isNotNull(securityUserDTO)) {
                 UserThreadHolder.set(securityUserDTO.getUser());
             }
-            UserThreadHolder.set(userService.getUserByUsername(username));
+            UserThreadHolder.set(userfeginService.getUserByUsername(username));
         }
         filterChain.doFilter(request, response);
         UserThreadHolder.remove();

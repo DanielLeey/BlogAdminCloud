@@ -1,4 +1,4 @@
-package com.lee.domain;
+package com.lee.common.ThreadHolder;
 
 import com.lee.common.entity.User;
 

@@ -25,4 +25,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         wrapper.eq(User::getUserName, username);
         return getOne(wrapper);
     }
+
+    @Override
+    public String getAdminUid() {
+        User admin =  userMapper.getAdminUid();
+        return admin.getId() +  "";
+    }
 }

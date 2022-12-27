@@ -50,7 +50,11 @@
             <artifactId>hutool-all</artifactId>
             <version>5.8.6</version>
         </dependency>
-
+        <!-- redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
         <!-- openFeign -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -74,6 +78,13 @@
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-datasource-nacos</artifactId>
+        </dependency>
+
+        <!-- api -->
+        <dependency>
+            <artifactId>user-service-api</artifactId>
+            <groupId>com.lee</groupId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

@@ -1,24 +1,31 @@
 package com.lee.article.service.impl;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lee.api.UserFeignService;
 import com.lee.article.dao.BlogMapper;
 import com.lee.article.service.BlogService;
 import com.lee.article.service.BlogSortService;
 import com.lee.article.service.TagService;
-import com.lee.common.Query.BlogQuery;
+import com.lee.common.Request.BlogAddRequest;
+import com.lee.common.Request.BlogEditRequest;
+import com.lee.common.Request.BlogRequest;
+import com.lee.common.ThreadHolder.UserThreadHolder;
 import com.lee.common.bo.BlogListRecordBO;
 import com.lee.common.entity.Blog;
 import com.lee.common.entity.BlogSort;
 import com.lee.common.entity.Tag;
+import com.lee.common.entity.User;
+import com.lee.common.utils.UUidUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,33 +37,39 @@ import java.util.List;
 public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements BlogService {
 
     @Autowired
+    private BlogMapper blogMapper;
+
+    @Autowired
     private TagService tagService;
 
     @Autowired
     private BlogSortService blogSortService;
 
+    @Autowired
+    private UserFeignService userService;
+
     @Override
-    public List<BlogListRecordBO> getBlogList(BlogQuery blogQuery) {
+    public List<BlogListRecordBO> getBlogList(BlogRequest blogRequest) {
         LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
-        if (StrUtil.isNotBlank(blogQuery.getBlogSortUid())) {
-            wrapper.eq(Blog::getBlogSortUid, blogQuery.getBlogSortUid());
+        if (StrUtil.isNotBlank(blogRequest.getBlogSortUid())) {
+            wrapper.eq(Blog::getBlogSortUid, blogRequest.getBlogSortUid());
         }
-        if (StrUtil.isNotBlank(blogQuery.getTagUid())) {
-            wrapper.eq(Blog::getTagUid, blogQuery.getTagUid());
+        if (StrUtil.isNotBlank(blogRequest.getTagUid())) {
+            wrapper.eq(Blog::getTagUid, blogRequest.getTagUid());
         }
-        if (StrUtil.isNotBlank(blogQuery.getBlogSortUid())) {
-            wrapper.eq(Blog::getBlogSortUid, blogQuery.getBlogSortUid());
+        if (StrUtil.isNotBlank(blogRequest.getBlogSortUid())) {
+            wrapper.eq(Blog::getBlogSortUid, blogRequest.getBlogSortUid());
         }
-        if (StrUtil.isNotEmpty(blogQuery.getIsOriginal())) {
-            wrapper.eq(Blog::getIsOriginal, blogQuery.getIsOriginal());
+        if (StrUtil.isNotEmpty(blogRequest.getIsOriginal())) {
+            wrapper.eq(Blog::getIsOriginal, blogRequest.getIsOriginal());
         }
-        if (StrUtil.isNotEmpty(blogQuery.getIsPublish())) {
-            wrapper.eq(Blog::getIsPublish, blogQuery.getIsPublish());
+        if (StrUtil.isNotEmpty(blogRequest.getIsPublish())) {
+            wrapper.eq(Blog::getIsPublish, blogRequest.getIsPublish());
         }
-        if (StrUtil.isNotBlank(blogQuery.getLevelKeyword())) {
-            wrapper.eq(Blog::getLevel, blogQuery.getLevelKeyword());
+        if (StrUtil.isNotBlank(blogRequest.getLevelKeyword())) {
+            wrapper.eq(Blog::getLevel, blogRequest.getLevelKeyword());
         }
-        Page<Blog> page = new Page<>(blogQuery.getCurrentPage(), blogQuery.getPageSize());
+        Page<Blog> page = new Page<>(blogRequest.getCurrentPage(), blogRequest.getPageSize());
         List<Blog> blogList = page(page, wrapper).getRecords();
         List<BlogListRecordBO> blogListVOList = new ArrayList<>(blogList.size());
         for (Blog blog : blogList) {
@@ -79,5 +92,33 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
             blogListVOList.add(blogListRecordBO);
         }
         return blogListVOList;
+    }
+
+    @Override
+    public Boolean editBlog(BlogEditRequest blogEditRequest) {
+        Blog blog = new Blog();
+        BeanUtils.copyProperties(blogEditRequest, blog);
+        blog.setUpdateTime(new Date());
+        return updateById(blog);
+    }
+
+    @Override
+    public Boolean addBlog(BlogAddRequest blogAddRequest) {
+        User user = UserThreadHolder.get();
+        Blog blog = new Blog();
+        BeanUtils.copyProperties(blogAddRequest, blog);
+        blog.setUid(UUidUtils.getUUId());
+        blog.setClickCount(0);
+        blog.setCollectCount(0);
+        blog.setStatus(1);
+        Date date = new Date();
+        blog.setCreateTime(date);
+        blog.setUpdateTime(date);
+        blog.setAdminUid(userService.getAdminUid());
+        blog.setSort(0);
+        blog.setUserUid(user.getId()+"");
+        blog.setArticleSource(0);
+        final int count = blogMapper.insert(blog);
+        return count > 0;
     }
 }

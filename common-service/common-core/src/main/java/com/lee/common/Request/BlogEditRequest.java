@@ -1,30 +1,25 @@
-package com.lee.common.entity;
+package com.lee.common.Request;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.lee.common.entity.BlogSort;
+import com.lee.common.entity.Tag;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: liyansong
- * @Date: 2022/12/24 15:31
+ * @Date: 2022/12/27 9:44
  * @Version: 1.0
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("t_blog")
-public class Blog implements Serializable {
-    private static final long serialVersionUID = -74772318443268076L;
-    /**
-     * 唯一uid
-     */
-    @TableId(type = IdType.INPUT)
+@Builder
+public class BlogEditRequest {
     private String uid;
     /**
      * 博客标题
@@ -117,9 +112,24 @@ public class Blog implements Serializable {
     /**
      * 投稿用户UID
      */
-    private String userUid;
+    //private String userUid;
     /**
      * 文章来源【0 后台添加，1 用户投稿】
      */
-    private Integer articleSource;
+    //private Integer articleSource;
+
+    /**
+     * 标签list
+     */
+    private List<Tag> tagList;
+
+    /**
+     * 图片地址
+     */
+    private List<String> photoList;
+
+    /**
+     * 博客分类list
+     */
+    private BlogSort blogSort;
 }

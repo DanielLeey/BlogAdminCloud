@@ -15,4 +15,7 @@ public interface UserFeignService {
 
     @GetMapping(value = "/getUserByUsername/{username}")
     public User getUserByUsername(@PathVariable("username") String username);
+
+    @GetMapping(value = "/getAdminUid")
+    public String getAdminUid();
 }

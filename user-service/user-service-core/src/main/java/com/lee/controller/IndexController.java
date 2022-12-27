@@ -13,7 +13,7 @@ import com.lee.common.entity.User;
 import com.lee.common.vo.InitVO;
 import com.lee.domain.BlogContributeCountBO;
 import com.lee.domain.BlogContributeCountVO;
-import com.lee.domain.UserThreadHolder;
+import com.lee.common.ThreadHolder.UserThreadHolder;
 import com.lee.service.UserService;
 import com.lee.service.WebVisitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author: liyansong

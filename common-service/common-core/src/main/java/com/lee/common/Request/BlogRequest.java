@@ -1,4 +1,4 @@
-package com.lee.common.Query;
+package com.lee.common.Request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BlogQuery {
+public class BlogRequest {
 
     private String keyword;
 

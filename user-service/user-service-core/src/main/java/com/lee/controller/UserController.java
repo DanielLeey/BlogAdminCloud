@@ -2,6 +2,7 @@ package com.lee.controller;
 
 
 import cn.hutool.core.util.ObjUtil;
+import com.lee.common.ThreadHolder.UserThreadHolder;
 import com.lee.common.api.CommonResult;
 import com.lee.common.entity.Resource;
 import com.lee.common.entity.Role;
@@ -116,5 +117,10 @@ public class UserController {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public CommonResult test() {
         return CommonResult.success("test");
+    }
+
+    @GetMapping(value = "/getAdminUid")
+    public String getAdminUid() {
+        return userService.getAdminUid();
     }
 }

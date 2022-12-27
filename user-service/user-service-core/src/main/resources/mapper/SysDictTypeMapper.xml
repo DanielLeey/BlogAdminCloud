@@ -3,7 +3,7 @@
 <mapper namespace="com.lee.dao.SysDictTypeMapper">
 
     <select id="getListByDictTypeList" resultType="com.lee.common.entity.DictType">
-        select a.oid, a.sort, a.is_publish, a.create_by_uid, a.update_by_uid, a.remark, a.uid, a.status, a.create_time, a.update_time, a.dict_type, b.dict_label, b.dict_value, b.dict_type_uid, b.list_class, b.is_default
+        select a.oid, a.sort, a.is_publish, a.create_by_uid, a.update_by_uid, a.remark, b.uid, a.status, a.create_time, a.update_time, a.dict_type, b.dict_label, b.dict_value, b.dict_type_uid, b.list_class, b.is_default
         from t_sys_dict_type a
         left join t_sys_dict_data b
         on a.uid = b.dict_type_uid
