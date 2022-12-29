@@ -3,6 +3,7 @@ package com.lee.article.service.impl;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.api.UserFeignService;
@@ -51,6 +52,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     @Override
     public List<BlogListRecordBO> getBlogList(BlogRequest blogRequest) {
         LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Blog::getStatus, 1);
         if (StrUtil.isNotBlank(blogRequest.getBlogSortUid())) {
             wrapper.eq(Blog::getBlogSortUid, blogRequest.getBlogSortUid());
         }
@@ -119,6 +121,19 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         blog.setUserUid(user.getId()+"");
         blog.setArticleSource(0);
         final int count = blogMapper.insert(blog);
+        return count > 0;
+    }
+
+    @Override
+    public Boolean deleteBlog(String uid) {
+        UpdateWrapper<Blog> updateWrapper = new UpdateWrapper();
+        updateWrapper.lambda().eq(Blog::getUid, uid).set(Blog::getStatus, 0);
+        return update(null, updateWrapper);
+    }
+
+    @Override
+    public Boolean deleteBatch(List<String> uids) {
+        final int count = blogMapper.deleteBatch(uids);
         return count > 0;
     }
 }

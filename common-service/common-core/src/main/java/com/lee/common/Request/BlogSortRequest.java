@@ -1,9 +1,7 @@
-package com.lee.common.entity;
+package com.lee.common.Request;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,20 +10,16 @@ import java.util.Date;
 
 /**
  * @Author: liyansong
- * @Date: 2022/12/24 16:45
+ * @Date: 2022/12/28 10:26
  * @Version: 1.0
- * 文章分类
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("t_blog_sort")
-public class BlogSort implements Serializable {
-    private static final long serialVersionUID = 733117657482976435L;
-    /**
-     * 唯一uid
-     */
-    @TableId(type = IdType.INPUT)
+@Builder
+public class BlogSortRequest implements Serializable {
+    private static final long serialVersionUID = -1825691936237927543L;
+
     private String uid;
     /**
      * 分类内容

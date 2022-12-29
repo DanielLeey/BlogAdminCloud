@@ -21,4 +21,8 @@ public interface BlogService extends IService<Blog> {
     Boolean editBlog(BlogEditRequest blogEditRequest);
 
     Boolean addBlog(BlogAddRequest blogAddRequest);
+
+    Boolean deleteBlog(String uid);
+
+    Boolean deleteBatch(List<String> uids);
 }

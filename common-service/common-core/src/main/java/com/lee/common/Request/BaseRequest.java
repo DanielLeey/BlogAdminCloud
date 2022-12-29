@@ -1,4 +1,4 @@
-package com.lee.common.entity;
+package com.lee.common.Request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BaseQuery {
+public class BaseRequest {
 
     private Integer currentPage;
 

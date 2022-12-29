@@ -1,0 +1,27 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "<http://mybatis.org/dtd/mybatis-3-mapper.dtd>">
+<mapper namespace="com.lee.article.dao.BlogSortMapper">
+
+    <update id="stick">
+        update t_blog_sort set sort = (
+            select * from (
+                select max(sort) + 1 as max from t_blog_sort
+            ) a
+        ) where uid = #{uid}
+    </update>
+
+    <update id="deleteBatch">
+        UPDATE t_blog_sort SET status = 0
+        <where>
+            <if test="uids != null and uids.size > 0">
+                uid in
+                <foreach item="item" collection="uids" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+    <update id="updateSortByClickCount">
+        update t_blog_sort set sort = click_count
+    </update>
+</mapper>

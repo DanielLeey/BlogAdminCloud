@@ -6,10 +6,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.article.dao.TagMapper;
 import com.lee.article.service.TagService;
 import com.lee.common.bo.BlogCountByTagBO;
-import com.lee.common.bo.BlogSortListRecordBO;
 import com.lee.common.bo.TagListRecordBO;
-import com.lee.common.entity.BaseQuery;
-import com.lee.common.entity.BlogSort;
+import com.lee.common.Request.BaseRequest;
 import com.lee.common.entity.Tag;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -37,8 +35,8 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
     }
 
     @Override
-    public List<TagListRecordBO> getTagList(BaseQuery baseQuery) {
-        Page<Tag> page = new Page<>(baseQuery.getCurrentPage(), baseQuery.getPageSize());
+    public List<TagListRecordBO> getTagList(BaseRequest baseRequest) {
+        Page<Tag> page = new Page<>(baseRequest.getCurrentPage(), baseRequest.getPageSize());
         List<Tag> blogList = page(page).getRecords();
         List<TagListRecordBO> list = new ArrayList<>(blogList.size());
         blogList.forEach(tag -> {

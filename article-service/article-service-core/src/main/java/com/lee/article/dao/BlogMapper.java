@@ -2,6 +2,9 @@ package com.lee.article.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.lee.common.entity.Blog;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @Author: liyansong
@@ -9,4 +12,6 @@ import com.lee.common.entity.Blog;
  * @Version: 1.0
  */
 public interface BlogMapper extends BaseMapper<Blog> {
+
+    int deleteBatch(@Param("uids") List<String> uids);
 }

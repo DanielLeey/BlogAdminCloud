@@ -2,10 +2,8 @@ package com.lee.article.controller;
 
 import com.lee.article.service.TagService;
 import com.lee.common.api.CommonResult;
-import com.lee.common.bo.BlogSortListRecordBO;
 import com.lee.common.bo.TagListRecordBO;
-import com.lee.common.entity.BaseQuery;
-import com.lee.common.vo.BlogSortListVO;
+import com.lee.common.Request.BaseRequest;
 import com.lee.common.vo.TagListVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,11 +26,11 @@ public class TagController {
     private TagService tagService;
 
     @PostMapping("/getList")
-    public CommonResult getTagList(@RequestBody BaseQuery baseQuery) {
-        List<TagListRecordBO> blogList = tagService.getTagList(baseQuery);
+    public CommonResult getTagList(@RequestBody BaseRequest baseRequest) {
+        List<TagListRecordBO> blogList = tagService.getTagList(baseRequest);
         TagListVO tagListVO = new TagListVO();
-        tagListVO.setCurrent(baseQuery.getCurrentPage());
-        tagListVO.setSize(baseQuery.getPageSize());
+        tagListVO.setCurrent(baseRequest.getCurrentPage());
+        tagListVO.setSize(baseRequest.getPageSize());
         tagListVO.setTotal(blogList.size());
         tagListVO.setRecords(blogList);
         tagListVO.setIsSearchCount(true);

@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BlogEditRequest {
+public class BlogEditRequest implements Serializable {
+    private static final long serialVersionUID = 6418396383532622558L;
+
     private String uid;
     /**
      * 博客标题

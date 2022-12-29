@@ -2,18 +2,18 @@ package com.lee.article.controller;
 
 import com.lee.article.service.BlogService;
 import com.lee.common.Request.BlogAddRequest;
+import com.lee.common.Request.BlogDeleteRequest;
 import com.lee.common.Request.BlogEditRequest;
 import com.lee.common.Request.BlogRequest;
 import com.lee.common.api.CommonResult;
 import com.lee.common.bo.BlogListRecordBO;
 import com.lee.common.vo.BlogListVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Author: liyansong
@@ -60,6 +60,26 @@ public class BlogController {
         final Boolean flag = blogService.addBlog(blogAddRequest);
         if (flag) {
             return CommonResult.success("新增成功");
+        }else {
+            return CommonResult.failed();
+        }
+    }
+    @PostMapping("/delete")
+    public CommonResult deleteBlog(@RequestBody Map<String, String> map) {
+        final Boolean flag = blogService.deleteBlog(map.get("uid"));
+        if (flag) {
+            return CommonResult.success("删除成功");
+        }else {
+            return CommonResult.failed();
+        }
+    }
+
+    @PostMapping("/deleteBatch")
+    public CommonResult deleteBlogBatch(@RequestBody List<BlogDeleteRequest> list) {
+        final List<String> uids = list.stream().map(blog -> blog.getUid()).collect(Collectors.toList());
+        Boolean flag = blogService.deleteBatch(uids);
+        if (flag) {
+            return CommonResult.success("批量删除成功");
         }else {
             return CommonResult.failed();
         }
