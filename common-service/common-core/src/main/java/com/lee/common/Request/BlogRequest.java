@@ -16,11 +16,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BlogRequest implements Serializable {
+public class BlogRequest extends BaseRequest implements Serializable {
 
     private static final long serialVersionUID = -3489016658007358257L;
-
-    private String keyword;
 
     private String blogSortUid;
 
@@ -34,11 +32,4 @@ public class BlogRequest implements Serializable {
 
     private String type;
 
-    private Integer currentPage;
-
-    private Integer pageSize;
-
-    private String orderByDescColumn;
-
-    private String orderByAscColumn;
 }

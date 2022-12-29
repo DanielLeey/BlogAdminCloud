@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface BlogService extends IService<Blog> {
 
-    List<BlogListRecordBO> getBlogList(BlogRequest blogRequest);
+    List<BlogListRecordBO> getBlogList(BlogRequest blogRequest) throws ClassNotFoundException, NoSuchFieldException;
 
     Boolean editBlog(BlogEditRequest blogEditRequest);
 

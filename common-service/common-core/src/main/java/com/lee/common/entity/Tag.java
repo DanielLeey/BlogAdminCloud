@@ -1,5 +1,7 @@
 package com.lee.common.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -24,7 +26,7 @@ public class Tag implements Serializable {
     /**
     * 唯一uid
     */
-    @TableId
+    @TableId(type = IdType.INPUT)
     private String uid;
     /**
     * 标签内容
@@ -35,19 +37,23 @@ public class Tag implements Serializable {
     */
     private Integer status;
     /**
-    * 标签简介
+    * 点击数
     */
+    @TableField("click_count")
     private Integer clickCount;
     /**
     * 创建时间
     */
+    @TableField("create_time")
     private Date createTime;
     /**
     * 更新时间
     */
+    @TableField("update_time")
     private Date updateTime;
     /**
     * 排序字段，越大越靠前
     */
+    @TableField("sort")
     private Integer sort;
 }

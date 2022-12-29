@@ -1,6 +1,7 @@
 package com.lee.common.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -38,6 +39,7 @@ public class BlogSort implements Serializable {
     /**
      * 创建时间
      */
+    @TableField("create_time")
     private Date createTime;
     /**
      * 更新时间
@@ -50,9 +52,11 @@ public class BlogSort implements Serializable {
     /**
      * 排序字段，越大越靠前
      */
+    @TableField("sort")
     private Integer sort;
     /**
      * 点击数
      */
+    @TableField("click_count")
     private Integer clickCount;
 }

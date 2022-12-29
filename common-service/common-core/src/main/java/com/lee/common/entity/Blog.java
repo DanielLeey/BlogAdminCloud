@@ -1,6 +1,7 @@
 package com.lee.common.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -45,6 +46,7 @@ public class Blog implements Serializable {
     /**
      * 博客点击数
      */
+    @TableField("click_count")
     private Integer clickCount;
     /**
      * 博客收藏数
@@ -73,6 +75,7 @@ public class Blog implements Serializable {
     /**
      * 是否原创（0:不是 1：是）
      */
+    @TableField("is_original")
     private String isOriginal;
     /**
      * 作者
@@ -89,6 +92,7 @@ public class Blog implements Serializable {
     /**
      * 推荐等级(0:正常)
      */
+    @TableField("level")
     private Integer level;
     /**
      * 是否发布：0：否，1：是

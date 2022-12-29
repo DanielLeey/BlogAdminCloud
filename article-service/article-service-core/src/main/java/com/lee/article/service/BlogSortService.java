@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface BlogSortService extends IService<BlogSort> {
 
-    List<BlogSortListRecordBO> getBlogSortList(BaseRequest baseRequest);
+    List<BlogSortListRecordBO> getBlogSortList(BlogSortRequest blogSortRequest) throws NoSuchFieldException, ClassNotFoundException;
 
     Boolean stick(String uid);
 

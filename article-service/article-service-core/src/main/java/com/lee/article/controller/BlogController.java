@@ -33,12 +33,12 @@ public class BlogController {
      * @return
      */
     @PostMapping("/getList")
-    public CommonResult getBlogList(@RequestBody BlogRequest blogRequest) {
+    public CommonResult getBlogList(@RequestBody BlogRequest blogRequest) throws ClassNotFoundException, NoSuchFieldException {
         List<BlogListRecordBO> blogList = blogService.getBlogList(blogRequest);
         final BlogListVO blogListVO = new BlogListVO();
         blogListVO.setCurrent(blogRequest.getCurrentPage());
         blogListVO.setSize(blogRequest.getPageSize());
-        blogListVO.setTotal(blogList.size());
+        blogListVO.setTotal(blogService.count());
         blogListVO.setRecords(blogList);
         blogListVO.setIsSearchCount(true);
         blogListVO.setOptimizeCountsql(true);

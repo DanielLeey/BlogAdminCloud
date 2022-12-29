@@ -32,12 +32,12 @@ public class BlogSortController {
     private BlogSortService blogSortService;
 
     @PostMapping("/getList")
-    public CommonResult getBlogSortList(@RequestBody BaseRequest baseRequest) {
-        List<BlogSortListRecordBO> blogList = blogSortService.getBlogSortList(baseRequest);
+    public CommonResult getBlogSortList(@RequestBody BlogSortRequest blogSortRequest) throws NoSuchFieldException, ClassNotFoundException {
+        List<BlogSortListRecordBO> blogList = blogSortService.getBlogSortList(blogSortRequest);
         BlogSortListVO blogSortListVO = new BlogSortListVO();
-        blogSortListVO.setCurrent(baseRequest.getCurrentPage());
-        blogSortListVO.setSize(baseRequest.getPageSize());
-        blogSortListVO.setTotal(blogList.size());
+        blogSortListVO.setCurrent(blogSortRequest.getCurrentPage());
+        blogSortListVO.setSize(blogSortRequest.getPageSize());
+        blogSortListVO.setTotal(blogSortService.count());
         blogSortListVO.setRecords(blogList);
         blogSortListVO.setIsSearchCount(true);
         blogSortListVO.setOptimizeCountsql(true);

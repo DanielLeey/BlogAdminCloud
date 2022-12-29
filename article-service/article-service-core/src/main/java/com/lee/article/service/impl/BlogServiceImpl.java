@@ -1,8 +1,9 @@
 package com.lee.article.service.impl;
 
-import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -25,9 +26,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author: liyansong
@@ -50,26 +49,34 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     private UserFeignService userService;
 
     @Override
-    public List<BlogListRecordBO> getBlogList(BlogRequest blogRequest) {
-        LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Blog::getStatus, 1);
+    public List<BlogListRecordBO> getBlogList(BlogRequest blogRequest) throws ClassNotFoundException, NoSuchFieldException {
+        QueryWrapper<Blog> wrapper = new QueryWrapper<>();
+        wrapper.eq("status", 1);
         if (StrUtil.isNotBlank(blogRequest.getBlogSortUid())) {
-            wrapper.eq(Blog::getBlogSortUid, blogRequest.getBlogSortUid());
+            wrapper.eq("blog_sort_uid", blogRequest.getBlogSortUid());
         }
         if (StrUtil.isNotBlank(blogRequest.getTagUid())) {
-            wrapper.eq(Blog::getTagUid, blogRequest.getTagUid());
+            wrapper.eq("tag_uid", blogRequest.getTagUid());
         }
         if (StrUtil.isNotBlank(blogRequest.getBlogSortUid())) {
-            wrapper.eq(Blog::getBlogSortUid, blogRequest.getBlogSortUid());
+            wrapper.eq("blog_sort_uid", blogRequest.getBlogSortUid());
         }
         if (StrUtil.isNotEmpty(blogRequest.getIsOriginal())) {
-            wrapper.eq(Blog::getIsOriginal, blogRequest.getIsOriginal());
+            wrapper.eq("is_original", blogRequest.getIsOriginal());
         }
         if (StrUtil.isNotEmpty(blogRequest.getIsPublish())) {
-            wrapper.eq(Blog::getIsPublish, blogRequest.getIsPublish());
+            wrapper.eq("is_publish", blogRequest.getIsPublish());
         }
         if (StrUtil.isNotBlank(blogRequest.getLevelKeyword())) {
-            wrapper.eq(Blog::getLevel, blogRequest.getLevelKeyword());
+            wrapper.eq("level", blogRequest.getLevelKeyword());
+        }
+        if (StrUtil.isNotBlank(blogRequest.getOrderByAscColumn())) {
+            final String orderByAscColumn = blogRequest.getOrderByAscColumn();
+            blogOrderBy(wrapper, orderByAscColumn, true);
+        }
+        if (StrUtil.isNotBlank(blogRequest.getOrderByDescColumn())) {
+            final String orderByDescColumn = blogRequest.getOrderByDescColumn();
+            blogOrderBy(wrapper, orderByDescColumn, false);
         }
         Page<Blog> page = new Page<>(blogRequest.getCurrentPage(), blogRequest.getPageSize());
         List<Blog> blogList = page(page, wrapper).getRecords();
@@ -96,6 +103,13 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         return blogListVOList;
     }
 
+    private void blogOrderBy(QueryWrapper<Blog> wrapper, String column, Boolean isAsc) throws ClassNotFoundException, NoSuchFieldException {
+        final Class<?> clazz = Class.forName("com.lee.common.entity.Blog");
+        final Optional<TableField> tableFieldAnnotation = Arrays.stream(clazz.getDeclaredField(column).getAnnotationsByType(TableField.class)).findFirst();
+        final TableField tableField = tableFieldAnnotation.get();
+        wrapper.orderBy(true, isAsc, tableField.value());
+    }
+
     @Override
     public Boolean editBlog(BlogEditRequest blogEditRequest) {
         Blog blog = new Blog();
@@ -118,7 +132,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         blog.setUpdateTime(date);
         blog.setAdminUid(userService.getAdminUid());
         blog.setSort(0);
-        blog.setUserUid(user.getId()+"");
+        blog.setUserUid(user.getId() + "");
         blog.setArticleSource(0);
         final int count = blogMapper.insert(blog);
         return count > 0;

@@ -1,22 +1,21 @@
 package com.lee.article.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.article.dao.BlogSortMapper;
 import com.lee.article.service.BlogSortService;
 import com.lee.common.Request.BlogSortRequest;
 import com.lee.common.bo.BlogSortListRecordBO;
-import com.lee.common.Request.BaseRequest;
 import com.lee.common.entity.BlogSort;
 import com.lee.common.utils.UUidUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author: liyansong
@@ -30,11 +29,17 @@ public class BlogSortServiceImpl extends ServiceImpl<BlogSortMapper, BlogSort> i
     private BlogSortMapper blogSortMapper;
 
     @Override
-    public List<BlogSortListRecordBO> getBlogSortList(BaseRequest baseRequest) {
-        Page<BlogSort> page = new Page<>(baseRequest.getCurrentPage(), baseRequest.getPageSize());
-        LambdaQueryWrapper<BlogSort> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(BlogSort::getStatus, 1);
-        wrapper.orderByDesc(BlogSort::getSort);
+    public List<BlogSortListRecordBO> getBlogSortList(BlogSortRequest blogSortRequest) throws NoSuchFieldException, ClassNotFoundException {
+        Page<BlogSort> page = new Page<>(blogSortRequest.getCurrentPage(), blogSortRequest.getPageSize());
+        QueryWrapper<BlogSort> wrapper = new QueryWrapper<>();
+        if (StrUtil.isNotBlank(blogSortRequest.getOrderByAscColumn())) {
+            final String orderByAscColumn = blogSortRequest.getOrderByAscColumn();
+            blogSortOrderBy(wrapper, orderByAscColumn, true);
+        }
+        if (StrUtil.isNotBlank(blogSortRequest.getOrderByDescColumn())) {
+            final String orderByDescColumn = blogSortRequest.getOrderByDescColumn();
+            blogSortOrderBy(wrapper, orderByDescColumn, false);
+        }
         List<BlogSort> blogList = page(page, wrapper).getRecords();
         List<BlogSortListRecordBO> list = new ArrayList<>(blogList.size());
         blogList.forEach(blogSort -> {
@@ -83,6 +88,13 @@ public class BlogSortServiceImpl extends ServiceImpl<BlogSortMapper, BlogSort> i
         blogSort.setClickCount(0);
         final int count = blogSortMapper.insert(blogSort);
         return count > 0;
+    }
+
+    private void blogSortOrderBy(QueryWrapper<BlogSort> wrapper, String column, Boolean isAsc) throws ClassNotFoundException, NoSuchFieldException {
+        final Class<?> clazz = Class.forName("com.lee.common.entity.BlogSort");
+        final Optional<TableField> tableFieldAnnotation = Arrays.stream(clazz.getDeclaredField(column).getAnnotationsByType(TableField.class)).findFirst();
+        final TableField tableField = tableFieldAnnotation.get();
+        wrapper.orderBy(true, isAsc, tableField.value());
     }
 }
 

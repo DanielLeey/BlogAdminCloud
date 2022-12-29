@@ -1,6 +1,7 @@
 package com.lee.article.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lee.common.Request.TagRequest;
 import com.lee.common.bo.BlogCountByTagBO;
 import com.lee.common.bo.TagListRecordBO;
 import com.lee.common.Request.BaseRequest;
@@ -17,5 +18,15 @@ public interface TagService extends IService<Tag> {
 
     List<BlogCountByTagBO> getBlogCountByTag();
 
-    List<TagListRecordBO> getTagList(BaseRequest baseRequest);
+    List<TagListRecordBO> getTagList(TagRequest baseRequest) throws NoSuchFieldException, ClassNotFoundException;
+
+    Boolean addTagList(TagRequest tagRequest);
+
+    Boolean stick(String uid);
+
+    Boolean editTag(TagRequest tagRequest);
+
+    Boolean deleteBatch(List<String> uids);
+
+    Boolean tagSortByClickCount();
 }
