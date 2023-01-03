@@ -1,5 +1,6 @@
 package com.lee.article.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -150,4 +151,37 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         final int count = blogMapper.deleteBatch(uids);
         return count > 0;
     }
+
+    @Override
+    public List<BlogListRecordBO> getBlogListByUids(List<String> blogUids, Integer currentPage, Integer pageSize) {
+        if(CollUtil.isEmpty(blogUids)) {
+            return null;
+        }
+        LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
+        wrapper.in(Blog::getUid, blogUids);
+        Page<Blog> page = new Page<>(currentPage, pageSize);
+        List<Blog> blogList = page(page, wrapper).getRecords();
+        List<BlogListRecordBO> blogListVOList = new ArrayList<>(blogList.size());
+        for (Blog blog : blogList) {
+            String blogSortUid = blog.getBlogSortUid();
+            String tagUid = blog.getTagUid();
+            BlogSort blogSort = null;
+            if (StrUtil.isNotBlank(blogSortUid)) {
+                LambdaQueryWrapper<BlogSort> blogSortWrapper = new LambdaQueryWrapper<>();
+                blogSortWrapper.eq(BlogSort::getUid, blogSortUid);
+                blogSort = blogSortService.getOne(blogSortWrapper);
+            }
+            List<Tag> tagList = null;
+            if (StrUtil.isNotBlank(tagUid)) {
+                LambdaQueryWrapper<Tag> tagWrapper = new LambdaQueryWrapper<>();
+                tagWrapper.eq(Tag::getUid, tagUid);
+                tagList = tagService.list(tagWrapper);
+            }
+            BlogListRecordBO blogListRecordBO = BlogListRecordBO.builder().blogSort(blogSort).tagList(tagList).build();
+            BeanUtils.copyProperties(blog, blogListRecordBO);
+            blogListVOList.add(blogListRecordBO);
+        }
+        return blogListVOList;
+    }
+
 }

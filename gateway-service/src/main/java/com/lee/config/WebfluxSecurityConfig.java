@@ -58,7 +58,9 @@ public class WebfluxSecurityConfig {
             "/admin/systemConfig/**",
             "/article/blog/**",
             "/article/blogSort/**",
-            "/article/tag/**"
+            "/article/tag/**",
+            "/article/subject/**",
+            "/article/subjectItem/**"
 
     };
     // "/admin/auth/**"
