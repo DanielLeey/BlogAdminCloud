@@ -1,7 +1,10 @@
 package com.lee.article.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lee.common.Request.SubjectItemEditRequest;
 import com.lee.common.entity.SubjectItem;
+
+import java.util.List;
 
 /**
  * @Author: liyansong
@@ -9,4 +12,8 @@ import com.lee.common.entity.SubjectItem;
  * @Version: 1.0
  */
 public interface SubjectItemService extends IService<SubjectItem> {
+
+    Boolean editSubject(List<SubjectItemEditRequest> subjectItemRequests);
+
+    Boolean deleteBatch(List<String> uids);
 }
