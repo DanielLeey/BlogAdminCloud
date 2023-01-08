@@ -60,7 +60,11 @@ public class WebfluxSecurityConfig {
             "/article/blogSort/**",
             "/article/tag/**",
             "/article/subject/**",
-            "/article/subjectItem/**"
+            "/article/subjectItem/**",
+            "/admin/admin/**",
+            "/admin/role/**",
+            "/admin/resource/**",
+            "/admin/user/**"
 
     };
     // "/admin/auth/**"

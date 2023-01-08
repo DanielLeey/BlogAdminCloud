@@ -9,4 +9,21 @@
         on a.role_id = b.uid
         where a.user_id = #{id};
     </select>
+
+    <select id="getResourcesByRoleId" resultType="java.lang.String">
+        select resource_id from sys_role_resource_relation where role_id = #{roleId};
+    </select>
+
+    <delete id="deleteRoleResourceByRoleId">
+        delete from sys_role_resource_relation where role_id = #{roleId};
+    </delete>
+
+    <insert id="insertBatch">
+        INSERT INTO sys_role_resource_relation (ROLE_ID, RESOURCE_ID)
+        VALUES
+        <foreach collection="list" separator="," item="item">
+            (#{item.roleId}, #{item.resourceId})
+        </foreach>
+    </insert>
+
 </mapper>

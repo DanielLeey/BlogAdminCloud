@@ -2,6 +2,8 @@ package com.lee.controller;
 
 import com.lee.common.api.CommonResult;
 import com.lee.common.bo.DictSysTypeBO;
+import com.lee.common.entity.SysDictData;
+import com.lee.common.vo.DictDataVO;
 import com.lee.service.SysDictTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,5 +30,12 @@ public class SysDictDataController {
     public CommonResult getListByDictTypeList(@RequestBody List<String> sysList) {
         final Map<String, Object> listByDictTypeList = sysDictTypeService.getListByDictTypeList(sysList);
         return CommonResult.success(listByDictTypeList);
+    }
+
+    @PostMapping("/getListByDictType")
+    public CommonResult getListByDictType(@RequestParam("dictType") String dictType) {
+        List<SysDictData> sysDictDataList = sysDictTypeService.getListByDictType(dictType);
+        final DictDataVO dictDataVO = new DictDataVO("1", sysDictDataList);
+        return CommonResult.success(dictDataVO);
     }
 }

@@ -2,6 +2,7 @@ package com.lee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lee.common.bo.DictSysTypeBO;
+import com.lee.common.entity.SysDictData;
 import com.lee.common.entity.SysDictType;
 
 import java.util.List;
@@ -14,4 +15,6 @@ import java.util.Map;
  */
 public interface SysDictTypeService extends IService<SysDictType> {
     Map<String, Object> getListByDictTypeList(List<String> sysList);
+
+    List<SysDictData> getListByDictType(String dictType);
 }

@@ -6,9 +6,17 @@
     <select id="getUserByUsername" resultType="com.lee.common.entity.User">
         select * from sys_user where user_name = #{username};
     </select>
+
     <select id="getAdminUid" resultType="com.lee.common.entity.User">
         select a.* from sys_user a
         left join sys_user_role_relation b
+        on a.id = b.user_id
+        where b.role_id = 5;
+    </select>
+
+    <select id="getAdminUser" resultType="com.lee.common.entity.User">
+        select a.* from sys_user a
+        inner join sys_user_role_relation b
         on a.id = b.user_id
         where b.role_id = 5;
     </select>

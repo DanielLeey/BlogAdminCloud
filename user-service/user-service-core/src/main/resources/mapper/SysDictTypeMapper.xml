@@ -17,4 +17,8 @@
         </where>
         order by b.dict_value asc
     </select>
+    <select id="getListByDictType" resultType="com.lee.common.entity.SysDictData">
+        select * from t_sys_dict_data
+        where dict_type_uid = (select uid from t_sys_dict_type where dict_type = #{dictType})
+    </select>
 </mapper>

@@ -2,6 +2,7 @@ package com.lee.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.lee.common.entity.DictType;
+import com.lee.common.entity.SysDictData;
 import com.lee.common.entity.SysDictType;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,4 +16,6 @@ import java.util.List;
 public interface SysDictTypeMapper extends BaseMapper<SysDictType> {
 
     List<DictType> getListByDictTypeList(@Param("sysList") List<String> sysList);
+
+    List<SysDictData> getListByDictType(String dictType);
 }

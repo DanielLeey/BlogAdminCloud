@@ -1,5 +1,7 @@
 package com.lee.controller;
 
+import com.lee.common.api.CommonResult;
+import com.lee.common.bo.ResourceBO;
 import com.lee.common.entity.Resource;
 import com.lee.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,4 +34,14 @@ public class ResourceController {
         return resourceService.list();
     }
 
+    @GetMapping("/getAll")
+    public CommonResult getAllResource() {
+        List<ResourceBO> resources = resourceService.getAllResource();
+        return CommonResult.success(resources);
+    }
+    @GetMapping("/getButtonAll")
+    public CommonResult getButtonAll() {
+        List<ResourceBO> resources = resourceService.getButtonAll();
+        return CommonResult.success(resources);
+    }
 }
