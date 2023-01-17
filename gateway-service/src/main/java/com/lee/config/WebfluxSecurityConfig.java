@@ -64,7 +64,10 @@ public class WebfluxSecurityConfig {
             "/admin/admin/**",
             "/admin/role/**",
             "/admin/resource/**",
-            "/admin/user/**"
+            "/admin/user/**",
+            "/admin/auth/info",
+            "/admin/sysDictType/**",
+            "/admin/sysParams/**"
 
     };
     // "/admin/auth/**"

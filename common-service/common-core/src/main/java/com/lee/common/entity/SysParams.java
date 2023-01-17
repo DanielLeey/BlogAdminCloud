@@ -11,46 +11,42 @@ import java.util.Date;
 import java.io.Serializable;
 
 /**
- * 字典类型表(TSysDictType)实体类
+ * 参数配置表(TSysParams)实体类
  *
  * @author makejava
- * @since 2022-12-25 10:50:06
+ * @since 2023-01-14 16:14:47
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("t_sys_dict_type")
-public class SysDictType implements Serializable {
-    private static final long serialVersionUID = -34599145430558258L;
+@TableName("t_sys_params")
+public class SysParams implements Serializable {
+    private static final long serialVersionUID = 963398523896245960L;
     /**
     * 主键
     */
     @TableId(type = IdType.INPUT)
     private String uid;
     /**
-    * 自增键oid
+    * 配置类型 是否系统内置(1:，是 0:否)
     */
-    private Integer oid;
+    private String paramsType;
     /**
-    * 字典名称
+    * 参数名称
     */
-    private String dictName;
+    private String paramsName;
     /**
-    * 字典类型
+    * 参数键名
     */
-    private String dictType;
-    /**
-    * 创建人UID
-    */
-    private String createByUid;
-    /**
-    * 最后更新人UID
-    */
-    private String updateByUid;
+    private String paramsKey;
     /**
     * 备注
     */
     private String remark;
+    /**
+    * 参数键值
+    */
+    private String paramsValue;
     /**
     * 状态
     */
@@ -63,10 +59,6 @@ public class SysDictType implements Serializable {
     * 更新时间
     */
     private Date updateTime;
-    /**
-    * 是否发布(1:是，0:否)
-    */
-    private String isPublish;
     /**
     * 排序字段
     */

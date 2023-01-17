@@ -22,6 +22,6 @@ public class MenuVO {
     private List<Resource> parentList;
 
     private List<Resource> sonList;
-
+    //用户拥有的按钮
     private List<Resource> buttonList;
 }

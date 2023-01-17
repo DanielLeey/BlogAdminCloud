@@ -100,6 +100,10 @@ public class AuthController {
         return userService.getUserByUsername(username);
     }
 
+    /**
+     * 获取用户的 一二级菜单 权限 和 三级按钮 权限
+     * @return
+     */
     @GetMapping("/getMenu")
     public CommonResult getMenu() {
         User user = UserThreadHolder.get();

@@ -18,4 +18,6 @@ public interface SysDictTypeMapper extends BaseMapper<SysDictType> {
     List<DictType> getListByDictTypeList(@Param("sysList") List<String> sysList);
 
     List<SysDictData> getListByDictType(String dictType);
+
+    Integer deleteBatch(@Param("uids") List<String> uids);
 }

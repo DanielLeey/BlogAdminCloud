@@ -21,4 +21,16 @@
         select * from t_sys_dict_data
         where dict_type_uid = (select uid from t_sys_dict_type where dict_type = #{dictType})
     </select>
+
+    <update id="deleteBatch">
+        UPDATE t_sys_dict_type SET status = 0
+        <where>
+            <if test="uids != null and uids.size > 0">
+                uid in
+                <foreach item="item" collection="uids" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </update>
 </mapper>

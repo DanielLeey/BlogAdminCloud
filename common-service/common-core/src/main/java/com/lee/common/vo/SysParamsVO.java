@@ -1,6 +1,7 @@
 package com.lee.common.vo;
 
 import com.lee.common.entity.SysDictType;
+import com.lee.common.entity.SysParams;
 import lombok.*;
 
 import java.io.Serializable;
@@ -8,18 +9,17 @@ import java.util.List;
 
 /**
  * @Author: liyansong
- * @Date: 2022/12/25 10:37
+ * @Date: 2023/1/14 16:24
  * @Version: 1.0
- * blog搜索
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DictTypeListVO extends BaseVO implements Serializable {
+public class SysParamsVO extends BaseVO implements Serializable {
 
-    private static final long serialVersionUID = 2571299149892237458L;
+    private static final long serialVersionUID = 287263608726503306L;
 
-    private List<SysDictType> records;
+    private List<SysParams> records;
 }
