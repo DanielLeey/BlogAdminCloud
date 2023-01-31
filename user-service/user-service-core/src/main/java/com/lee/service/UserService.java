@@ -17,4 +17,6 @@ public interface UserService extends IService<User> {
     List<AdminBO> getAdminUsers();
 
     List<UserBO> getUsers(UserListRequest userListRequest);
+
+    List<User> getUsersByIds(List<String> userIds);
 }

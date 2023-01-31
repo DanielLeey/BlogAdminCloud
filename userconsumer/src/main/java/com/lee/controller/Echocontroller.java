@@ -3,7 +3,7 @@ package com.lee.controller;
 import cn.hutool.json.JSONUtil;
 import com.lee.api.EchoService;
 import com.lee.api.ResourceFeignService;
-import com.lee.api.UserFeignService;
+import com.lee.api.AuthFeignService;
 import com.lee.common.entity.Resource;
 import com.lee.common.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class Echocontroller {
     private EchoService echoService;
 
     @Autowired
-    private UserFeignService userFeignService;
+    private AuthFeignService authFeignService;
 
     @Autowired
     private ResourceFeignService resourceFeignService;
@@ -41,7 +41,7 @@ public class Echocontroller {
 
     @GetMapping("/test/userfeign")
     public String testUserFeign() {
-        User user = userFeignService.getUserByUsername("admin");
+        User user = authFeignService.getUserByUsername("admin");
         return JSONUtil.toJsonPrettyStr(user);
     }
 

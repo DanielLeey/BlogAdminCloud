@@ -69,8 +69,9 @@ public class WebfluxSecurityConfig {
             "/admin/sysDictType/**",
             "/admin/sysParams/**",
             "/admin/webConfig/getWebConfig",
-            "/admin/webNavbar/getAllList",
-            "/admin/todo/**"
+            "/admin/webNavbar/**",
+            "/admin/todo/**",
+            "/article/comment/**"
 
     };
     // "/admin/auth/**"

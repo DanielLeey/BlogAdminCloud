@@ -2,6 +2,7 @@ package com.lee.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lee.common.Request.WebNavbarEditRequest;
 import com.lee.common.bo.WebNavbarBO;
 import com.lee.common.entity.WebNavbar;
 import com.lee.dao.WebNavbarMapper;
@@ -32,6 +33,26 @@ public class WebNavbarServiceImpl extends ServiceImpl<WebNavbarMapper, WebNavbar
         }
         return webNavbarBOList.stream().filter(webNavbarBO -> webNavbarBO.getNavbarLevel() == 1)
                 .map(webNavbarBO -> getSubWebNavbar(webNavbarBO, webNavbarBOList)).collect(Collectors.toList());
+    }
+
+    @Override
+    public Boolean edit(WebNavbarEditRequest webNavbarEditRequest) {
+        final WebNavbarBO webNavbarBO = new WebNavbarBO();
+        BeanUtils.copyProperties(webNavbarEditRequest, webNavbarBO);
+        editWebNavbarBO(webNavbarBO);
+        return true;
+    }
+
+
+    private void editWebNavbarBO(WebNavbarBO webNavbarBO) {
+        final WebNavbar webNavbar = new WebNavbar();
+        BeanUtils.copyProperties(webNavbarBO, webNavbar);
+        updateById(webNavbar);
+        if (CollUtil.isNotEmpty(webNavbarBO.getChildWebNavbar())) {
+            for (WebNavbarBO oneWebNavbarBO : webNavbarBO.getChildWebNavbar()) {
+                editWebNavbarBO(oneWebNavbarBO);
+            }
+        }
     }
 
     private WebNavbarBO getSubWebNavbar(WebNavbarBO webNavbarBO, List<WebNavbarBO> webNavbarBOList) {

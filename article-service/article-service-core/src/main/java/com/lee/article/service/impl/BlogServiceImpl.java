@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.lee.api.UserFeignService;
+import com.lee.api.AuthFeignService;
 import com.lee.article.dao.BlogMapper;
 import com.lee.article.service.BlogService;
 import com.lee.article.service.BlogSortService;
@@ -47,7 +47,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     private BlogSortService blogSortService;
 
     @Autowired
-    private UserFeignService userService;
+    private AuthFeignService userService;
 
     @Override
     public List<BlogListRecordBO> getBlogList(BlogRequest blogRequest) throws ClassNotFoundException, NoSuchFieldException {

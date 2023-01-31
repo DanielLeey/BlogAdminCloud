@@ -1,6 +1,7 @@
 package com.lee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lee.common.Request.WebNavbarEditRequest;
 import com.lee.common.bo.WebNavbarBO;
 import com.lee.common.entity.WebNavbar;
 
@@ -14,4 +15,7 @@ import java.util.List;
 public interface WebNavbarService extends IService<WebNavbar> {
 
     List<WebNavbarBO> getAllList();
+
+    Boolean edit(WebNavbarEditRequest webNavbarEditRequest);
+
 }

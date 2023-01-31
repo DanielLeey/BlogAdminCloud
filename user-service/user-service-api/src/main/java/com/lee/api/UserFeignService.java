@@ -2,20 +2,19 @@ package com.lee.api;
 
 import com.lee.common.entity.User;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 /**
  * @Author: liyansong
- * @Date: 2022/12/7 9:27
+ * @Date: 2023/1/21 11:41
  * @Version: 1.0
  */
-@FeignClient(value = "user-service", path = "/auth")
+@FeignClient(value = "user-service", path = "/user")
 public interface UserFeignService {
 
-    @GetMapping(value = "/getUserByUsername/{username}")
-    public User getUserByUsername(@PathVariable("username") String username);
-
-    @GetMapping(value = "/getAdminUid")
-    public String getAdminUid();
+    @PostMapping("/getUsersByIds")
+    public List<User> getUsersByIds(@RequestBody List<String> userIds);
 }

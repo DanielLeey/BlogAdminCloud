@@ -2,7 +2,7 @@ package com.lee.article.filter;
 
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
-import com.lee.api.UserFeignService;
+import com.lee.api.AuthFeignService;
 import com.lee.article.utils.RedisUtils;
 import com.lee.common.ThreadHolder.UserThreadHolder;
 import com.lee.common.dto.SecurityUserDTO;
@@ -37,7 +37,7 @@ public class UsernameFilter extends GenericFilterBean {
     private RedisUtils redisUtils;
 
     @Autowired
-    private UserFeignService userfeginService;
+    private AuthFeignService userfeginService;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {

@@ -3,6 +3,7 @@ package com.lee.controller;
 import com.lee.common.Request.UserListRequest;
 import com.lee.common.api.CommonResult;
 import com.lee.common.bo.UserBO;
+import com.lee.common.entity.User;
 import com.lee.common.vo.UserListVO;
 import com.lee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +37,10 @@ public class UserController {
         userListVO.setIsSearchCount(true);
         userListVO.setOptimizeCountsql(true);
         return CommonResult.success(userListVO);
+    }
+
+    @PostMapping("/getUsersByIds")
+    public List<User> getUsersByIds(@RequestBody List<String> userIds) {
+        return userService.getUsersByIds(userIds);
     }
 }

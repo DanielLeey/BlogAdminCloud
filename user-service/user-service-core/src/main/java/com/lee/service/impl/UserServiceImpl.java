@@ -69,4 +69,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         final List<User> users = page(page, wrapper).getRecords();
         return users.stream().map(user -> new UserBO(user)).collect(Collectors.toList());
     }
+
+    @Override
+    public List<User> getUsersByIds(List<String> userIds) {
+        return userMapper.getUsersByIds(userIds);
+    }
 }
