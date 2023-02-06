@@ -13,4 +13,14 @@
             </if>
         </where>
     </update>
+    <select id="getSameBlogByBlogUid" resultType="com.lee.common.entity.Blog">
+        select * from t_blog
+        where
+            blog_sort_uid = (
+                select blog_sort_uid
+                from t_blog where uid = #{blogUid}
+            )
+            and status = 1
+        order by sort desc limit 3;
+    </select>
 </mapper>

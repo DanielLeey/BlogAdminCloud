@@ -22,6 +22,10 @@ import java.util.stream.Collectors;
 @Service("webNavbarService")
 public class WebNavbarServiceImpl extends ServiceImpl<WebNavbarMapper, WebNavbar> implements WebNavbarService {
 
+    /**
+     * 获取导航栏的树形结构
+     * @return
+     */
     @Override
     public List<WebNavbarBO> getAllList() {
         final List<WebNavbar> allWebNavbars = list();

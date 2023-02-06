@@ -134,4 +134,6 @@ public class BlogListRecordBO {
      */
     private BlogSort blogSort;
 
+    private String copyright = "本文为Lee博客原创文章，转载无需和我联系，但请注明来自Lee博客 http://www.moguit.cn";
+
 }

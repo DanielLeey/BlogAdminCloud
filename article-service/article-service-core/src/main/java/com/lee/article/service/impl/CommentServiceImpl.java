@@ -1,5 +1,6 @@
 package com.lee.article.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -54,6 +55,10 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         if (ObjUtil.isNotEmpty(commentRequest.getType())) {
             wrapper.eq(Comment::getType, commentRequest.getType());
         }
+        // 博客Uid
+        if (ObjUtil.isNotEmpty(commentRequest.getBlogUid())) {
+            wrapper.eq(Comment::getBlogUid, commentRequest.getBlogUid());
+        }
         User commentUser = null;
         if (StrUtil.isNotBlank(commentRequest.getUserName())) {
             commentUser = authFeignService.getUserByUsername(commentRequest.getUserName());
@@ -61,11 +66,14 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         }
         Page<Comment> page = new Page<>(commentRequest.getCurrentPage(), commentRequest.getPageSize());
         final List<Comment> commentList = page(page, wrapper).getRecords();
-        // 得到所有评论的 文章id，放入map
-        final List<String> blogIdList = commentList.stream().map(Comment::getBlogUid).distinct().collect(Collectors.toList());
-        final List<Blog> blogList = blogService.listByIds(blogIdList);
-        Map<String, Blog> blogMap = new HashMap<>(blogIdList.size());
-        blogList.forEach(blog -> blogMap.put(blog.getUid(), blog));
+        Map<String, Blog> blogMap = new HashMap<>();
+        if (CollUtil.isNotEmpty(commentList)) {
+            // 得到所有评论的 文章id，放入map
+            final List<String> blogIdList = commentList.stream().map(Comment::getBlogUid).distinct().collect(Collectors.toList());
+            final List<Blog> blogList = blogService.listByIds(blogIdList);
+            blogList.forEach(blog -> blogMap.put(blog.getUid(), blog));
+        }
+
         // 得到所有评论的 用户id，放入map
         List<User> userList = new ArrayList<>();
         if (ObjUtil.isEmpty(commentUser)) {

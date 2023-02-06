@@ -109,4 +109,19 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
         int count = tagMapper.updateSortByClickCount();
         return count > 0;
     }
+
+    @Override
+    public List<TagListRecordBO> getHotTag() {
+        LambdaQueryWrapper<Tag> wrapper = new LambdaQueryWrapper<>();
+        wrapper.orderByDesc(Tag::getClickCount);
+        Page<Tag> page = new Page<>(1, 10);
+        List<Tag> blogList = page(page, wrapper).getRecords();
+        List<TagListRecordBO> list = new ArrayList<>(blogList.size());
+        blogList.forEach(tag -> {
+            TagListRecordBO tagListRecordBO = new TagListRecordBO();
+            BeanUtils.copyProperties(tag, tagListRecordBO);
+            list.add(tagListRecordBO);
+        });
+        return list;
+    }
 }

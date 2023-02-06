@@ -27,4 +27,16 @@ public interface BlogService extends IService<Blog> {
     Boolean deleteBatch(List<String> uids);
 
     List<BlogListRecordBO> getBlogListByUids(List<String> blogUids, Integer currentPage, Integer pageSize);
+
+    Boolean pay(String id);
+
+    List<BlogListRecordBO> getBlogByLevel(Integer currentPage, Integer pageSize, Integer level, Integer useSort);
+
+    List<BlogListRecordBO> getNewBlog(Integer currentPage, Integer pageSize);
+
+    List<BlogListRecordBO> getHotBlog();
+
+    BlogListRecordBO getBlogByUid(String oid);
+
+    List<BlogListRecordBO> getSameBlogByBlogUid(String blogUid);
 }

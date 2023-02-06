@@ -14,4 +14,6 @@ import java.util.List;
 public interface BlogMapper extends BaseMapper<Blog> {
 
     int deleteBatch(@Param("uids") List<String> uids);
+
+    List<Blog> getSameBlogByBlogUid(@Param("blogUid") String blogUid);
 }

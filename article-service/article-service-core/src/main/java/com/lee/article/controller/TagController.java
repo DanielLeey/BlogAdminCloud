@@ -8,10 +8,7 @@ import com.lee.common.bo.TagListRecordBO;
 import com.lee.common.Request.BaseRequest;
 import com.lee.common.vo.TagListVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -97,5 +94,11 @@ public class TagController {
         }else {
             return CommonResult.failed();
         }
+    }
+
+    @GetMapping("/getHotTag")
+    public CommonResult getHotTag() {
+        List<TagListRecordBO> blogList = tagService.getHotTag();
+        return CommonResult.success(blogList);
     }
 }

@@ -10,11 +10,11 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>user-service</module>
-        <module>userconsumer</module>
         <module>gateway-service</module>
-        <module>oauth2-auth</module>
         <module>article-service</module>
         <module>common-service</module>
+        <module>payment-service</module>
+        <module>point-service</module>
     </modules>
 
     <properties>

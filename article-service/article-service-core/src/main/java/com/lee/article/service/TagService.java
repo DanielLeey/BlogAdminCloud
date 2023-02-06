@@ -29,4 +29,6 @@ public interface TagService extends IService<Tag> {
     Boolean deleteBatch(List<String> uids);
 
     Boolean tagSortByClickCount();
+
+    List<TagListRecordBO> getHotTag();
 }

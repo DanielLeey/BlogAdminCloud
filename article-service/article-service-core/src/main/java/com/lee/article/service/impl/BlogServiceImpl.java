@@ -1,6 +1,7 @@
 package com.lee.article.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -22,9 +23,13 @@ import com.lee.common.entity.Blog;
 import com.lee.common.entity.BlogSort;
 import com.lee.common.entity.Tag;
 import com.lee.common.entity.User;
+import com.lee.common.message.PlacePayEvent;
+import com.lee.common.message.PlacePayEventMessage;
 import com.lee.common.utils.UUidUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -35,7 +40,12 @@ import java.util.*;
  * @Version: 1.0
  */
 @Service("blogService")
+@Slf4j
 public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements BlogService {
+
+    // 观察者模式
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
     private BlogMapper blogMapper;
@@ -81,27 +91,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         }
         Page<Blog> page = new Page<>(blogRequest.getCurrentPage(), blogRequest.getPageSize());
         List<Blog> blogList = page(page, wrapper).getRecords();
-        List<BlogListRecordBO> blogListVOList = new ArrayList<>(blogList.size());
-        for (Blog blog : blogList) {
-            String blogSortUid = blog.getBlogSortUid();
-            String tagUid = blog.getTagUid();
-            BlogSort blogSort = null;
-            if (StrUtil.isNotBlank(blogSortUid)) {
-                LambdaQueryWrapper<BlogSort> blogSortWrapper = new LambdaQueryWrapper<>();
-                blogSortWrapper.eq(BlogSort::getUid, blogSortUid);
-                blogSort = blogSortService.getOne(blogSortWrapper);
-            }
-            List<Tag> tagList = null;
-            if (StrUtil.isNotBlank(tagUid)) {
-                LambdaQueryWrapper<Tag> tagWrapper = new LambdaQueryWrapper<>();
-                tagWrapper.eq(Tag::getUid, tagUid);
-                tagList = tagService.list(tagWrapper);
-            }
-            BlogListRecordBO blogListRecordBO = BlogListRecordBO.builder().blogSort(blogSort).tagList(tagList).build();
-            BeanUtils.copyProperties(blog, blogListRecordBO);
-            blogListVOList.add(blogListRecordBO);
-        }
-        return blogListVOList;
+        return getRecordBO(blogList);
     }
 
     private void blogOrderBy(QueryWrapper<Blog> wrapper, String column, Boolean isAsc) throws ClassNotFoundException, NoSuchFieldException {
@@ -161,6 +151,88 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         wrapper.in(Blog::getUid, blogUids);
         Page<Blog> page = new Page<>(currentPage, pageSize);
         List<Blog> blogList = page(page, wrapper).getRecords();
+        return getRecordBO(blogList);
+    }
+
+    @Override
+    public Boolean pay(String id) {
+        log.info("[placePay] start.");
+        //消息
+        PlacePayEventMessage eventMessage = new PlacePayEventMessage();
+        User user = UserThreadHolder.get();
+        eventMessage.setBlogId(id);
+        eventMessage.setUserId(String.valueOf(user.getId()));
+        //发布事件
+        applicationEventPublisher.publishEvent(new PlacePayEvent(eventMessage));
+        log.info("[placeOrder] end.");
+        return true;
+    }
+
+    @Override
+    public List<BlogListRecordBO> getBlogByLevel(Integer currentPage, Integer pageSize, Integer level, Integer useSort) {
+        QueryWrapper<Blog> wrapper = new QueryWrapper<>();
+        if (ObjUtil.isNotEmpty(level)) {
+            wrapper.eq("level", level);
+        }
+        if (ObjUtil.isNotEmpty(useSort)) {
+            wrapper.eq("sort", useSort);
+        }
+        Page<Blog> page = new Page<>(currentPage, pageSize);
+        List<Blog> blogList = page(page, wrapper).getRecords();
+        return getRecordBO(blogList);
+    }
+
+    @Override
+    public List<BlogListRecordBO> getNewBlog(Integer currentPage, Integer pageSize) {
+        LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
+        wrapper.orderByDesc(Blog::getCreateTime);
+        Page<Blog> page = new Page<>(currentPage, pageSize);
+        List<Blog> blogList = page(page, wrapper).getRecords();
+        return getRecordBO(blogList);
+    }
+
+    @Override
+    public List<BlogListRecordBO> getHotBlog() {
+        LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
+        wrapper.orderByDesc(Blog::getClickCount);
+        Page<Blog> page = new Page<>(1, 5);
+        List<Blog> blogList = page(page, wrapper).getRecords();
+        return getRecordBO(blogList);
+    }
+
+    @Override
+    public BlogListRecordBO getBlogByUid(String oid) {
+        LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Blog::getOid, oid);
+        Blog blog = getOne(wrapper);
+        String blogSortUid = blog.getBlogSortUid();
+        String tagUid = blog.getTagUid();
+        BlogSort blogSort = null;
+        if (StrUtil.isNotBlank(blogSortUid)) {
+            LambdaQueryWrapper<BlogSort> blogSortWrapper = new LambdaQueryWrapper<>();
+            blogSortWrapper.eq(BlogSort::getUid, blogSortUid);
+            blogSort = blogSortService.getOne(blogSortWrapper);
+        }
+        List<Tag> tagList = null;
+        if (StrUtil.isNotBlank(tagUid)) {
+            LambdaQueryWrapper<Tag> tagWrapper = new LambdaQueryWrapper<>();
+            tagWrapper.eq(Tag::getUid, tagUid);
+            tagList = tagService.list(tagWrapper);
+        }
+        BlogListRecordBO blogListRecordBO = new BlogListRecordBO();
+        blogListRecordBO.setBlogSort(blogSort);
+        blogListRecordBO.setTagList(tagList);
+        BeanUtils.copyProperties(blog, blogListRecordBO);
+        return blogListRecordBO;
+    }
+
+    @Override
+    public List<BlogListRecordBO> getSameBlogByBlogUid(String blogUid) {
+        List<Blog> blogList = blogMapper.getSameBlogByBlogUid(blogUid);
+        return getRecordBO(blogList);
+    }
+
+    private List<BlogListRecordBO> getRecordBO(List<Blog> blogList) {
         List<BlogListRecordBO> blogListVOList = new ArrayList<>(blogList.size());
         for (Blog blog : blogList) {
             String blogSortUid = blog.getBlogSortUid();
@@ -177,7 +249,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
                 tagWrapper.eq(Tag::getUid, tagUid);
                 tagList = tagService.list(tagWrapper);
             }
-            BlogListRecordBO blogListRecordBO = BlogListRecordBO.builder().blogSort(blogSort).tagList(tagList).build();
+            BlogListRecordBO blogListRecordBO = new BlogListRecordBO();
+            blogListRecordBO.setBlogSort(blogSort);
+            blogListRecordBO.setTagList(tagList);
             BeanUtils.copyProperties(blog, blogListRecordBO);
             blogListVOList.add(blogListRecordBO);
         }

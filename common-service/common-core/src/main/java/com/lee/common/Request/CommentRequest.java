@@ -27,6 +27,8 @@ public class CommentRequest implements Serializable {
 
     private String source;
 
+    private String blogUid;
+
     private String type;
 
     private String userName;

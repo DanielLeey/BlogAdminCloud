@@ -11,6 +11,7 @@ import com.lee.common.vo.BlogListVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -82,5 +83,58 @@ public class BlogController {
         }else {
             return CommonResult.failed();
         }
+    }
+
+    @GetMapping("/pay/{id}")
+    public CommonResult pay(@PathVariable("id") String id) {
+        Boolean flag = blogService.pay(id);
+        if (flag) {
+            return CommonResult.success("支付成功");
+        }else {
+            return CommonResult.failed();
+        }
+    }
+
+    @GetMapping("/getBlogByLevel")
+    public CommonResult getBlogByLevel(@PathParam("currentPage") Integer currentPage, @PathParam("pageSize") Integer pageSize,
+                                       @PathParam("level") Integer level, @PathParam("useSort") Integer useSort) {
+        currentPage = currentPage == null? 1 : currentPage;
+        pageSize = pageSize == null? 10 : pageSize;
+        List<BlogListRecordBO> blogList = blogService.getBlogByLevel(currentPage, pageSize, level, useSort);
+        final BlogListVO blogListVO = new BlogListVO(blogList);
+        blogListVO.setCurrent(currentPage);
+        blogListVO.setSize(pageSize);
+        blogListVO.setTotal(blogList.size());
+        blogListVO.setIsSearchCount(true);
+        blogListVO.setOptimizeCountsql(true);
+        return CommonResult.success(blogListVO);
+    }
+
+    @GetMapping("/getNewBlog")
+    public CommonResult getNewBlog(@PathParam("currentPage") Integer currentPage, @PathParam("pageSize") Integer pageSize) {
+        List<BlogListRecordBO> blogList = blogService.getNewBlog(currentPage, pageSize);
+        final BlogListVO blogListVO = new BlogListVO(blogList);
+        blogListVO.setCurrent(currentPage);
+        blogListVO.setSize(pageSize);
+        blogListVO.setTotal(blogList.size());
+        blogListVO.setIsSearchCount(true);
+        blogListVO.setOptimizeCountsql(true);
+        return CommonResult.success(blogListVO);
+    }
+
+    /**
+     * 点击量最高的5条博客
+     * @return
+     */
+    @GetMapping("/getHotBlog")
+    public CommonResult getHotBlog() {
+        List<BlogListRecordBO> blogList = blogService.getHotBlog();
+        final BlogListVO blogListVO = new BlogListVO(blogList);
+        blogListVO.setCurrent(1);
+        blogListVO.setSize(5);
+        blogListVO.setTotal(blogList.size());
+        blogListVO.setIsSearchCount(true);
+        blogListVO.setOptimizeCountsql(true);
+        return CommonResult.success(blogListVO);
     }
 }
