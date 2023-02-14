@@ -1,6 +1,8 @@
 package com.lee.article.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -33,6 +35,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Author: liyansong
@@ -63,9 +66,6 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     public List<BlogListRecordBO> getBlogList(BlogRequest blogRequest) throws ClassNotFoundException, NoSuchFieldException {
         QueryWrapper<Blog> wrapper = new QueryWrapper<>();
         wrapper.eq("status", 1);
-        if (StrUtil.isNotBlank(blogRequest.getBlogSortUid())) {
-            wrapper.eq("blog_sort_uid", blogRequest.getBlogSortUid());
-        }
         if (StrUtil.isNotBlank(blogRequest.getTagUid())) {
             wrapper.eq("tag_uid", blogRequest.getTagUid());
         }
@@ -144,7 +144,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 
     @Override
     public List<BlogListRecordBO> getBlogListByUids(List<String> blogUids, Integer currentPage, Integer pageSize) {
-        if(CollUtil.isEmpty(blogUids)) {
+        if (CollUtil.isEmpty(blogUids)) {
             return null;
         }
         LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
@@ -201,9 +201,14 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
     }
 
     @Override
-    public BlogListRecordBO getBlogByUid(String oid) {
+    public BlogListRecordBO getBlogByUid(String uid, String oid) {
         LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Blog::getOid, oid);
+        if (StrUtil.isNotBlank(uid)) {
+            wrapper.eq(Blog::getUid, uid);
+        }
+        if (StrUtil.isNotBlank(oid)) {
+            wrapper.eq(Blog::getOid, oid);
+        }
         Blog blog = getOne(wrapper);
         String blogSortUid = blog.getBlogSortUid();
         String tagUid = blog.getTagUid();
@@ -231,6 +236,32 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         List<Blog> blogList = blogMapper.getSameBlogByBlogUid(blogUid);
         return getRecordBO(blogList);
     }
+
+    @Override
+    public List<String> getSortList() {
+        List<String> dateList = blogMapper.getSortList();
+        if (CollUtil.isNotEmpty(dateList)) {
+            return dateList.stream().map(date -> {
+                date.replace("-", "年");
+                date.concat("月");
+                return date;
+            }).collect(Collectors.toList());
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<BlogListRecordBO> getArticleByMonth(String monthDate) {
+        if (StrUtil.isBlank(monthDate)) {
+            return new ArrayList<>();
+        }
+        String begDate = monthDate + "-01";
+        final DateTime endDateTime = DateUtil.offsetMonth(DateUtil.parse(begDate), 1);
+        String endDate = DateUtil.formatDate(endDateTime);
+        List<Blog> blogs = blogMapper.getArticleByMonth(begDate, endDate);
+        return getRecordBO(blogs);
+    }
+
 
     private List<BlogListRecordBO> getRecordBO(List<Blog> blogList) {
         List<BlogListRecordBO> blogListVOList = new ArrayList<>(blogList.size());

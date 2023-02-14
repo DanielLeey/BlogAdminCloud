@@ -23,4 +23,12 @@
             and status = 1
         order by sort desc limit 3;
     </select>
+    <select id="getSortList" resultType="java.lang.String">
+        SELECT distinct SUBSTR(date(create_time), 1, 7)
+        from t_blog order by SUBSTR(date(create_time), 1, 7);
+    </select>
+    <select id="getArticleByMonth" resultType="com.lee.common.entity.Blog">
+        select * from t_blog where create_time between #{begDate} and #{endDate}
+        order by create_time desc
+    </select>
 </mapper>

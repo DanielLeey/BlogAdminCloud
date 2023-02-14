@@ -16,4 +16,8 @@ public interface BlogMapper extends BaseMapper<Blog> {
     int deleteBatch(@Param("uids") List<String> uids);
 
     List<Blog> getSameBlogByBlogUid(@Param("blogUid") String blogUid);
+
+    List<String> getSortList();
+
+    List<Blog> getArticleByMonth(@Param("begDate") String begDate,@Param("endDate") String endDate);
 }

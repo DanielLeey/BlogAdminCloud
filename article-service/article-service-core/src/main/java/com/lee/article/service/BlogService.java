@@ -36,7 +36,11 @@ public interface BlogService extends IService<Blog> {
 
     List<BlogListRecordBO> getHotBlog();
 
-    BlogListRecordBO getBlogByUid(String oid);
+    BlogListRecordBO getBlogByUid(String uid, String oid);
 
     List<BlogListRecordBO> getSameBlogByBlogUid(String blogUid);
+
+    List<String> getSortList();
+
+    List<BlogListRecordBO> getArticleByMonth(String monthDate);
 }

@@ -26,8 +26,8 @@ public class BlogContentController {
     private BlogService blogService;
 
     @GetMapping("/getBlogByUid")
-    public CommonResult getBlogByUid(@PathParam("oid") String oid) {
-        BlogListRecordBO blog = blogService.getBlogByUid(oid);
+    public CommonResult getBlogByUid(@PathParam("uid") String uid, @PathParam("oid") String oid) {
+        BlogListRecordBO blog = blogService.getBlogByUid(uid, oid);
         return CommonResult.success(blog);
     }
 

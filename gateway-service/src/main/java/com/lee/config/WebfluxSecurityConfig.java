@@ -76,8 +76,11 @@ public class WebfluxSecurityConfig {
             "/web/sysDictData/**",
             "/web/index/**",
             "/article/link/**",
-            "/article/search/getSearchModel",
-            "/article/content/**"
+            "/article/search/**",
+            "/article/content/**",
+            "/article/sort/**",
+            "/article/classify/**",
+            "/admin/oauth/**"
 
     };
     // "/admin/auth/**"

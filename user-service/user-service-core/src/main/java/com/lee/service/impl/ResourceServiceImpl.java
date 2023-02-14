@@ -60,7 +60,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
         levelTwoResources.forEach(resource -> getSubResource(resource, resources));
         return levelTwoResources;
     }
-
+    // 递归
     private void getSubResource(ResourceBO resource, List<Resource> resources) {
         final String uid = resource.getUid();
         final List<Resource> subResources = resources.stream().filter(oneResource -> uid.equals(oneResource.getParentUid())).collect(Collectors.toList());
