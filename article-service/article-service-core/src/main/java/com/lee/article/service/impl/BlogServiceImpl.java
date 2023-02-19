@@ -123,7 +123,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         blog.setUpdateTime(date);
         blog.setAdminUid(userService.getAdminUid());
         blog.setSort(0);
-        blog.setUserUid(user.getId() + "");
+        blog.setUserUid(user.getUid());
         blog.setArticleSource(0);
         final int count = blogMapper.insert(blog);
         return count > 0;
@@ -161,7 +161,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         PlacePayEventMessage eventMessage = new PlacePayEventMessage();
         User user = UserThreadHolder.get();
         eventMessage.setBlogId(id);
-        eventMessage.setUserId(String.valueOf(user.getId()));
+        eventMessage.setUserId(user.getUid());
         //发布事件
         applicationEventPublisher.publishEvent(new PlacePayEvent(eventMessage));
         log.info("[placeOrder] end.");

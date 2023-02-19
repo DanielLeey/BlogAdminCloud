@@ -11,5 +11,5 @@ public interface ResourceMapper extends BaseMapper<Resource> {
 
     List<Resource> getResourcesByRoleId(Long uid);
 
-    List<Resource> getResourcesByUserIdAndLevel(@Param("userId") Long userId, @Param("level")int level);
+    List<Resource> getResourcesByUserIdAndLevel(@Param("userId") String userId, @Param("level")int level);
 }

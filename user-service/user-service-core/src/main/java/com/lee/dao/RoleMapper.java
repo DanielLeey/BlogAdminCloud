@@ -14,7 +14,7 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @param id
      * @return
      */
-    List<Role> getRoleByUserId(Long id);
+    List<Role> getRoleByUserId(String id);
 
     List<String> getResourcesByRoleId(Long roleId);
 

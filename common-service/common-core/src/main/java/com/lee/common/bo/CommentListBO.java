@@ -1,6 +1,5 @@
 package com.lee.common.bo;
 
-import com.lee.common.entity.Blog;
 import com.lee.common.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

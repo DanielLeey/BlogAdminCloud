@@ -12,7 +12,7 @@ public interface ResourceService extends IService<Resource> {
 
     List<Resource> getResourcesByRoleId(Long uid);
 
-    List<Resource> getResourcesByUserIdAndLevel(Long id, int level);
+    List<Resource> getResourcesByUserIdAndLevel(String id, int level);
 
     List<ResourceBO> getAllResource();
 

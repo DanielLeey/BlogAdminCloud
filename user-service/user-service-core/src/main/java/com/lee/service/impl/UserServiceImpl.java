@@ -7,7 +7,6 @@ import com.lee.common.Request.UserListRequest;
 import com.lee.common.bo.AdminBO;
 import com.lee.common.bo.RoleBO;
 import com.lee.common.bo.UserBO;
-import com.lee.common.entity.BlogSort;
 import com.lee.common.entity.Role;
 import com.lee.common.entity.User;
 import com.lee.dao.UserMapper;
@@ -43,14 +42,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public String getAdminUid() {
         User admin = userMapper.getAdminUid();
-        return admin.getId() + "";
+        return admin.getUid();
     }
 
     @Override
     public List<AdminBO> getAdminUsers() {
         List<User> adminUsers = userMapper.getAdminUser();
         return adminUsers.stream().map(adminUser -> {
-            final List<Role> roles = roleService.getByUserId(adminUser.getId());
+            final List<Role> roles = roleService.getByUserId(adminUser.getUid());
             AdminBO adminBO = new AdminBO(adminUser);
             adminBO.setRoles(roles.stream().map(role -> {
                 RoleBO roleBO = new RoleBO(role);

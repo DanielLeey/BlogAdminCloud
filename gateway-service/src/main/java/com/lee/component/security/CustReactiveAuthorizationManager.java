@@ -15,7 +15,6 @@ import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.ReactiveAuthorizationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -72,7 +71,7 @@ public class CustReactiveAuthorizationManager implements ReactiveAuthorizationMa
         ServerHttpRequest request = authorizationContext.getExchange().getRequest();
         String uid = UUID.fastUUID().toString().replace("-", "");
         SecurityUser securityUser = (SecurityUser) auth.getPrincipal();
-        Long userId = securityUser.getUser().getId();
+        String userId = securityUser.getUser().getUid();
         String ip = "";
         if(request.getHeaders().getFirst("X-Forwarded-For") != null) {
             ip = request.getHeaders().getFirst("X-Forwarded-For");

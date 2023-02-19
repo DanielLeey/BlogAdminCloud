@@ -4,11 +4,14 @@ package com.lee.controller;
 import cn.hutool.core.util.ObjUtil;
 import com.lee.common.ThreadHolder.UserThreadHolder;
 import com.lee.common.api.CommonResult;
+import com.lee.common.dto.SecurityUserDTO;
 import com.lee.common.entity.Resource;
 import com.lee.common.entity.Role;
-import com.lee.common.dto.SecurityUserDTO;
 import com.lee.common.entity.User;
-import com.lee.domain.*;
+import com.lee.domain.MenuVO;
+import com.lee.domain.RoleDTO;
+import com.lee.domain.UserInfoVO;
+import com.lee.domain.UserQuery;
 import com.lee.service.ResourceService;
 import com.lee.service.RoleService;
 import com.lee.service.UserService;
@@ -69,13 +72,14 @@ public class AuthController {
 
     /**
      * 获取token返回用户的信息
-     * @RequestHeader HttpHeaders httpHeaders
+     *
      * @return
+     * @RequestHeader HttpHeaders httpHeaders
      */
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public CommonResult info() {
         User user = UserThreadHolder.get();
-        List<Role> roles = roleService.getByUserId(user.getId());
+        List<Role> roles = roleService.getByUserId(user.getUid());
         final List<RoleDTO> roleDTOS = roles.stream().map(role -> {
             List<Resource> resources = resourceService.getResourcesByRoleId(role.getUid());
             List<String> categoryMenuUids = resources.stream().map(Resource::getUid).collect(Collectors.toList());
@@ -88,6 +92,7 @@ public class AuthController {
 
     /**
      * 从请求头中获取username
+     *
      * @param httpHeaders
      * @return
      */
@@ -102,19 +107,20 @@ public class AuthController {
 
     /**
      * 获取用户的 一二级菜单 权限 和 三级按钮 权限
+     *
      * @return
      */
     @GetMapping("/getMenu")
     public CommonResult getMenu() {
         User user = UserThreadHolder.get();
-        List<Resource> parentList = resourceService.getResourcesByUserIdAndLevel(user.getId(), 1);
-        List<Resource> sonList = resourceService.getResourcesByUserIdAndLevel(user.getId(), 2);
-        List<Resource> buttonList = resourceService.getResourcesByUserIdAndLevel(user.getId(), 3);
+        List<Resource> parentList = resourceService.getResourcesByUserIdAndLevel(user.getUid(), 1);
+        List<Resource> sonList = resourceService.getResourcesByUserIdAndLevel(user.getUid(), 2);
+        List<Resource> buttonList = resourceService.getResourcesByUserIdAndLevel(user.getUid(), 3);
         MenuVO data = MenuVO.builder()
-                            .parentList(parentList)
-                            .sonList(sonList)
-                            .buttonList(buttonList)
-                            .build();
+                .parentList(parentList)
+                .sonList(sonList)
+                .buttonList(buttonList)
+                .build();
         return CommonResult.success(data);
     }
 

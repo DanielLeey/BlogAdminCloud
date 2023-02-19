@@ -1,8 +1,8 @@
 package com.lee.component.security;
 
 import com.lee.common.constant.MessageConstant;
-import com.lee.common.entity.Resource;
 import com.lee.common.dto.SecurityUserDTO;
+import com.lee.common.entity.Resource;
 import com.lee.common.entity.User;
 import com.lee.domain.SecurityUser;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ public class SecurityUserDetailsService implements ReactiveUserDetailsService {
 
     public Mono<SecurityUser> getUserFromRedis(String username) {
         Mono<SecurityUserDTO> securityUserMono = (Mono<SecurityUserDTO>) reactiveRedisTemplate.opsForValue().get("USERNAME:" + username);
-        return  securityUserMono.map(securityUserDTO -> {
+        return securityUserMono.map(securityUserDTO -> {
             return new SecurityUser(securityUserDTO.getUser(), securityUserDTO.getResources());
         });
     }
@@ -53,7 +53,7 @@ public class SecurityUserDetailsService implements ReactiveUserDetailsService {
         String resourceQuery = "select a.* from t_sys_resource a left join sys_role_resource_relation b on a.uid = b.resource_id " +
                 "left join sys_user_role_relation c on b.role_id = c.role_id where c.user_id = ?";
         RowMapper<Resource> resourceRowMapper = new BeanPropertyRowMapper<Resource>(Resource.class);
-        List<Resource> resources = jdbcTemplate.query(resourceQuery, resourceRowMapper, user.getId());
+        List<Resource> resources = jdbcTemplate.query(resourceQuery, resourceRowMapper, user.getUid());
 
         SecurityUser securityUser = new SecurityUser(user, resources);
         SecurityUserDTO securityUserDTO = new SecurityUserDTO(user, resources);

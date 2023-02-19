@@ -30,7 +30,7 @@ public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> i
     }
 
     @Override
-    public List<Resource> getResourcesByUserIdAndLevel(Long userId, int level) {
+    public List<Resource> getResourcesByUserIdAndLevel(String userId, int level) {
         return resourceMapper.getResourcesByUserIdAndLevel(userId, level);
     }
 

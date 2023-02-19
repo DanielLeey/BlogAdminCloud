@@ -19,13 +19,13 @@
     <select id="getResourcesByUserIdAndLevel" resultType="com.lee.common.entity.Resource">
         select d.* from sys_user a
         left join sys_user_role_relation b
-        on a.id = b.user_id
+        on a.uid = b.user_id
         left join sys_role_resource_relation c
         on b.role_id = c.role_id
         left join t_sys_resource d
         on c.resource_id = d.uid
         where
-        a.id = #{userId}
+        a.uid = #{userId}
         and d.menu_level = #{level}
     </select>
 </mapper>

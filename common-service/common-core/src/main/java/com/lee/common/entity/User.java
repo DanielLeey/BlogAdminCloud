@@ -1,10 +1,7 @@
 package com.lee.common.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,48 +9,132 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author Lee
+ * 用户表(TUser)实体类
+ *
+ * @author makejava
+ * @since 2023-02-16 19:27:31
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @TableName("sys_user")
 public class User implements Serializable {
-    private static final long serialVersionUID = 6993580724261947757L;
-    //主键
-    @TableId
-    private Long id;
-    //用户名
+    private static final long serialVersionUID = 629729180724772996L;
+    /**
+     * 唯一uid
+     */
+    private String uid;
+    /**
+     * 用户名
+     */
     private String userName;
-    //昵称
-    private String nickName;
-    //密码
+    /**
+     * 密码
+     */
     private String password;
-    //用户类型：0代表普通用户，1代表管理员
-    private String type;
-    //账号状态（0正常 1停用）
-    private String status;
-    //邮箱
-    private String email;
-    //手机号
-    private String phonenumber;
-    //用户性别（0男，1女，2未知）
-    private String sex;
-    //头像
+    /**
+     * 性别(1:男2:女)
+     */
+    private Integer gender;
+    /**
+     * 个人头像
+     */
     private String avatar;
-    //创建人的用户id
-    private Long createBy;
-    //创建时间
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    /**
+     * 邮箱
+     */
+    private String email;
+    /**
+     * 出生年月日
+     */
+    private Date birthday;
+    /**
+     * 手机
+     */
+    private String mobile;
+    /**
+     * 邮箱验证码
+     */
+    private String validCode;
+    /**
+     * 自我简介最多150字
+     */
+    private String summary;
+    /**
+     * 登录次数
+     */
+    private Integer loginCount;
+    /**
+     * 最后登录时间
+     */
+    private Date lastLoginTime;
+    /**
+     * 最后登录IP
+     */
+    private String lastLoginIp;
+    /**
+     * 状态
+     */
+    private Integer status;
+    /**
+     * 创建时间
+     */
     private Date createTime;
-    //更新人
-    private Long updateBy;
-    //更新时间
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    /**
+     * 更新时间
+     */
     private Date updateTime;
-    //删除标志（0代表未删除，1代表已删除）
-    private Integer delFlag;
-
+    /**
+     * 昵称
+     */
+    private String nickName;
+    /**
+     * 资料来源
+     */
+    private String source;
+    /**
+     * 平台uuid
+     */
+    private String uuid;
+    /**
+     * QQ号
+     */
+    private String qqNumber;
+    /**
+     * 微信号
+     */
+    private String weChat;
+    /**
+     * 职业
+     */
+    private String occupation;
+    /**
+     * 评论状态 1:正常 0:禁言
+     */
+    private Integer commentStatus;
+    /**
+     * ip来源
+     */
+    private String ipSource;
+    /**
+     * 浏览器
+     */
+    private String browser;
+    /**
+     * 操作系统
+     */
+    private String os;
+    /**
+     * 是否开启邮件通知 1:开启 0:关闭
+     */
+    private Integer startEmailNotification;
+    /**
+     * 用户标签：0：普通用户，1：管理员，2：博主 等
+     */
+    private Integer userTag;
+    /**
+     * 是否通过加载校验【0 未通过，1 已通过】
+     */
+    private Integer loadingValid;
 
 }

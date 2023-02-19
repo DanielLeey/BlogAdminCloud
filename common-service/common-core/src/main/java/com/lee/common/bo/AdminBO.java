@@ -24,7 +24,7 @@ public class AdminBO {
 
     private Date createTime;
 
-    private String gender;
+    private Integer gender;
 
     private String gitee;
 
@@ -47,7 +47,7 @@ public class AdminBO {
     private List<String> roleUids;
 
     //账号状态（0正常 1停用）
-    private String status;
+    private Integer status;
 
     private Long storageSize;
 
@@ -64,16 +64,16 @@ public class AdminBO {
     private String mobile;
 
     public AdminBO(User user) {
-        this.uid = user.getId() + "";
+        this.uid = user.getUid();
         this.avatar = user.getAvatar();
         this.createTime = user.getCreateTime();
         this.nickName = user.getNickName();
         this.password = user.getPassword();
-        this.gender = user.getSex();
+        this.gender = user.getGender();
         this.status = user.getStatus();
         this.updateTime = user.getUpdateTime();
         this.userName = user.getUserName();
         this.email = user.getEmail();
-        this.mobile = user.getPhonenumber();
+        this.mobile = user.getMobile();
     }
 }

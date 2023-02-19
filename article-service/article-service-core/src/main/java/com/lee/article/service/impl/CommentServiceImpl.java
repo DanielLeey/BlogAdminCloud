@@ -23,6 +23,7 @@ import com.lee.common.bo.PraiseBO;
 import com.lee.common.entity.Blog;
 import com.lee.common.entity.Comment;
 import com.lee.common.entity.User;
+import com.lee.common.entity.User;
 import com.lee.common.utils.UUidUtils;
 import com.lee.common.vo.CommentListByUserVO;
 import org.springframework.beans.BeanUtils;
@@ -70,7 +71,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         }
         if (StrUtil.isNotBlank(commentRequest.getUserName())) {
             User commentUser = authFeignService.getUserByUsername(commentRequest.getUserName());
-            wrapper.eq(Comment::getUserUid, commentUser.getId());
+            wrapper.eq(Comment::getUserUid, commentUser.getUid());
         }
         Page<Comment> page = new Page<>(commentRequest.getCurrentPage(), commentRequest.getPageSize());
         final List<Comment> commentList = page(page, wrapper).getRecords();
@@ -92,7 +93,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             // 得到所有评论的 用户id，放入map
             List<String> userIdList = commentList.stream().map(Comment::getUserUid).distinct().collect(Collectors.toList());
             List<User> userList = userFeignService.getUsersByIds(userIdList);
-            userList.forEach(user -> userMap.put(user.getId() + "", user));
+            userList.forEach(user -> userMap.put(user.getUid(), user));
         }
         // 如果request中不包含userName，需要查找所有user
         return commentList.stream().map(comment -> {
@@ -115,7 +116,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         User commentUser = null;
         if (StrUtil.isNotBlank(commentRequest.getUserName())) {
             commentUser = authFeignService.getUserByUsername(commentRequest.getUserName());
-            wrapper.eq(Comment::getUserUid, commentUser.getId());
+            wrapper.eq(Comment::getUserUid, commentUser.getUid());
         }
         Page<Comment> page = new Page<>(commentRequest.getCurrentPage(), commentRequest.getPageSize());
         return (int) page(page, wrapper).getSize();
@@ -163,17 +164,17 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         final List<Comment> commentList = page(page, wrapper).getRecords();
 
         // 得到所有评论的 user_uid，放入map
-        List<User> userList = new ArrayList<>();
+        List<User> UserList = new ArrayList<>();
         List<String> userIdList = allComments.stream().map(Comment::getUserUid).distinct().collect(Collectors.toList());
-        userList = userFeignService.getUsersByIds(userIdList);
-        Map<String, User> userMap = new HashMap<>(userList.size());
-        userList.forEach(user -> userMap.put(user.getId() + "", user));
+        UserList = userFeignService.getUsersByIds(userIdList);
+        Map<String, User> userMap = new HashMap<>(UserList.size());
+        UserList.forEach(user -> userMap.put(user.getUid(), user));
         // 得到所有评论的 to_user_uid，放入map
         List<User> toUserList = new ArrayList<>();
         List<String> toUserIdList = allComments.stream().map(Comment::getToUserUid).distinct().collect(Collectors.toList());
         toUserList = userFeignService.getUsersByIds(toUserIdList);
         Map<String, User> toUserMap = new HashMap<>(toUserList.size());
-        toUserList.forEach(user -> toUserMap.put(user.getId() + "", user));
+        toUserList.forEach(user -> toUserMap.put(user.getUid(), user));
 
         // 如果request中不包含userName，需要查找所有user
         List<CommentListBO> allCommentListBOs = allComments.stream().map(comment -> {
@@ -220,8 +221,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
      */
     @Override
     public CommentListByUserVO getListByUser(BaseRequest baseRequest) {
-        User user = UserThreadHolder.get();
-        final String userId = user.getId() + "";
+        User User = UserThreadHolder.get();
+        final String userId = User.getUid();
         //获取用户自己的评论
         LambdaQueryWrapper<Comment> commentListWrapper = new LambdaQueryWrapper<>();
         commentListWrapper.eq(Comment::getUserUid, userId).ne(Comment::getStatus, 0).orderByDesc(Comment::getCreateTime);
@@ -238,8 +239,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     @Override
     public List<PraiseBO> getPraiseListByUser(BaseRequest baseRequest) {
-        User user = UserThreadHolder.get();
-        final String userId = user.getId() + "";
+        User User = UserThreadHolder.get();
+        final String userId = User.getUid();
         LambdaQueryWrapper<Comment> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Comment::getUserUid, userId).eq(Comment::getType, 1).ne(Comment::getStatus, 0).orderByDesc(Comment::getCreateTime);
         final List<Comment> commentList = list(wrapper);

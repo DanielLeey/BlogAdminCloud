@@ -83,8 +83,8 @@ public class WebVisitServiceImpl extends ServiceImpl<WebVisitMapper, WebVisit> i
     }
 
     @Override
-    public BlogContributeCountBO getBlogContributeCount(Long id, DateTime startDate, DateTime endDate) {
-        List<Article> articleList = articleFeignService.getArticleByUserId(id.toString(), startDate.toString(), endDate.toString());
+    public BlogContributeCountBO getBlogContributeCount(String id, DateTime startDate, DateTime endDate) {
+        List<Article> articleList = articleFeignService.getArticleByUserId(id, startDate.toString(), endDate.toString());
         // 记录每天 写的 文章数量
         Map<String, Integer> articleDateMap = new LinkedHashMap<>();
         long days = DateUtil.between(startDate, endDate, DateUnit.DAY);

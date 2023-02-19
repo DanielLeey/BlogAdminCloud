@@ -55,11 +55,11 @@ public class UserBO {
     public UserBO(User user) {
         this.createTime = user.getCreateTime();
         this.updateTime = user.getUpdateTime();
-        this.uid = user.getId()+"";
+        this.uid = user.getUid();
         this.userName = user.getUserName();
         this.nickName = user.getNickName();
         this.passWord = user.getPassword();
-        this.status = Integer.parseInt(user.getStatus());
+        this.status = user.getStatus();
         this.email = user.getEmail();
     }
 }

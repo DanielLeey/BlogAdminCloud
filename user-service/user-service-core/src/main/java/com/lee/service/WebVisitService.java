@@ -2,8 +2,8 @@ package com.lee.service;
 
 import cn.hutool.core.date.DateTime;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.lee.common.dto.BlogCountByBlogSortDTO;
 import com.lee.common.bo.VisitByWeekBO;
+import com.lee.common.dto.BlogCountByBlogSortDTO;
 import com.lee.common.dto.BlogCountByTagDTO;
 import com.lee.common.entity.WebVisit;
 import com.lee.domain.BlogContributeCountBO;
@@ -32,7 +32,7 @@ public interface WebVisitService extends IService<WebVisit> {
      * @param endDate   结束日期
      * @return
      */
-    BlogContributeCountBO getBlogContributeCount(Long id, DateTime startDate, DateTime endDate);
+    BlogContributeCountBO getBlogContributeCount(String id, DateTime startDate, DateTime endDate);
 
     BlogCountByBlogSortDTO getBlogCountByBlogSort();
 

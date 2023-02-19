@@ -84,7 +84,7 @@ public class IndexController {
         contributeDate.add(curDate.toString());
         // 2.获取访问用户一年内的文章数量
         User user = UserThreadHolder.get();
-        BlogContributeCountBO blogContributeCount = webVisitService.getBlogContributeCount(user.getId(), startDate, curDate);
+        BlogContributeCountBO blogContributeCount = webVisitService.getBlogContributeCount(user.getUid(), startDate, curDate);
         BlogContributeCountVO blogContributeCountVO = BlogContributeCountVO.builder()
                 .contributeDate(contributeDate)
                 .blogContributeCount(blogContributeCount.getBlogContributeCount())

@@ -26,6 +26,7 @@ import java.io.IOException;
  * @Date: 2022/12/8 17:22
  * @Version: 1.0
  * 从请求头中的USERNAME在redis中获取用户，放入ThreadLocal
+ * 需要在controller中获取当前用户时，可以获取ThreadLocal中存放的用户
  */
 
 @Component

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface RoleService extends IService<Role> {
 
-    List<Role> getByUserId(Long id);
+    List<Role> getByUserId(String id);
 
     List<String> getResourcesByRoleId(Long id);
 

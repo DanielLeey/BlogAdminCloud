@@ -94,7 +94,7 @@ public class CommentController {
     @GetMapping("/getUserReceiveCommentCount")
     public CommonResult getUserReceiveCommentCount() {
         User user = UserThreadHolder.get();
-        final String userId = user.getId() + "";
+        final String userId = user.getUid();
         Integer count = commentService.getUserReceiveCommentCount(userId);
         return CommonResult.success(count);
     }

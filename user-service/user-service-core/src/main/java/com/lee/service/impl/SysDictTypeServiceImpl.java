@@ -83,8 +83,8 @@ public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDi
         BeanUtils.copyProperties(sysDictTypeAddRequest, sysDictType);
         User user = UserThreadHolder.get();
         sysDictType.setUid(UUidUtils.getUUId());
-        sysDictType.setCreateByUid(user.getId()+"");
-        sysDictType.setUpdateByUid(user.getId()+"");
+        sysDictType.setCreateByUid(user.getUid());
+        sysDictType.setUpdateByUid(user.getUid());
         sysDictType.setStatus(1);
         Date date = new Date();
         sysDictType.setCreateTime(date);

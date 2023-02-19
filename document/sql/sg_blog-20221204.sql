@@ -50,7 +50,7 @@ CREATE TABLE `config_info`  (
   `md5` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'md5',
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
-  `src_user` text CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT 'source user',
+  `src_user` text CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT 'source oldUser',
   `src_ip` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'source ip',
   `app_name` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `tenant_id` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '' COMMENT '租户字段',
@@ -102,7 +102,7 @@ CREATE TABLE `config_info_beta`  (
   `md5` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'md5',
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
-  `src_user` text CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT 'source user',
+  `src_user` text CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT 'source oldUser',
   `src_ip` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'source ip',
   `tenant_id` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT '' COMMENT '租户字段',
   PRIMARY KEY (`id`) USING BTREE,
@@ -128,7 +128,7 @@ CREATE TABLE `config_info_tag`  (
   `md5` varchar(32) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'md5',
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
-  `src_user` text CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT 'source user',
+  `src_user` text CHARACTER SET utf8 COLLATE utf8_bin NULL COMMENT 'source oldUser',
   `src_ip` varchar(50) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL COMMENT 'source ip',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_configinfotag_datagrouptenanttag`(`data_id`, `group_id`, `tenant_id`, `tag_id`) USING BTREE
@@ -416,16 +416,16 @@ CREATE TABLE `sys_menu`  (
 -- Records of sys_menu
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES (1, '系统管理', 0, 1, 'system', NULL, 1, 'M', '0', '0', '', 'system', 0, '2021-11-12 10:46:19', 0, NULL, '系统管理目录', '0');
-INSERT INTO `sys_menu` VALUES (100, '用户管理', 1, 1, 'user', 'system/user/index', 1, 'C', '0', '0', 'system:user:list', 'user', 0, '2021-11-12 10:46:19', 1, '2022-07-31 15:47:58', '用户管理菜单', '0');
+INSERT INTO `sys_menu` VALUES (100, '用户管理', 1, 1, 'oldUser', 'system/oldUser/index', 1, 'C', '0', '0', 'system:oldUser:list', 'oldUser', 0, '2021-11-12 10:46:19', 1, '2022-07-31 15:47:58', '用户管理菜单', '0');
 INSERT INTO `sys_menu` VALUES (101, '角色管理', 1, 2, 'role', 'system/role/index', 1, 'C', '0', '0', 'system:role:list', 'peoples', 0, '2021-11-12 10:46:19', 0, NULL, '角色管理菜单', '0');
 INSERT INTO `sys_menu` VALUES (102, '菜单管理', 1, 3, 'menu', 'system/menu/index', 1, 'C', '0', '0', 'system:menu:list', 'tree-table', 0, '2021-11-12 10:46:19', 0, NULL, '菜单管理菜单', '0');
-INSERT INTO `sys_menu` VALUES (1001, '用户查询', 100, 1, '', '', 1, 'F', '0', '0', 'system:user:query', '#', 0, '2021-11-12 10:46:19', 0, NULL, '', '0');
-INSERT INTO `sys_menu` VALUES (1002, '用户新增', 100, 2, '', '', 1, 'F', '0', '0', 'system:user:add', '#', 0, '2021-11-12 10:46:19', 0, NULL, '', '0');
-INSERT INTO `sys_menu` VALUES (1003, '用户修改', 100, 3, '', '', 1, 'F', '0', '0', 'system:user:edit', '#', 0, '2021-11-12 10:46:19', 0, NULL, '', '0');
-INSERT INTO `sys_menu` VALUES (1004, '用户删除', 100, 4, '', '', 1, 'F', '0', '0', 'system:user:remove', '#', 0, '2021-11-12 10:46:19', 0, NULL, '', '0');
-INSERT INTO `sys_menu` VALUES (1005, '用户导出', 100, 5, '', '', 1, 'F', '0', '0', 'system:user:export', '#', 0, '2021-11-12 10:46:19', 0, NULL, '', '0');
-INSERT INTO `sys_menu` VALUES (1006, '用户导入', 100, 6, '', '', 1, 'F', '0', '0', 'system:user:import', '#', 0, '2021-11-12 10:46:19', 0, NULL, '', '0');
-INSERT INTO `sys_menu` VALUES (1007, '重置密码', 100, 7, '', '', 1, 'F', '0', '0', 'system:user:resetPwd', '#', 0, '2021-11-12 10:46:19', 0, NULL, '', '0');
+INSERT INTO `sys_menu` VALUES (1001, '用户查询', 100, 1, '', '', 1, 'F', '0', '0', 'system:oldUser:query', '#', 0, '2021-11-12 10:46:19', 0, NULL, '', '0');
+INSERT INTO `sys_menu` VALUES (1002, '用户新增', 100, 2, '', '', 1, 'F', '0', '0', 'system:oldUser:add', '#', 0, '2021-11-12 10:46:19', 0, NULL, '', '0');
+INSERT INTO `sys_menu` VALUES (1003, '用户修改', 100, 3, '', '', 1, 'F', '0', '0', 'system:oldUser:edit', '#', 0, '2021-11-12 10:46:19', 0, NULL, '', '0');
+INSERT INTO `sys_menu` VALUES (1004, '用户删除', 100, 4, '', '', 1, 'F', '0', '0', 'system:oldUser:remove', '#', 0, '2021-11-12 10:46:19', 0, NULL, '', '0');
+INSERT INTO `sys_menu` VALUES (1005, '用户导出', 100, 5, '', '', 1, 'F', '0', '0', 'system:oldUser:export', '#', 0, '2021-11-12 10:46:19', 0, NULL, '', '0');
+INSERT INTO `sys_menu` VALUES (1006, '用户导入', 100, 6, '', '', 1, 'F', '0', '0', 'system:oldUser:import', '#', 0, '2021-11-12 10:46:19', 0, NULL, '', '0');
+INSERT INTO `sys_menu` VALUES (1007, '重置密码', 100, 7, '', '', 1, 'F', '0', '0', 'system:oldUser:resetPwd', '#', 0, '2021-11-12 10:46:19', 0, NULL, '', '0');
 INSERT INTO `sys_menu` VALUES (1008, '角色查询', 101, 1, '', '', 1, 'F', '0', '0', 'system:role:query', '#', 0, '2021-11-12 10:46:19', 0, NULL, '', '0');
 INSERT INTO `sys_menu` VALUES (1009, '角色新增', 101, 2, '', '', 1, 'F', '0', '0', 'system:role:add', '#', 0, '2021-11-12 10:46:19', 0, NULL, '', '0');
 INSERT INTO `sys_menu` VALUES (1010, '角色修改', 101, 3, '', '', 1, 'F', '0', '0', 'system:role:edit', '#', 0, '2021-11-12 10:46:19', 0, NULL, '', '0');
@@ -1003,7 +1003,7 @@ CREATE TABLE `t_category_menu`  (
 -- ----------------------------
 INSERT INTO `t_category_menu` VALUES ('02ea2f9ef5d44f559fb66189b05f6769', 'Solr', 2, 'Solr监控中心', '147cd431cbb9007bde87444d7987b151', '/monitor/Solr', 'el-icon-lightning', 0, 1, '2018-11-30 03:55:39', '2020-12-09 20:41:22', 1, 0, 0);
 INSERT INTO `t_category_menu` VALUES ('062087bce19d00312b3787b6e24c21d1', '字典数据', 2, '字典数据', 'badf0010422b432ba6ec9c83a25012ed', '/system/sysDictData', 'el-icon-data-line', 0, 1, '2020-02-21 18:06:11', '2020-05-30 08:44:04', 0, 0, 0);
-INSERT INTO `t_category_menu` VALUES ('065cda845549289b2afcd0129d87c2c0', '新增用户', 3, '新增用户', 'fb4237a353d0418ab42c748b7c1d64c6', '/user/add', NULL, 0, 1, '2020-09-29 20:40:09', '2020-09-29 20:40:30', 1, 1, 0);
+INSERT INTO `t_category_menu` VALUES ('065cda845549289b2afcd0129d87c2c0', '新增用户', 3, '新增用户', 'fb4237a353d0418ab42c748b7c1d64c6', '/oldUser/add', NULL, 0, 1, '2020-09-29 20:40:09', '2020-09-29 20:40:30', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('079f0cfdb7a7017d827f5c349983eebc', 'Eureka', 2, 'Eureka监控中心', '147cd431cbb9007bde87444d7987b151', '/monitor/eureka', 'el-icon-moon-night', 0, 0, '2020-01-06 05:27:30', '2020-12-05 15:21:41', 1, 0, 0);
 INSERT INTO `t_category_menu` VALUES ('0a035547bbec404eb3ee0ef43312148d', '分类管理', 2, '管理博客分类', '49b42250abcb47ff876bad699cf34f03', '/blog/blogSort', 'el-icon-brush', 10, 1, '2018-11-26 03:07:14', '2020-05-30 08:34:17', 1, 0, 0);
 INSERT INTO `t_category_menu` VALUES ('0cab1fcdcd01f394768e2e2674e56773', '本地上传', 3, '本地文件上传', '1f01cd1d2f474743b241d74008b12333', '/blog/uploadLocalBlog', NULL, 1, 1, '2020-04-15 17:28:36', '2020-07-09 21:40:01', 1, 1, 0);
@@ -1025,7 +1025,7 @@ INSERT INTO `t_category_menu` VALUES ('2a733ff390af9b44ecda4e8c4634d73k', '删�
 INSERT INTO `t_category_menu` VALUES ('2a733ff390af9b44ecda4e8c4634d75d', '删除选中', 3, '分类管理 删除选中', '0a035547bbec404eb3ee0ef43312148d', '/blogSort/deleteBatch', NULL, 0, 1, '2020-03-21 18:23:19', '2020-03-21 18:23:19', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('2a733ff390af9b44ecda4e8c4634d75f', '删除选中', 3, '标签管理 删除选中', '6606b7e646d545e5a25c70b5e5fade9f', '/tag/deleteBatch', NULL, 0, 1, '2020-03-21 18:23:19', '2020-03-21 18:23:19', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('2a733ff390af9b44ecda4e8c4634d75k', '删除选中', 3, '评论管理 删除选中', '9beb7caa2c844b36a02789262dc76fbe', '/comment/deleteBatch', NULL, 0, 1, '2020-03-21 18:23:19', '2020-04-21 08:33:27', 1, 1, 0);
-INSERT INTO `t_category_menu` VALUES ('2a733ff390af9b44ecda4e8c4634d75t', '重置密码', 3, '用户管理 重置密码', 'fb4237a353d0418ab42c748b7c1d64c6', '/user/resetUserPassword', NULL, 0, 1, '2020-03-21 18:23:19', '2020-04-21 08:28:37', 1, 1, 0);
+INSERT INTO `t_category_menu` VALUES ('2a733ff390af9b44ecda4e8c4634d75t', '重置密码', 3, '用户管理 重置密码', 'fb4237a353d0418ab42c748b7c1d64c6', '/oldUser/resetUserPassword', NULL, 0, 1, '2020-03-21 18:23:19', '2020-04-21 08:28:37', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('2a733ff390af9b44ecda4e8c4634d75u', '初始化ElasticSearch索引', 3, 'ElasticSearch 初始化ElasticSearch索引', 'bfc9463e59a3ca250dcfc1c86627e034', '/search/initElasticIndex', NULL, 0, 1, '2020-03-21 18:23:19', '2020-03-21 18:23:19', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('2a733ff390af9b44ecda4e8c4634d75v', '初始化Solr索引', 3, 'Solr 初始化Solr索引', '02ea2f9ef5d44f559fb66189b05f6769', '/search/initSolrIndex', NULL, 0, 1, '2020-03-21 18:23:19', '2020-03-21 18:23:19', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('2a733ff390af9b44ecda4e8c4634d78k', '删除', 3, '友情链接 删除', '9002d1ae905c4cb79c2a485333dad2f7', '/link/delete', NULL, 0, 1, '2020-03-21 18:23:19', '2020-03-21 18:23:19', 1, 1, 0);
@@ -1064,7 +1064,7 @@ INSERT INTO `t_category_menu` VALUES ('4337f63d13d84b9aba64b9d7a69fd066', '异�
 INSERT INTO `t_category_menu` VALUES ('49b42250abcb47ff876bad699cf34f03', '博客管理', 1, '用于博客的一些相关操作', NULL, '/blog', 'el-icon-edit', 20, 1, '2018-11-25 05:15:07', '2020-10-07 15:35:48', 1, 0, 0);
 INSERT INTO `t_category_menu` VALUES ('4dea9c4f39d2480983e8c4333d35e036', '图片类别管理', 2, '图片类别', '65e22f3d36d94bcea47478aba02895a1', '/picture/pictureSort', 'el-icon-printer', 2, 1, '2018-11-28 19:50:31', '2020-10-12 10:13:57', 1, 0, 0);
 INSERT INTO `t_category_menu` VALUES ('4fe7725159ced4a238b816a4595109d1', '门户管理', 1, '管理门户页面', NULL, '/web', 'el-icon-help', 0, 1, '2021-02-22 18:25:34', '2021-02-22 18:25:34', 1, 0, 0);
-INSERT INTO `t_category_menu` VALUES ('5010ae46511e4c0b9f30d1c63ad3f0c1', '角色管理', 2, '管理用户角色信息', 'd3a19221259d439b916f475e43edb13d', '/authority/role', 'el-icon-user', 0, 1, '2018-11-25 19:10:34', '2020-05-30 09:06:22', 1, 0, 0);
+INSERT INTO `t_category_menu` VALUES ('5010ae46511e4c0b9f30d1c63ad3f0c1', '角色管理', 2, '管理用户角色信息', 'd3a19221259d439b916f475e43edb13d', '/authority/role', 'el-icon-oldUser', 0, 1, '2018-11-25 19:10:34', '2020-05-30 09:06:22', 1, 0, 0);
 INSERT INTO `t_category_menu` VALUES ('505b4769b77617a314a3ed78e4acdff7', 'Zipkin', 2, 'Zipkin链路追踪', '147cd431cbb9007bde87444d7987b151', 'http://localhost:9411/zipkin/', 'el-icon-moon', 2, 1, '2020-02-06 20:22:18', '2020-12-05 15:31:42', 1, 0, 1);
 INSERT INTO `t_category_menu` VALUES ('510483ce569b4fc88299f346147b1314', '资源管理', 1, '资源管理', '', '/resource', 'el-icon-present', 2, 1, '2018-11-28 19:42:13', '2020-05-30 08:51:30', 1, 0, 0);
 INSERT INTO `t_category_menu` VALUES ('587e2697fa4d85046feece8ab9d0706c', 'Redis操作', 3, 'Redis操作 清空缓存', '78f24799307cb63bc3759413dadf4d1a', '/systemConfig/cleanRedisByKey', NULL, 0, 1, '2020-04-03 19:38:01', '2020-04-03 19:38:00', 1, 1, 0);
@@ -1082,7 +1082,7 @@ INSERT INTO `t_category_menu` VALUES ('6c8a8c50c77429fab210bd52ed8c50bb', '引�
 INSERT INTO `t_category_menu` VALUES ('72d26cf940bf9dfb6bde0a590ff40882', '删除', 3, '分类管理，删除分类', '0a035547bbec404eb3ee0ef43312148d', '/blogSort/delete', NULL, 0, 1, '2020-03-21 18:22:51', '2020-03-21 18:22:51', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('72d26cf940bf9dfb6bde0a590ff4088g', '删除', 3, '标签管理，删除分类', '6606b7e646d545e5a25c70b5e5fade9f', '/tag/delete', NULL, 0, 1, '2020-03-21 18:22:51', '2020-03-21 18:22:51', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('72d26cf940bf9dfb6bde0a590ff4088j', '删除', 3, '评论管理，删除', '9beb7caa2c844b36a02789262dc76fbe', '/comment/delete', NULL, 0, 1, '2020-03-21 18:22:51', '2020-04-21 08:33:21', 1, 1, 0);
-INSERT INTO `t_category_menu` VALUES ('72d26cf940bf9dfb6bde0a590ff4088s', '删除', 3, '用户管理，删除', 'fb4237a353d0418ab42c748b7c1d64c6', '/user/delete', NULL, 0, 1, '2020-03-21 18:22:51', '2020-04-21 08:28:30', 1, 1, 0);
+INSERT INTO `t_category_menu` VALUES ('72d26cf940bf9dfb6bde0a590ff4088s', '删除', 3, '用户管理，删除', 'fb4237a353d0418ab42c748b7c1d64c6', '/oldUser/delete', NULL, 0, 1, '2020-03-21 18:22:51', '2020-04-21 08:28:30', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('72d26cf940bf9dfb6bde0a590ff408ej', '设为封面', 3, '图片管理，设为封面', '1cc493d36e17fad535f2bf70242162b0', '/picture/setCover', NULL, 0, 1, '2020-03-21 18:22:51', '2020-03-21 18:22:51', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('72d26cf940bf9dfb6bde0a590ff408nj', '重置密码', 3, '管理员管理，重置密码', '2de247af3b0a459095e937d7ab9f5864', '/admin/restPwd', NULL, 0, 1, '2020-03-21 18:22:51', '2020-03-21 18:22:51', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('7668dabe69473f59d1516d84cb99d583', '爬虫管理', 1, '爬虫管理', NULL, '/spider', 'el-icon-search', 0, 1, '2021-01-08 22:07:12', '2021-01-08 22:07:12', 1, 0, 0);
@@ -1125,7 +1125,7 @@ INSERT INTO `t_category_menu` VALUES ('aef85c40b54320d7c5a9d78697e129rn', '置�
 INSERT INTO `t_category_menu` VALUES ('aef85c40b54320d7c5a9d78697e12e6n', '置顶', 3, '资源分类 置顶', '9449ce5dd5e24b21a9d15f806cb36e87', '/resourceSort/stick', NULL, 0, 1, '2020-03-21 21:37:07', '2020-03-21 21:37:07', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('af0e753d3ea0adf5cd8cf1dd55f162c2', '接口聚合', 2, '聚合所有模块的接口', 'baace3dc03d34c54b81761dce8243814', 'http://localhost:8607/doc.html', 'el-icon-ice-cream-round', 5, 1, '2020-12-05 15:42:51', '2020-12-05 15:42:51', 1, 0, 1);
 INSERT INTO `t_category_menu` VALUES ('b21105b915a5b54588c2cd458a94d2d5', '新增', 3, '专题管理 新增', '3e92f2fd6cf012d30bfae2d9cdb7092d', '/subject/add', NULL, 0, 1, '2020-08-23 08:55:29', '2020-08-23 08:55:29', 1, 1, 0);
-INSERT INTO `t_category_menu` VALUES ('b511cae571834971a392ae4779270034', '游客管理', 2, '游客管理', 'c519725da92b42f3acf0cc9fad58c664', '/user/visitor', 'el-icon-news', 2, 1, '2018-11-28 19:54:28', '2020-05-30 08:47:06', 1, 0, 0);
+INSERT INTO `t_category_menu` VALUES ('b511cae571834971a392ae4779270034', '游客管理', 2, '游客管理', 'c519725da92b42f3acf0cc9fad58c664', '/oldUser/visitor', 'el-icon-news', 2, 1, '2018-11-28 19:54:28', '2020-05-30 08:47:06', 1, 0, 0);
 INSERT INTO `t_category_menu` VALUES ('b7fc36f7efc9738bddc9b09fedeccf60', '导航栏管理 查询全部', 3, '导航栏管理 查询全部', '6275bc5189e2e595b621d744d68278af', '/webNavbar/getAllList', NULL, 0, 1, '2021-02-23 13:00:24', '2021-02-23 13:00:24', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('baa21ccb45ee133b064187185edb2ac0', '删除', 3, '网盘管理 删除', 'e1e54aea65cc22d9f8a4c74ce8d23749', '/networkDisk/delete', NULL, 0, 1, '2020-06-15 10:36:07', '2020-06-15 10:46:33', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('baace3dc03d34c54b81761dce8243814', '接口管理', 1, '接口管理', '', '/restapi', 'el-icon-stopwatch', 4, 1, '2018-11-28 20:01:57', '2020-05-30 08:49:22', 1, 0, 0);
@@ -1136,10 +1136,10 @@ INSERT INTO `t_category_menu` VALUES ('bfc9463e59a3ca250dcfc1c86627e034', 'Elast
 INSERT INTO `t_category_menu` VALUES ('bfcb9b002c3de18f269189c573b985f8', '在线用户', 2, '在线的用户和管理员', '147cd431cbb9007bde87444d7987b151', '/monitor/OnlineAdmin', 'el-icon-sunset', 6, 1, '2020-06-09 17:14:02', '2020-12-05 15:27:39', 1, 0, 0);
 INSERT INTO `t_category_menu` VALUES ('c28f0b052e0b930299dd53de59cc32d7', '字典管理', 2, '字典管理', 'badf0010422b432ba6ec9c83a25012ed', '/system/sysDictType', 'el-icon-lightning', 0, 1, '2020-02-16 18:11:10', '2020-05-30 08:35:46', 1, 0, 0);
 INSERT INTO `t_category_menu` VALUES ('c2a1218dd07747a57b055f184ddae217', '查询', 3, '参数配置 查询', '3eacc357e23b0b17e4f835c2f998ed34', '/sysParams/getList', NULL, 0, 1, '2020-07-21 16:48:17', '2020-07-21 16:48:17', 1, 1, 0);
-INSERT INTO `t_category_menu` VALUES ('c519725da92b42f3acf0cc9fad58c664', '用户管理', 1, '用户管理', '', '/user', 'el-icon-house', 15, 1, '2018-11-28 19:51:47', '2020-05-30 08:46:44', 1, 0, 0);
+INSERT INTO `t_category_menu` VALUES ('c519725da92b42f3acf0cc9fad58c664', '用户管理', 1, '用户管理', '', '/oldUser', 'el-icon-house', 15, 1, '2018-11-28 19:51:47', '2020-05-30 08:46:44', 1, 0, 0);
 INSERT INTO `t_category_menu` VALUES ('cbd7ba11c1b38c66b569405ed9185f35', 'RabbitMQ', 2, 'RabbitMQ监控中心', '147cd431cbb9007bde87444d7987b151', 'http://localhost:15672', 'el-icon-sunny', 3, 1, '2020-01-05 21:29:39', '2020-12-05 15:31:33', 1, 0, 1);
 INSERT INTO `t_category_menu` VALUES ('ccc0dced06919403832647a871312f09', '删除选中', 3, '专题管理 删除选中', '3e92f2fd6cf012d30bfae2d9cdb7092d', '/subject/deleteBatch', NULL, 0, 1, '2020-08-23 08:57:45', '2020-08-23 08:57:45', 1, 1, 0);
-INSERT INTO `t_category_menu` VALUES ('d3a19221259d439b916f475e43edb13d', '权限管理', 1, '对管理员权限分配进行管理', '', '/authority', 'el-icon-user', 18, 1, '2018-11-25 19:08:42', '2020-05-30 08:44:17', 1, 0, 0);
+INSERT INTO `t_category_menu` VALUES ('d3a19221259d439b916f475e43edb13d', '权限管理', 1, '对管理员权限分配进行管理', '', '/authority', 'el-icon-oldUser', 18, 1, '2018-11-25 19:08:42', '2020-05-30 08:44:17', 1, 0, 0);
 INSERT INTO `t_category_menu` VALUES ('d4d92c53d3614d00865e9219b8292a90', 'Picture接口', 2, 'Picture接口', 'baace3dc03d34c54b81761dce8243814', 'http://localhost:8602/swagger-ui/index.html', 'el-icon-heavy-rain', 0, 1, '2018-11-28 20:04:33', '2020-12-24 09:20:21', 1, 0, 1);
 INSERT INTO `t_category_menu` VALUES ('da32aa8f92ae7fe7e7f445bf1028d2df', '查询', 3, '专题元素管理  查询', '7cb1a6b7462832bf831a18a28eea94cd', '/subjectItem/getList', NULL, 0, 1, '2020-08-23 09:15:37', '2020-08-23 09:15:37', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('e1e54aea65cc22d9f8a4c74ce8d23749', '网盘管理', 2, '管理网盘的资源', '510483ce569b4fc88299f346147b1314', '/resource/file', 'el-icon-unlock', 1, 1, '2020-06-13 16:36:11', '2020-10-10 14:38:13', 1, 0, 0);
@@ -1155,7 +1155,7 @@ INSERT INTO `t_category_menu` VALUES ('f87d2f9b4539abbade38583420dc8b2l', '编�
 INSERT INTO `t_category_menu` VALUES ('f87d2f9b4539abbade38583420dc8b89', '编辑', 3, '分类管理 编辑', '0a035547bbec404eb3ee0ef43312148d', '/blogSort/edit', NULL, 0, 1, '2020-03-21 21:35:57', '2020-03-21 21:35:57', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('f87d2f9b4539abbade38583420dc8b8e', '编辑', 3, '标签管理 编辑', '6606b7e646d545e5a25c70b5e5fade9f', '/tag/edit', NULL, 0, 1, '2020-03-21 21:35:57', '2020-03-21 21:35:57', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('f87d2f9b4539abbade38583420dc8b8l', '编辑', 3, '评论管理 编辑', '9beb7caa2c844b36a02789262dc76fbe', '/comment/edit', NULL, 0, 1, '2020-03-21 21:35:57', '2020-03-21 21:35:57', 1, 1, 0);
-INSERT INTO `t_category_menu` VALUES ('f87d2f9b4539abbade38583420dc8b8r', '编辑', 3, '用户管理 编辑', 'fb4237a353d0418ab42c748b7c1d64c6', '/user/edit', NULL, 0, 1, '2020-03-21 21:35:57', '2020-03-21 21:35:57', 1, 1, 0);
+INSERT INTO `t_category_menu` VALUES ('f87d2f9b4539abbade38583420dc8b8r', '编辑', 3, '用户管理 编辑', 'fb4237a353d0418ab42c748b7c1d64c6', '/oldUser/edit', NULL, 0, 1, '2020-03-21 21:35:57', '2020-03-21 21:35:57', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('f87d2f9b4539abbade38583420dc8b9l', '编辑', 3, '友情链接 编辑', '9002d1ae905c4cb79c2a485333dad2f7', '/link/edit', NULL, 0, 1, '2020-03-21 21:35:57', '2020-03-21 21:35:57', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('f87d2f9b4539abbade38583420dc8bbl', '编辑', 3, '字典数据 编辑', '062087bce19d00312b3787b6e24c21d1', '/sysDictData/edit', NULL, 0, 1, '2020-03-21 21:35:57', '2020-03-21 21:35:57', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('f87d2f9b4539abbade38583420dc8bhl', '编辑', 3, '图片管理 编辑', '1cc493d36e17fad535f2bf70242162b0', '/picture/edit', NULL, 0, 1, '2020-03-21 21:35:57', '2020-03-21 21:35:57', 1, 1, 0);
@@ -1172,14 +1172,14 @@ INSERT INTO `t_category_menu` VALUES ('f87d2f9b4539abbade38583420dc8l9l', '编�
 INSERT INTO `t_category_menu` VALUES ('f9276eb8e3274c8aa05577c86e4dc8c1', 'Web接口', 2, 'Web接口', 'baace3dc03d34c54b81761dce8243814', 'http://localhost:8603/swagger-ui/index.html', 'el-icon-light-rain', 0, 1, '2018-11-28 20:04:52', '2020-12-05 15:46:54', 1, 0, 1);
 INSERT INTO `t_category_menu` VALUES ('fa1e85a9c7734d27df07bc730206bd1a', '删除', 3, '编辑管理 删除', '3e92f2fd6cf012d30bfae2d9cdb7092d', '/subject/delete', NULL, 0, 1, '2020-08-23 08:56:36', '2020-08-23 08:58:33', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('faccfe476b89483791c05019ad5b4906', '关于我', 2, '关于我', 'badf0010422b432ba6ec9c83a25012ed', '/system/aboutMe', 'el-icon-sugar', 0, 1, '2018-11-29 03:55:17', '2020-05-30 08:35:21', 1, 0, 0);
-INSERT INTO `t_category_menu` VALUES ('fb4237a353d0418ab42c748b7c1d64c6', '用户管理', 2, '用户管理', 'c519725da92b42f3acf0cc9fad58c664', '/user/user', 'el-icon-headset', 3, 1, '2018-11-28 19:52:20', '2020-05-30 08:46:54', 1, 0, 0);
+INSERT INTO `t_category_menu` VALUES ('fb4237a353d0418ab42c748b7c1d64c6', '用户管理', 2, '用户管理', 'c519725da92b42f3acf0cc9fad58c664', '/oldUser/oldUser', 'el-icon-headset', 3, 1, '2018-11-28 19:52:20', '2020-05-30 08:46:54', 1, 0, 0);
 INSERT INTO `t_category_menu` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8ca0m', '查询', 3, '资源分类 查询', '9449ce5dd5e24b21a9d15f806cb36e87', '/resourceSort/getList', NULL, 0, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8ce0m', '查询', 3, '友情链接 查询', '9002d1ae905c4cb79c2a485333dad2f7', '/link/getList', NULL, 0, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8ce1m', '查询', 3, '菜单管理 查询', 'aa225cdae6464bc0acebd732192f8362', '/categoryMenu/getList', NULL, 0, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8ce99', '查询', 3, '分类管理 查询', '0a035547bbec404eb3ee0ef43312148d', '/blogSort/getList', NULL, 0, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8ce9d', '查询', 3, '标签管理 查询', '6606b7e646d545e5a25c70b5e5fade9f', '/tag/getList', NULL, 0, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8ce9m', '查询', 3, '评论管理 查询', '9beb7caa2c844b36a02789262dc76fbe', '/comment/getList', NULL, 1, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
-INSERT INTO `t_category_menu` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8ce9q', '查询', 3, '用户管理 查询', 'fb4237a353d0418ab42c748b7c1d64c6', '/user/getList', NULL, 0, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
+INSERT INTO `t_category_menu` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8ce9q', '查询', 3, '用户管理 查询', 'fb4237a353d0418ab42c748b7c1d64c6', '/oldUser/getList', NULL, 0, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8ceam', '查询', 3, '字典数据 查询', '062087bce19d00312b3787b6e24c21d1', '/sysDictData/getList', NULL, 0, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8ceim', '查询', 3, '图片管理 查询', '1cc493d36e17fad535f2bf70242162b0', '/picture/getList', NULL, 0, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
 INSERT INTO `t_category_menu` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8cejm', '查询', 3, '管理员管理 查询', '2de247af3b0a459095e937d7ab9f5864', '/admin/getList', NULL, 0, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
@@ -1225,7 +1225,7 @@ CREATE TABLE `t_sys_resource`  (
 -- ----------------------------
 INSERT INTO `t_sys_resource` VALUES ('02ea2f9ef5d44f559fb66189b05f6769', 'Solr', 2, 'Solr监控中心', '147cd431cbb9007bde87444d7987b151', '/monitor/Solr', 'el-icon-lightning', 0, 1, '2018-11-30 03:55:39', '2020-12-09 20:41:22', 1, 0, 0);
 INSERT INTO `t_sys_resource` VALUES ('062087bce19d00312b3787b6e24c21d1', '字典数据', 2, '字典数据', 'badf0010422b432ba6ec9c83a25012ed', '/system/sysDictData', 'el-icon-data-line', 0, 1, '2020-02-21 18:06:11', '2020-05-30 08:44:04', 0, 0, 0);
-INSERT INTO `t_sys_resource` VALUES ('065cda845549289b2afcd0129d87c2c0', '新增用户', 3, '新增用户', 'fb4237a353d0418ab42c748b7c1d64c6', '/user/add', NULL, 0, 1, '2020-09-29 20:40:09', '2020-09-29 20:40:30', 1, 1, 0);
+INSERT INTO `t_sys_resource` VALUES ('065cda845549289b2afcd0129d87c2c0', '新增用户', 3, '新增用户', 'fb4237a353d0418ab42c748b7c1d64c6', '/oldUser/add', NULL, 0, 1, '2020-09-29 20:40:09', '2020-09-29 20:40:30', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('079f0cfdb7a7017d827f5c349983eebc', 'Eureka', 2, 'Eureka监控中心', '147cd431cbb9007bde87444d7987b151', '/monitor/eureka', 'el-icon-moon-night', 0, 0, '2020-01-06 05:27:30', '2020-12-05 15:21:41', 1, 0, 0);
 INSERT INTO `t_sys_resource` VALUES ('0a035547bbec404eb3ee0ef43312148d', '分类管理', 2, '管理博客分类', '49b42250abcb47ff876bad699cf34f03', '/blog/blogSort', 'el-icon-brush', 10, 1, '2018-11-26 03:07:14', '2020-05-30 08:34:17', 1, 0, 0);
 INSERT INTO `t_sys_resource` VALUES ('0cab1fcdcd01f394768e2e2674e56773', '本地上传', 3, '本地文件上传', '1f01cd1d2f474743b241d74008b12333', '/blog/uploadLocalBlog', NULL, 1, 1, '2020-04-15 17:28:36', '2020-07-09 21:40:01', 1, 1, 0);
@@ -1247,7 +1247,7 @@ INSERT INTO `t_sys_resource` VALUES ('2a733ff390af9b44ecda4e8c4634d73k', '删除
 INSERT INTO `t_sys_resource` VALUES ('2a733ff390af9b44ecda4e8c4634d75d', '删除选中', 3, '分类管理 删除选中', '0a035547bbec404eb3ee0ef43312148d', '/blogSort/deleteBatch', NULL, 0, 1, '2020-03-21 18:23:19', '2020-03-21 18:23:19', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('2a733ff390af9b44ecda4e8c4634d75f', '删除选中', 3, '标签管理 删除选中', '6606b7e646d545e5a25c70b5e5fade9f', '/tag/deleteBatch', NULL, 0, 1, '2020-03-21 18:23:19', '2020-03-21 18:23:19', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('2a733ff390af9b44ecda4e8c4634d75k', '删除选中', 3, '评论管理 删除选中', '9beb7caa2c844b36a02789262dc76fbe', '/comment/deleteBatch', NULL, 0, 1, '2020-03-21 18:23:19', '2020-04-21 08:33:27', 1, 1, 0);
-INSERT INTO `t_sys_resource` VALUES ('2a733ff390af9b44ecda4e8c4634d75t', '重置密码', 3, '用户管理 重置密码', 'fb4237a353d0418ab42c748b7c1d64c6', '/user/resetUserPassword', NULL, 0, 1, '2020-03-21 18:23:19', '2020-04-21 08:28:37', 1, 1, 0);
+INSERT INTO `t_sys_resource` VALUES ('2a733ff390af9b44ecda4e8c4634d75t', '重置密码', 3, '用户管理 重置密码', 'fb4237a353d0418ab42c748b7c1d64c6', '/oldUser/resetUserPassword', NULL, 0, 1, '2020-03-21 18:23:19', '2020-04-21 08:28:37', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('2a733ff390af9b44ecda4e8c4634d75u', '初始化ElasticSearch索引', 3, 'ElasticSearch 初始化ElasticSearch索引', 'bfc9463e59a3ca250dcfc1c86627e034', '/search/initElasticIndex', NULL, 0, 1, '2020-03-21 18:23:19', '2020-03-21 18:23:19', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('2a733ff390af9b44ecda4e8c4634d75v', '初始化Solr索引', 3, 'Solr 初始化Solr索引', '02ea2f9ef5d44f559fb66189b05f6769', '/search/initSolrIndex', NULL, 0, 1, '2020-03-21 18:23:19', '2020-03-21 18:23:19', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('2a733ff390af9b44ecda4e8c4634d78k', '删除', 3, '友情链接 删除', '9002d1ae905c4cb79c2a485333dad2f7', '/link/delete', NULL, 0, 1, '2020-03-21 18:23:19', '2020-03-21 18:23:19', 1, 1, 0);
@@ -1286,7 +1286,7 @@ INSERT INTO `t_sys_resource` VALUES ('4337f63d13d84b9aba64b9d7a69fd066', '异常
 INSERT INTO `t_sys_resource` VALUES ('49b42250abcb47ff876bad699cf34f03', '博客管理', 1, '用于博客的一些相关操作', NULL, '/blog', 'el-icon-edit', 20, 1, '2018-11-25 05:15:07', '2020-10-07 15:35:48', 1, 0, 0);
 INSERT INTO `t_sys_resource` VALUES ('4dea9c4f39d2480983e8c4333d35e036', '图片类别管理', 2, '图片类别', '65e22f3d36d94bcea47478aba02895a1', '/picture/pictureSort', 'el-icon-printer', 2, 1, '2018-11-28 19:50:31', '2020-10-12 10:13:57', 1, 0, 0);
 INSERT INTO `t_sys_resource` VALUES ('4fe7725159ced4a238b816a4595109d1', '门户管理', 1, '管理门户页面', NULL, '/web', 'el-icon-help', 0, 1, '2021-02-22 18:25:34', '2021-02-22 18:25:34', 1, 0, 0);
-INSERT INTO `t_sys_resource` VALUES ('5010ae46511e4c0b9f30d1c63ad3f0c1', '角色管理', 2, '管理用户角色信息', 'd3a19221259d439b916f475e43edb13d', '/authority/role', 'el-icon-user', 0, 1, '2018-11-25 19:10:34', '2020-05-30 09:06:22', 1, 0, 0);
+INSERT INTO `t_sys_resource` VALUES ('5010ae46511e4c0b9f30d1c63ad3f0c1', '角色管理', 2, '管理用户角色信息', 'd3a19221259d439b916f475e43edb13d', '/authority/role', 'el-icon-oldUser', 0, 1, '2018-11-25 19:10:34', '2020-05-30 09:06:22', 1, 0, 0);
 INSERT INTO `t_sys_resource` VALUES ('505b4769b77617a314a3ed78e4acdff7', 'Zipkin', 2, 'Zipkin链路追踪', '147cd431cbb9007bde87444d7987b151', 'http://localhost:9411/zipkin/', 'el-icon-moon', 2, 1, '2020-02-06 20:22:18', '2020-12-05 15:31:42', 1, 0, 1);
 INSERT INTO `t_sys_resource` VALUES ('510483ce569b4fc88299f346147b1314', '资源管理', 1, '资源管理', '', '/resource', 'el-icon-present', 2, 1, '2018-11-28 19:42:13', '2020-05-30 08:51:30', 1, 0, 0);
 INSERT INTO `t_sys_resource` VALUES ('587e2697fa4d85046feece8ab9d0706c', 'Redis操作', 3, 'Redis操作 清空缓存', '78f24799307cb63bc3759413dadf4d1a', '/systemConfig/cleanRedisByKey', NULL, 0, 1, '2020-04-03 19:38:01', '2020-04-03 19:38:00', 1, 1, 0);
@@ -1304,7 +1304,7 @@ INSERT INTO `t_sys_resource` VALUES ('6c8a8c50c77429fab210bd52ed8c50bb', '引用
 INSERT INTO `t_sys_resource` VALUES ('72d26cf940bf9dfb6bde0a590ff40882', '删除', 3, '分类管理，删除分类', '0a035547bbec404eb3ee0ef43312148d', '/blogSort/delete', NULL, 0, 1, '2020-03-21 18:22:51', '2020-03-21 18:22:51', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('72d26cf940bf9dfb6bde0a590ff4088g', '删除', 3, '标签管理，删除分类', '6606b7e646d545e5a25c70b5e5fade9f', '/tag/delete', NULL, 0, 1, '2020-03-21 18:22:51', '2020-03-21 18:22:51', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('72d26cf940bf9dfb6bde0a590ff4088j', '删除', 3, '评论管理，删除', '9beb7caa2c844b36a02789262dc76fbe', '/comment/delete', NULL, 0, 1, '2020-03-21 18:22:51', '2020-04-21 08:33:21', 1, 1, 0);
-INSERT INTO `t_sys_resource` VALUES ('72d26cf940bf9dfb6bde0a590ff4088s', '删除', 3, '用户管理，删除', 'fb4237a353d0418ab42c748b7c1d64c6', '/user/delete', NULL, 0, 1, '2020-03-21 18:22:51', '2020-04-21 08:28:30', 1, 1, 0);
+INSERT INTO `t_sys_resource` VALUES ('72d26cf940bf9dfb6bde0a590ff4088s', '删除', 3, '用户管理，删除', 'fb4237a353d0418ab42c748b7c1d64c6', '/oldUser/delete', NULL, 0, 1, '2020-03-21 18:22:51', '2020-04-21 08:28:30', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('72d26cf940bf9dfb6bde0a590ff408ej', '设为封面', 3, '图片管理，设为封面', '1cc493d36e17fad535f2bf70242162b0', '/picture/setCover', NULL, 0, 1, '2020-03-21 18:22:51', '2020-03-21 18:22:51', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('72d26cf940bf9dfb6bde0a590ff408nj', '重置密码', 3, '管理员管理，重置密码', '2de247af3b0a459095e937d7ab9f5864', '/admin/restPwd', NULL, 0, 1, '2020-03-21 18:22:51', '2020-03-21 18:22:51', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('7668dabe69473f59d1516d84cb99d583', '爬虫管理', 1, '爬虫管理', NULL, '/spider', 'el-icon-search', 0, 1, '2021-01-08 22:07:12', '2021-01-08 22:07:12', 1, 0, 0);
@@ -1347,7 +1347,7 @@ INSERT INTO `t_sys_resource` VALUES ('aef85c40b54320d7c5a9d78697e129rn', '置顶
 INSERT INTO `t_sys_resource` VALUES ('aef85c40b54320d7c5a9d78697e12e6n', '置顶', 3, '资源分类 置顶', '9449ce5dd5e24b21a9d15f806cb36e87', '/resourceSort/stick', NULL, 0, 1, '2020-03-21 21:37:07', '2020-03-21 21:37:07', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('af0e753d3ea0adf5cd8cf1dd55f162c2', '接口聚合', 2, '聚合所有模块的接口', 'baace3dc03d34c54b81761dce8243814', 'http://localhost:8607/doc.html', 'el-icon-ice-cream-round', 5, 1, '2020-12-05 15:42:51', '2020-12-05 15:42:51', 1, 0, 1);
 INSERT INTO `t_sys_resource` VALUES ('b21105b915a5b54588c2cd458a94d2d5', '新增', 3, '专题管理 新增', '3e92f2fd6cf012d30bfae2d9cdb7092d', '/subject/add', NULL, 0, 1, '2020-08-23 08:55:29', '2020-08-23 08:55:29', 1, 1, 0);
-INSERT INTO `t_sys_resource` VALUES ('b511cae571834971a392ae4779270034', '游客管理', 2, '游客管理', 'c519725da92b42f3acf0cc9fad58c664', '/user/visitor', 'el-icon-news', 2, 1, '2018-11-28 19:54:28', '2020-05-30 08:47:06', 1, 0, 0);
+INSERT INTO `t_sys_resource` VALUES ('b511cae571834971a392ae4779270034', '游客管理', 2, '游客管理', 'c519725da92b42f3acf0cc9fad58c664', '/oldUser/visitor', 'el-icon-news', 2, 1, '2018-11-28 19:54:28', '2020-05-30 08:47:06', 1, 0, 0);
 INSERT INTO `t_sys_resource` VALUES ('b7fc36f7efc9738bddc9b09fedeccf60', '导航栏管理 查询全部', 3, '导航栏管理 查询全部', '6275bc5189e2e595b621d744d68278af', '/webNavbar/getAllList', NULL, 0, 1, '2021-02-23 13:00:24', '2021-02-23 13:00:24', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('baa21ccb45ee133b064187185edb2ac0', '删除', 3, '网盘管理 删除', 'e1e54aea65cc22d9f8a4c74ce8d23749', '/networkDisk/delete', NULL, 0, 1, '2020-06-15 10:36:07', '2020-06-15 10:46:33', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('baace3dc03d34c54b81761dce8243814', '接口管理', 1, '接口管理', '', '/restapi', 'el-icon-stopwatch', 4, 1, '2018-11-28 20:01:57', '2020-05-30 08:49:22', 1, 0, 0);
@@ -1358,10 +1358,10 @@ INSERT INTO `t_sys_resource` VALUES ('bfc9463e59a3ca250dcfc1c86627e034', 'Elasti
 INSERT INTO `t_sys_resource` VALUES ('bfcb9b002c3de18f269189c573b985f8', '在线用户', 2, '在线的用户和管理员', '147cd431cbb9007bde87444d7987b151', '/monitor/OnlineAdmin', 'el-icon-sunset', 6, 1, '2020-06-09 17:14:02', '2020-12-05 15:27:39', 1, 0, 0);
 INSERT INTO `t_sys_resource` VALUES ('c28f0b052e0b930299dd53de59cc32d7', '字典管理', 2, '字典管理', 'badf0010422b432ba6ec9c83a25012ed', '/system/sysDictType', 'el-icon-lightning', 0, 1, '2020-02-16 18:11:10', '2020-05-30 08:35:46', 1, 0, 0);
 INSERT INTO `t_sys_resource` VALUES ('c2a1218dd07747a57b055f184ddae217', '查询', 3, '参数配置 查询', '3eacc357e23b0b17e4f835c2f998ed34', '/sysParams/getList', NULL, 0, 1, '2020-07-21 16:48:17', '2020-07-21 16:48:17', 1, 1, 0);
-INSERT INTO `t_sys_resource` VALUES ('c519725da92b42f3acf0cc9fad58c664', '用户管理', 1, '用户管理', '', '/user', 'el-icon-house', 15, 1, '2018-11-28 19:51:47', '2020-05-30 08:46:44', 1, 0, 0);
+INSERT INTO `t_sys_resource` VALUES ('c519725da92b42f3acf0cc9fad58c664', '用户管理', 1, '用户管理', '', '/oldUser', 'el-icon-house', 15, 1, '2018-11-28 19:51:47', '2020-05-30 08:46:44', 1, 0, 0);
 INSERT INTO `t_sys_resource` VALUES ('cbd7ba11c1b38c66b569405ed9185f35', 'RabbitMQ', 2, 'RabbitMQ监控中心', '147cd431cbb9007bde87444d7987b151', 'http://localhost:15672', 'el-icon-sunny', 3, 1, '2020-01-05 21:29:39', '2020-12-05 15:31:33', 1, 0, 1);
 INSERT INTO `t_sys_resource` VALUES ('ccc0dced06919403832647a871312f09', '删除选中', 3, '专题管理 删除选中', '3e92f2fd6cf012d30bfae2d9cdb7092d', '/subject/deleteBatch', NULL, 0, 1, '2020-08-23 08:57:45', '2020-08-23 08:57:45', 1, 1, 0);
-INSERT INTO `t_sys_resource` VALUES ('d3a19221259d439b916f475e43edb13d', '权限管理', 1, '对管理员权限分配进行管理', '', '/authority', 'el-icon-user', 18, 1, '2018-11-25 19:08:42', '2020-05-30 08:44:17', 1, 0, 0);
+INSERT INTO `t_sys_resource` VALUES ('d3a19221259d439b916f475e43edb13d', '权限管理', 1, '对管理员权限分配进行管理', '', '/authority', 'el-icon-oldUser', 18, 1, '2018-11-25 19:08:42', '2020-05-30 08:44:17', 1, 0, 0);
 INSERT INTO `t_sys_resource` VALUES ('d4d92c53d3614d00865e9219b8292a90', 'Picture接口', 2, 'Picture接口', 'baace3dc03d34c54b81761dce8243814', 'http://localhost:8602/swagger-ui/index.html', 'el-icon-heavy-rain', 0, 1, '2018-11-28 20:04:33', '2020-12-24 09:20:21', 1, 0, 1);
 INSERT INTO `t_sys_resource` VALUES ('da32aa8f92ae7fe7e7f445bf1028d2df', '查询', 3, '专题元素管理  查询', '7cb1a6b7462832bf831a18a28eea94cd', '/subjectItem/getList', NULL, 0, 1, '2020-08-23 09:15:37', '2020-08-23 09:15:37', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('e1e54aea65cc22d9f8a4c74ce8d23749', '网盘管理', 2, '管理网盘的资源', '510483ce569b4fc88299f346147b1314', '/resource/file', 'el-icon-unlock', 1, 1, '2020-06-13 16:36:11', '2020-10-10 14:38:13', 1, 0, 0);
@@ -1377,7 +1377,7 @@ INSERT INTO `t_sys_resource` VALUES ('f87d2f9b4539abbade38583420dc8b2l', '编辑
 INSERT INTO `t_sys_resource` VALUES ('f87d2f9b4539abbade38583420dc8b89', '编辑', 3, '分类管理 编辑', '0a035547bbec404eb3ee0ef43312148d', '/blogSort/edit', NULL, 0, 1, '2020-03-21 21:35:57', '2020-03-21 21:35:57', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('f87d2f9b4539abbade38583420dc8b8e', '编辑', 3, '标签管理 编辑', '6606b7e646d545e5a25c70b5e5fade9f', '/tag/edit', NULL, 0, 1, '2020-03-21 21:35:57', '2020-03-21 21:35:57', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('f87d2f9b4539abbade38583420dc8b8l', '编辑', 3, '评论管理 编辑', '9beb7caa2c844b36a02789262dc76fbe', '/comment/edit', NULL, 0, 1, '2020-03-21 21:35:57', '2020-03-21 21:35:57', 1, 1, 0);
-INSERT INTO `t_sys_resource` VALUES ('f87d2f9b4539abbade38583420dc8b8r', '编辑', 3, '用户管理 编辑', 'fb4237a353d0418ab42c748b7c1d64c6', '/user/edit', NULL, 0, 1, '2020-03-21 21:35:57', '2020-03-21 21:35:57', 1, 1, 0);
+INSERT INTO `t_sys_resource` VALUES ('f87d2f9b4539abbade38583420dc8b8r', '编辑', 3, '用户管理 编辑', 'fb4237a353d0418ab42c748b7c1d64c6', '/oldUser/edit', NULL, 0, 1, '2020-03-21 21:35:57', '2020-03-21 21:35:57', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('f87d2f9b4539abbade38583420dc8b9l', '编辑', 3, '友情链接 编辑', '9002d1ae905c4cb79c2a485333dad2f7', '/link/edit', NULL, 0, 1, '2020-03-21 21:35:57', '2020-03-21 21:35:57', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('f87d2f9b4539abbade38583420dc8bbl', '编辑', 3, '字典数据 编辑', '062087bce19d00312b3787b6e24c21d1', '/sysDictData/edit', NULL, 0, 1, '2020-03-21 21:35:57', '2020-03-21 21:35:57', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('f87d2f9b4539abbade38583420dc8bhl', '编辑', 3, '图片管理 编辑', '1cc493d36e17fad535f2bf70242162b0', '/picture/edit', NULL, 0, 1, '2020-03-21 21:35:57', '2020-03-21 21:35:57', 1, 1, 0);
@@ -1394,14 +1394,14 @@ INSERT INTO `t_sys_resource` VALUES ('f87d2f9b4539abbade38583420dc8l9l', '编辑
 INSERT INTO `t_sys_resource` VALUES ('f9276eb8e3274c8aa05577c86e4dc8c1', 'Web接口', 2, 'Web接口', 'baace3dc03d34c54b81761dce8243814', 'http://localhost:8603/swagger-ui/index.html', 'el-icon-light-rain', 0, 1, '2018-11-28 20:04:52', '2020-12-05 15:46:54', 1, 0, 1);
 INSERT INTO `t_sys_resource` VALUES ('fa1e85a9c7734d27df07bc730206bd1a', '删除', 3, '编辑管理 删除', '3e92f2fd6cf012d30bfae2d9cdb7092d', '/subject/delete', NULL, 0, 1, '2020-08-23 08:56:36', '2020-08-23 08:58:33', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('faccfe476b89483791c05019ad5b4906', '关于我', 2, '关于我', 'badf0010422b432ba6ec9c83a25012ed', '/system/aboutMe', 'el-icon-sugar', 0, 1, '2018-11-29 03:55:17', '2020-05-30 08:35:21', 1, 0, 0);
-INSERT INTO `t_sys_resource` VALUES ('fb4237a353d0418ab42c748b7c1d64c6', '用户管理', 2, '用户管理', 'c519725da92b42f3acf0cc9fad58c664', '/user/user', 'el-icon-headset', 3, 1, '2018-11-28 19:52:20', '2020-05-30 08:46:54', 1, 0, 0);
+INSERT INTO `t_sys_resource` VALUES ('fb4237a353d0418ab42c748b7c1d64c6', '用户管理', 2, '用户管理', 'c519725da92b42f3acf0cc9fad58c664', '/oldUser/oldUser', 'el-icon-headset', 3, 1, '2018-11-28 19:52:20', '2020-05-30 08:46:54', 1, 0, 0);
 INSERT INTO `t_sys_resource` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8ca0m', '查询', 3, '资源分类 查询', '9449ce5dd5e24b21a9d15f806cb36e87', '/resourceSort/getList', NULL, 0, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8ce0m', '查询', 3, '友情链接 查询', '9002d1ae905c4cb79c2a485333dad2f7', '/link/getList', NULL, 0, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8ce1m', '查询', 3, '菜单管理 查询', 'aa225cdae6464bc0acebd732192f8362', '/categoryMenu/getList', NULL, 0, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8ce99', '查询', 3, '分类管理 查询', '0a035547bbec404eb3ee0ef43312148d', '/blogSort/getList', NULL, 0, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8ce9d', '查询', 3, '标签管理 查询', '6606b7e646d545e5a25c70b5e5fade9f', '/tag/getList', NULL, 0, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8ce9m', '查询', 3, '评论管理 查询', '9beb7caa2c844b36a02789262dc76fbe', '/comment/getList', NULL, 1, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
-INSERT INTO `t_sys_resource` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8ce9q', '查询', 3, '用户管理 查询', 'fb4237a353d0418ab42c748b7c1d64c6', '/user/getList', NULL, 0, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
+INSERT INTO `t_sys_resource` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8ce9q', '查询', 3, '用户管理 查询', 'fb4237a353d0418ab42c748b7c1d64c6', '/oldUser/getList', NULL, 0, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8ceam', '查询', 3, '字典数据 查询', '062087bce19d00312b3787b6e24c21d1', '/sysDictData/getList', NULL, 0, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8ceim', '查询', 3, '图片管理 查询', '1cc493d36e17fad535f2bf70242162b0', '/picture/getList', NULL, 0, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
 INSERT INTO `t_sys_resource` VALUES ('fbc30e4ae5bb33b39baca7bf6bd8cejm', '查询', 3, '管理员管理 查询', '2de247af3b0a459095e937d7ab9f5864', '/admin/getList', NULL, 0, 1, '2020-03-21 21:36:28', '2020-03-21 21:36:28', 1, 1, 0);
@@ -1466,10 +1466,10 @@ CREATE TABLE `tenant_info`  (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for users
+-- Table structure for oldUsers
 -- ----------------------------
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE `users`  (
+DROP TABLE IF EXISTS `oldUsers`;
+CREATE TABLE `oldUsers`  (
   `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `password` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `enabled` tinyint(1) NOT NULL,
@@ -1477,8 +1477,8 @@ CREATE TABLE `users`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of users
+-- Records of oldUsers
 -- ----------------------------
-INSERT INTO `users` VALUES ('nacos', '$2a$10$EuWPZHzz32dJN7jexM34MOeYirDdFAZm2kuWj7VEOJhhZkDrxfvUu', 1);
+INSERT INTO `oldUsers` VALUES ('nacos', '$2a$10$EuWPZHzz32dJN7jexM34MOeYirDdFAZm2kuWj7VEOJhhZkDrxfvUu', 1);
 
 SET FOREIGN_KEY_CHECKS = 1;

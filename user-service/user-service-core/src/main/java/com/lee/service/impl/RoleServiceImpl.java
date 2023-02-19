@@ -23,7 +23,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     private RoleMapper roleMapper;
 
     @Override
-    public List<Role> getByUserId(Long id) {
+    public List<Role> getByUserId(String id) {
         return roleMapper.getRoleByUserId(id);
     }
 

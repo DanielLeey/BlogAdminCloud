@@ -74,7 +74,7 @@ public class SecurityUser implements UserDetails, Serializable {
 
     @Override
     public boolean isEnabled() {
-        return "0".equals(this.user.getStatus());
+        return this.user.getStatus() == 0;
     }
 
 }
