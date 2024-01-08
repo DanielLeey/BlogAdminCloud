@@ -1,15 +1,13 @@
 package com.lee.article.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.lee.api.UserFeignService;
 import com.lee.article.service.ArticleService;
 import com.lee.common.api.CommonResult;
 import com.lee.common.entity.Article;
 import com.lee.common.dto.ArticleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,5 +33,15 @@ public class ArticleController {
     @GetMapping("/getArticleByUserId/{uid}/{startDate}/{endDate}")
     public List<Article> getArticleByUserId(@PathVariable(value = "uid") String uid, @PathVariable(value = "startDate") String startDate, @PathVariable(value = "endDate") String endDate) {
         return articleService.getArticleByUserId(uid, startDate, endDate);
+    }
+
+    @PostMapping("/insert")
+    CommonResult<Article> testSeataInsertArtile() throws Exception {
+        LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Article::getId, 1L);
+        Article article = articleService.getOne(wrapper);
+        article.setId(1000L);
+        articleService.addArticle(article);
+        return CommonResult.success(article);
     }
 }

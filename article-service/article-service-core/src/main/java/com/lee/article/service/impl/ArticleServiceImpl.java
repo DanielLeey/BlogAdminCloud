@@ -7,6 +7,7 @@ import com.lee.article.service.ArticleService;
 import com.lee.common.api.CommonResult;
 import com.lee.common.dto.ArticleDTO;
 import com.lee.common.entity.Article;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,4 +35,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         wrapper.between(Article::getCreateTime, startDate, endDate);
         return articleMapper.selectList(wrapper);
     }
+
+    @Override
+    @GlobalTransactional(rollbackFor = Exception.class)
+    public boolean addArticle(Article article) throws Exception {
+        int count = articleMapper.insert(article);
+        return count > 0;
+    }
+
+
 }

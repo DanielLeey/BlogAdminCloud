@@ -12,4 +12,6 @@ public interface ArticleService extends IService<Article> {
     public CommonResult<ArticleDTO> getArticleById(String id);
 
     public List<Article> getArticleByUserId(String uid, String startDate, String endDate);
+
+    boolean addArticle(Article article) throws Exception;
 }

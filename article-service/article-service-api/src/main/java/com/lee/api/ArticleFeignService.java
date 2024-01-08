@@ -4,10 +4,7 @@ import com.lee.common.api.CommonResult;
 import com.lee.common.dto.ArticleDTO;
 import com.lee.common.entity.Article;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,4 +20,7 @@ public interface ArticleFeignService {
 
     @GetMapping("/getArticleByUserId/{uid}/{startDate}/{endDate}")
     public List<Article> getArticleByUserId(@PathVariable(value = "uid") String uid, @PathVariable(value = "startDate") String startDate, @PathVariable(value = "endDate") String endDate);
+
+    @PostMapping("/insert")
+    CommonResult<Article>  testSeataInsertArtile();
 }

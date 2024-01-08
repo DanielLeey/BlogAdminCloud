@@ -14,15 +14,12 @@ import com.lee.domain.BlogContributeCountVO;
 import com.lee.domain.UserThreadHolder;
 import com.lee.service.UserService;
 import com.lee.service.WebVisitService;
-import org.apache.ibatis.javassist.expr.NewArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -65,6 +62,7 @@ public class IndexController {
     /**
      * contributeDate: 日历的起止日
      * blogContributeCount： 数组，arr[0]日期，arr[1]写文章的数量
+     *
      * @return
      */
     @GetMapping(value = "/getBlogContributeCount")
@@ -79,9 +77,15 @@ public class IndexController {
         User user = UserThreadHolder.get();
         BlogContributeCountBO blogContributeCount = webVisitService.getBlogContributeCount(user.getId(), startDate, curDate);
         BlogContributeCountVO blogContributeCountVO = BlogContributeCountVO.builder()
-                                                                            .contributeDate(contributeDate)
-                                                                            .blogContributeCount(blogContributeCount.getBlogContributeCount())
-                                                                            .build();
+                .contributeDate(contributeDate)
+                .blogContributeCount(blogContributeCount.getBlogContributeCount())
+                .build();
         return CommonResult.success(blogContributeCountVO);
+    }
+
+
+    @GetMapping("/testSeata")
+    public void testSeata() throws Exception {
+        userService.userTestSeata();
     }
 }
