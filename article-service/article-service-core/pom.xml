@@ -50,7 +50,6 @@
             <artifactId>hutool-all</artifactId>
             <version>5.8.6</version>
         </dependency>
-        <!-- redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -80,11 +79,34 @@
             <artifactId>sentinel-datasource-nacos</artifactId>
         </dependency>
 
-        <!-- api -->
         <dependency>
             <artifactId>user-service-api</artifactId>
             <groupId>com.lee</groupId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.2.6</version>
+        </dependency>
+        <!-- seata相关的配置 这里的版本最好引入和seata下载服务版本一致的依赖-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+            <version>${spring-cloud-alibaba.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.seata</groupId>
+                    <artifactId>seata-spring-boot-starter</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- 我服务端是1.4.2这里就引入1.4.2 -->
+        <dependency>
+            <groupId>io.seata</groupId>
+            <artifactId>seata-spring-boot-starter</artifactId>
+            <version>1.4.2</version>
         </dependency>
     </dependencies>
 </project>
