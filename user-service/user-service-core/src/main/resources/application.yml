@@ -6,16 +6,63 @@ spring:
   application:
     name: user-service
   datasource:
-    url: jdbc:mysql://localhost:3306/blog_admin?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/blog_admin_user?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      #2.连接池配置
+      #初始化连接池的连接数量 大小，最小，最大
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      #配置获取连接等待超时的时间
+      max-wait: 60000
+      #配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 30000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: true
+      test-on-return: false
+      # 是否缓存preparedStatement，也就是PSCache  官方建议MySQL下建议关闭   个人建议如果想用SQL防火墙 建议打开
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filter:
+        stat:
+          merge-sql: true
+          slow-sql-millis: 5000
+      #3.基础监控配置
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        #设置不统计哪些URL
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+        session-stat-enable: true
+        session-stat-max-count: 100
+      stat-view-servlet:
+        enabled: true
+        # 数据监控访问路径
+        url-pattern: /druid/*
+        reset-enable: true
+        #设置监控页面的登录名和密码
+        login-username: admin
+        login-password: admin
+        allow: 127.0.0.1
+        #deny: 192.168.1.100
   main:
     allow-bean-definition-overriding: true
   # nacos 服务发现
   cloud:
     nacos:
-      server-addr: 127.0.0.1:8848
+      discovery:
+        server-addr: http://127.0.0.1:8848
+        # 必须填命名空间的ID
+        namespace: 74e7e7e4-dd05-464e-ba57-888dcca21dc9
+        # 服务分组
+        group: SEATA_GROUP
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
   redis:
@@ -35,3 +82,29 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
       id-type: auto
+      #数据库类型
+      db-type: MYSQL
+
+#seata客户端配置
+seata:
+  tx-service-group: default_tx_group  # 与nacos事务分组配置项保持一致
+  registry:  # 注册中心
+    type: nacos
+    nacos:
+      # seata-server注册在nacos中的服务名
+      application: seata-server
+      # nacos的地址端口
+      server-addr: 127.0.0.1:8848
+      # seata-server在nacos的分组
+      group: SEATA_GROUP
+      # seata-server在nacos的命名空间ID
+      namespace: 74e7e7e4-dd05-464e-ba57-888dcca21dc9
+  config:  # 配置中心
+    type: nacos
+    nacos:
+      server-addr: 127.0.0.1:8848
+      group: SEATA_GROUP
+      # 与配置项命名空间ID保持一致
+      namespace: 74e7e7e4-dd05-464e-ba57-888dcca21dc9
+      # 与配置项Data Id保持一致
+      dataId: seataServer.properties

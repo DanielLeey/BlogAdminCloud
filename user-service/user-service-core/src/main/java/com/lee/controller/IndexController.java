@@ -8,23 +8,17 @@ import com.lee.api.CommentFeignService;
 import com.lee.common.ThreadHolder.UserThreadHolder;
 import com.lee.common.api.CommonResult;
 import com.lee.common.bo.VisitByWeekBO;
-import com.lee.common.bo.WebNavbarBO;
-import com.lee.common.dto.BlogCountByBlogSortDTO;
-import com.lee.common.dto.BlogCountByTagDTO;
 import com.lee.common.entity.User;
 import com.lee.common.vo.InitVO;
-import com.lee.common.vo.WebConfigVO;
 import com.lee.domain.BlogContributeCountBO;
 import com.lee.domain.BlogContributeCountVO;
 import com.lee.service.UserService;
-import com.lee.service.WebNavbarService;
 import com.lee.service.WebVisitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,9 +36,6 @@ public class IndexController {
 
     @Autowired
     private WebVisitService webVisitService;
-
-    @Autowired
-    private WebNavbarService webNavbarService;
 
     @Autowired
     private CommentFeignService commentFeignService;
@@ -92,41 +83,9 @@ public class IndexController {
         return CommonResult.success(blogContributeCountVO);
     }
 
-    /**
-     * 查询该分类下文章的数量
-     *
-     * @return
-     */
-    @GetMapping(value = "/getBlogCountByBlogSort")
-    public CommonResult getBlogCountByBlogSort() {
-        BlogCountByBlogSortDTO blogCountByBlogSortDTO = webVisitService.getBlogCountByBlogSort();
-        return CommonResult.success(blogCountByBlogSortDTO.getList());
-    }
 
-    /**
-     * 查询该标签下文章的数量
-     *
-     * @return
-     */
-    @GetMapping(value = "/getBlogCountByTag")
-    public CommonResult getBlogCountByTag() {
-        BlogCountByTagDTO blogCountByTagDTO = webVisitService.getBlogCountByTag();
-        return CommonResult.success(blogCountByTagDTO.getList());
-    }
-
-    @GetMapping("/getWebNavbar")
-    public CommonResult getWebNavbar(@PathParam("isShow") Integer isShow) {
-        final List<WebNavbarBO> allList = webNavbarService.getAllList();
-        return CommonResult.success(allList);
-    }
-
-    @GetMapping("/getWebConfig")
-    public CommonResult getWebConfig() {
-        return CommonResult.success(new WebConfigVO());
-    }
-
-    @GetMapping("/recorderVisitPage")
-    public CommonResult recorderVisitPage(@PathParam("pageName") String pageName) {
-        return CommonResult.success("插入成功");
+    @GetMapping("/testSeata")
+    public void testSeata() throws Exception {
+        userService.userTestSeata();
     }
 }

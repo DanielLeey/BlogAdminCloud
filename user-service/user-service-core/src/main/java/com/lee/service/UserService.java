@@ -12,6 +12,8 @@ public interface UserService extends IService<User> {
 
     User getUserByUsername(String username);
 
+    void userTestSeata() throws Exception;
+
     String getAdminUid();
 
     List<AdminBO> getAdminUsers();
@@ -19,4 +21,6 @@ public interface UserService extends IService<User> {
     List<UserBO> getUsers(UserListRequest userListRequest);
 
     List<User> getUsersByIds(List<String> userIds);
+
+
 }

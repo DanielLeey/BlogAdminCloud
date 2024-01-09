@@ -16,4 +16,5 @@ public interface ArticleService extends IService<Article> {
 
     List<BlogCountByBlogSortBO> getBlogCountByBlogSort();
 
+    boolean addArticle(Article article) throws Exception;
 }

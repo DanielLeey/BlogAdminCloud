@@ -8,6 +8,7 @@ import com.lee.common.api.CommonResult;
 import com.lee.common.bo.BlogCountByBlogSortBO;
 import com.lee.common.dto.ArticleDTO;
 import com.lee.common.entity.Article;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,5 +41,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public List<BlogCountByBlogSortBO> getBlogCountByBlogSort() {
         return articleMapper.getBlogCountByBlogSort();
     }
+
+    @Override
+    @GlobalTransactional(rollbackFor = Exception.class)
+    public boolean addArticle(Article article) throws Exception {
+        int count = articleMapper.insert(article);
+        return count > 0;
+    }
+
 
 }
