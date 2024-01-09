@@ -20,4 +20,6 @@ public interface BlogMapper extends BaseMapper<Blog> {
     List<String> getSortList();
 
     List<Blog> getArticleByMonth(@Param("begDate") String begDate,@Param("endDate") String endDate);
+
+    int addBlogCollectCount(@Param("uid") String uid);
 }

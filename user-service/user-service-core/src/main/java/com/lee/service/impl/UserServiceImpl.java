@@ -54,14 +54,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public String getAdminUid() {
         User admin = userMapper.getAdminUid();
-        return admin.getId() + "";
+        return admin.getUid();
     }
 
     @Override
     public List<AdminBO> getAdminUsers() {
         List<User> adminUsers = userMapper.getAdminUser();
         return adminUsers.stream().map(adminUser -> {
-            final List<Role> roles = roleService.getByUserId(adminUser.getId());
+            final List<Role> roles = roleService.getByUserId(adminUser.getUid());
             AdminBO adminBO = new AdminBO(adminUser);
             adminBO.setRoles(roles.stream().map(role -> {
                 RoleBO roleBO = new RoleBO(role);
@@ -91,7 +91,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     //@Transactional(rollbackFor = Exception.class)
     public void userTestSeata() throws Exception {
         User user = getById(1);
-        user.setId(100L);
+        user.setUid("100");
         userMapper.insert(user);
         CommonResult<Article> commonResult = articleFeignService.testSeataInsertArtile();
         log.info(commonResult.getData().toString());

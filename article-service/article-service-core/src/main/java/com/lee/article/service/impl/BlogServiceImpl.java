@@ -8,6 +8,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -15,16 +16,15 @@ import com.lee.api.AuthFeignService;
 import com.lee.article.dao.BlogMapper;
 import com.lee.article.service.BlogService;
 import com.lee.article.service.BlogSortService;
+import com.lee.article.service.CommentService;
 import com.lee.article.service.TagService;
 import com.lee.common.Request.BlogAddRequest;
 import com.lee.common.Request.BlogEditRequest;
 import com.lee.common.Request.BlogRequest;
+import com.lee.common.Request.CommentAddRequest;
 import com.lee.common.ThreadHolder.UserThreadHolder;
 import com.lee.common.bo.BlogListRecordBO;
-import com.lee.common.entity.Blog;
-import com.lee.common.entity.BlogSort;
-import com.lee.common.entity.Tag;
-import com.lee.common.entity.User;
+import com.lee.common.entity.*;
 import com.lee.common.message.PlacePayEvent;
 import com.lee.common.message.PlacePayEventMessage;
 import com.lee.common.utils.UUidUtils;
@@ -32,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -61,6 +62,10 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
 
     @Autowired
     private AuthFeignService userService;
+
+    @Autowired
+    @Lazy
+    private CommentService commentService;
 
     @Override
     public List<BlogListRecordBO> getBlogList(BlogRequest blogRequest) throws ClassNotFoundException, NoSuchFieldException {
@@ -260,6 +265,32 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements Bl
         String endDate = DateUtil.formatDate(endDateTime);
         List<Blog> blogs = blogMapper.getArticleByMonth(begDate, endDate);
         return getRecordBO(blogs);
+    }
+
+    /**
+     * 插入comment评论表一条数据，更新blog表的点赞数，返回blog的点赞数
+     * 重复点赞，插入失败
+     * @param uid
+     * @return
+     */
+    @Override
+    public Integer praiseBlogByUid(String uid) {
+        final User user = UserThreadHolder.get();
+        final String userUid = user.getUid();
+        LambdaQueryWrapper<Comment> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Comment::getUserUid, userUid)
+                .eq(Comment::getBlogUid, uid);
+        final Comment comment = commentService.getOne(wrapper);
+        //已经点过赞了
+        if(ObjUtil.isNotEmpty(comment)) {
+            return -1;
+        }
+        //没点过赞，则插入一条点赞评论，更新文章点赞数
+        CommentAddRequest addRequest = CommentAddRequest.builder().blogUid(uid).userUid(userUid).source("BLOG_INFO").build();
+        commentService.addComment(addRequest);
+        blogMapper.addBlogCollectCount(uid);
+        Blog blog = blogMapper.selectById(uid);
+        return blog.getCollectCount();
     }
 
 

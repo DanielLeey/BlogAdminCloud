@@ -31,4 +31,7 @@
         select * from t_blog where create_time between #{begDate} and #{endDate}
         order by create_time desc
     </select>
+    <update id="addBlogCollectCount">
+        update t_blog set collect_count = collect_count+1 where uid = #{uid}
+    </update>
 </mapper>

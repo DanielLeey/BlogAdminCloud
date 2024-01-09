@@ -46,6 +46,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @GlobalTransactional(rollbackFor = Exception.class)
     public boolean addArticle(Article article) throws Exception {
         int count = articleMapper.insert(article);
+        int i = 10 / 0;
         return count > 0;
     }
 

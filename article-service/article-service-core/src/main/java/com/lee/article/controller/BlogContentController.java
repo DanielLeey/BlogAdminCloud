@@ -1,5 +1,6 @@
 package com.lee.article.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.lee.article.service.BlogService;
 import com.lee.common.api.CommonResult;
 import com.lee.common.bo.BlogListRecordBO;
@@ -8,6 +9,7 @@ import com.lee.common.vo.BlogListVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.websocket.server.PathParam;
@@ -41,5 +43,24 @@ public class BlogContentController {
         blogListVO.setIsSearchCount(true);
         blogListVO.setOptimizeCountsql(true);
         return CommonResult.success(blogListVO);
+    }
+
+    /**
+     * 点赞按钮
+     * 插入comment评论表一条数据，更新blog表的点赞数，返回blog的点赞数
+     * 重复点赞，插入失败
+     * @return
+     */
+    @GetMapping("/praiseBlogByUid")
+    public CommonResult praiseBlogByUid(@PathParam("uid") String uid) {
+        if (StrUtil.isBlank(uid)) {
+            return CommonResult.failed("点赞失败");
+        }
+        //文章点赞数量
+        Integer praiseCount = blogService.praiseBlogByUid(uid);
+        if (praiseCount == -1) {
+            return CommonResult.failed("您已经点赞过了!");
+        }
+        return CommonResult.success(praiseCount);
     }
 }
