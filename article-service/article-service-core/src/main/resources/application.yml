@@ -60,9 +60,22 @@ spring:
       discovery:
         server-addr: http://127.0.0.1:8848
         # 必须填命名空间的ID
-        namespace: 74e7e7e4-dd05-464e-ba57-888dcca21dc9
+        namespace: 44cbd03a-18a5-44e0-9adf-c4942c56089b
         # 服务分组
         group: SEATA_GROUP
+    sentinel:
+      transport:
+        port: 9999 #跟控制台交流的端口,随意指定一个未使用的端口即可
+        dashboard: localhost:8333 # 指定控制台服务的地址
+      datasource:
+        ds1:
+          nacos:
+            server-addr: localhost:8848
+            namespace: 44cbd03a-18a5-44e0-9adf-c4942c56089b
+            dataId: ${spring.application.name}-sentinel
+            groupId: SEATA_GROUP
+            data-type: json
+            rule-type: flow
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
   redis:
@@ -70,7 +83,12 @@ spring:
     port: 6379
     host: localhost
     password:
-
+# sentinel新增配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   configuration:
@@ -84,6 +102,21 @@ mybatis-plus:
       id-type: auto
       #数据库类型
       db-type: MYSQL
+#开启fegin配置
+feign:
+  client:
+    config:
+      # 默认的超时时间设置
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+      # 在指定的 FeignClient 设置超时时间，覆盖默认的设置
+      nacos-provider:
+        connectTimeout: 1000
+        readTimeout: 1000
+        loggerLevel: full
+  sentinel:
+    enabled: true
 
 #seata客户端配置
 seata:
@@ -98,13 +131,13 @@ seata:
       # seata-server在nacos的分组
       group: SEATA_GROUP
       # seata-server在nacos的命名空间ID
-      namespace: 74e7e7e4-dd05-464e-ba57-888dcca21dc9
+      namespace: 44cbd03a-18a5-44e0-9adf-c4942c56089b
   config:  # 配置中心
     type: nacos
     nacos:
       server-addr: 127.0.0.1:8848
       group: SEATA_GROUP
       # 与配置项命名空间ID保持一致
-      namespace: 74e7e7e4-dd05-464e-ba57-888dcca21dc9
+      namespace: 44cbd03a-18a5-44e0-9adf-c4942c56089b
       # 与配置项Data Id保持一致
       dataId: seataServer.properties

@@ -80,4 +80,13 @@ public class ArticleController {
         articleService.addArticle(article);
         return CommonResult.success(article);
     }
+
+    @PostMapping("/testSentinel")
+    CommonResult<Article> testSentinel() throws Exception {
+        LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Article::getId, 1L);
+        Article article = articleService.getOne(wrapper);
+        Thread.sleep(60);
+        return CommonResult.success(article);
+    }
 }

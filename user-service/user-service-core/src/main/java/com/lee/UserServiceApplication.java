@@ -15,7 +15,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @Date: 2022/12/7 10:52
  * @Version: 1.0
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.lee"})
 @EnableDiscoveryClient
 @MapperScan("com.lee.dao")
 @EnableFeignClients(basePackages = {"com.lee.api"})

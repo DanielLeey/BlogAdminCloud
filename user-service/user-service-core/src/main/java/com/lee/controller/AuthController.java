@@ -2,6 +2,7 @@ package com.lee.controller;
 
 
 import cn.hutool.core.util.ObjUtil;
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.lee.common.ThreadHolder.UserThreadHolder;
 import com.lee.common.api.CommonResult;
 import com.lee.common.dto.SecurityUserDTO;
@@ -130,7 +131,16 @@ public class AuthController {
     }
 
     @GetMapping(value = "/getAdminUid")
+    //@SentinelResource(value = "getAdminUid", fallback = "getAdminUidFallback")
     public String getAdminUid() {
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return userService.getAdminUid();
     }
+/*    public String getAdminUidFallback() throws InterruptedException {
+        return "100";
+    }*/
 }

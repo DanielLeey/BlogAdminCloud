@@ -15,7 +15,12 @@ spring:
   # nacos 服务发现
   cloud:
     nacos:
-      server-addr: 127.0.0.1:8848
+      discovery:
+        server-addr: http://127.0.0.1:8848
+        # 必须填命名空间的ID
+        namespace: 44cbd03a-18a5-44e0-9adf-c4942c56089b
+        # 服务分组
+        group: SEATA_GROUP
     # 网关
     gateway:
       # 启用开关(默认开启)
@@ -55,8 +60,8 @@ spring:
             - name: RequestRateLimiter
               args:
                 key-resolver: '#{@hostAddrKeyResolver}'
-                redis-rate-limiter.replenishRate: 1
-                redis-rate-limiter.burstCapacity: 3
+                redis-rate-limiter.replenishRate: 5
+                redis-rate-limiter.burstCapacity: 10
         - id: oauth2-auth
           uri: lb://oauth2-auth
           predicates:

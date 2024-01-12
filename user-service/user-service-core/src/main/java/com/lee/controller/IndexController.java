@@ -85,7 +85,14 @@ public class IndexController {
 
 
     @GetMapping("/testSeata")
-    public void testSeata() throws Exception {
-        userService.userTestSeata();
+    public CommonResult testSeata() throws Exception {
+        final String result = userService.userTestSeata();
+        return CommonResult.success("ok", result);
+    }
+
+    @GetMapping("/testSentinel")
+    public CommonResult testSentinel() {
+        final String result = userService.userTestSentinel();
+        return CommonResult.success("ok", result);
     }
 }

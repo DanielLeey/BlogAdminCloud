@@ -1,6 +1,7 @@
 package com.lee.api;
 
 import com.lee.common.entity.User;
+import com.lee.component.sentinel.AuthFeginFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @Date: 2022/12/7 9:27
  * @Version: 1.0
  */
-@FeignClient(value = "user-service", path = "/auth")
+@FeignClient(value = "user-service", path = "/auth", fallback = AuthFeginFallback.class)
 public interface AuthFeignService {
 
     @GetMapping(value = "/getUserByUsername/{username}")

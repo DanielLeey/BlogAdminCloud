@@ -12,7 +12,7 @@ public interface UserService extends IService<User> {
 
     User getUserByUsername(String username);
 
-    void userTestSeata() throws Exception;
+    String userTestSeata() throws Exception;
 
     String getAdminUid();
 
@@ -22,5 +22,5 @@ public interface UserService extends IService<User> {
 
     List<User> getUsersByIds(List<String> userIds);
 
-
+    String userTestSentinel();
 }

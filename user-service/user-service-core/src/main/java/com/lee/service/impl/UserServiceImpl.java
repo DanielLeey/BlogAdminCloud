@@ -89,13 +89,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     @GlobalTransactional(rollbackFor = Exception.class)
     //@Transactional(rollbackFor = Exception.class)
-    public void userTestSeata() throws Exception {
+    public String userTestSeata() throws Exception {
         User user = getById(1);
         user.setUid("100");
-        userMapper.insert(user);
+        //userMapper.insert(user);
         CommonResult<Article> commonResult = articleFeignService.testSeataInsertArtile();
-        log.info(commonResult.getData().toString());
-        int i = 10 / 0;
+        return commonResult.getMessage();
+        //int i = 10 / 0;
+    }
 
+    @Override
+    @GlobalTransactional(rollbackFor = Exception.class)
+    public String userTestSentinel() {
+        User user = getById(1);
+        CommonResult<Article> commonResult = articleFeignService.testSentinel();
+        return commonResult.getMessage();
     }
 }

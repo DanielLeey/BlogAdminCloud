@@ -5,13 +5,14 @@ import com.lee.common.dto.ArticleDTO;
 import com.lee.common.dto.BlogCountByBlogSortDTO;
 import com.lee.common.dto.BlogCountByTagDTO;
 import com.lee.common.entity.Article;
+import com.lee.component.sentinel.ArticleFeignServiceFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
-@FeignClient(value = "article-service", path = "/article")
+@FeignClient(value = "article-service", path = "/article", fallback = ArticleFeignServiceFallback.class)
 public interface ArticleFeignService {
 
     @RequestMapping(value = "/getArticle/{id}", method = RequestMethod.GET)
@@ -31,4 +32,7 @@ public interface ArticleFeignService {
 
     @PostMapping("/insert")
     CommonResult<Article>  testSeataInsertArtile();
+
+    @PostMapping("/testSentinel")
+    CommonResult<Article> testSentinel();
 }

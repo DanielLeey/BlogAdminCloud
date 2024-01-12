@@ -1,5 +1,7 @@
 package com.lee.common.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +25,7 @@ public class User implements Serializable {
     /**
      * 唯一uid
      */
+    @TableId(value = "uid", type = IdType.INPUT)
     private String uid;
     /**
      * 用户名

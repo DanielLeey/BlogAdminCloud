@@ -80,7 +80,9 @@ public class WebfluxSecurityConfig {
             "/article/content/**",
             "/article/sort/**",
             "/article/classify/**",
-            "/admin/oauth/**"
+            "/admin/oauth/**",
+
+            "/admin/auth/**"
 
     };
     // "/admin/auth/**"
