@@ -7,7 +7,11 @@ import com.lee.api.ArticleFeignService;
 import com.lee.api.CommentFeignService;
 import com.lee.common.ThreadHolder.UserThreadHolder;
 import com.lee.common.api.CommonResult;
+import com.lee.common.bo.BlogCountByBlogSortBO;
+import com.lee.common.bo.BlogCountByTagBO;
 import com.lee.common.bo.VisitByWeekBO;
+import com.lee.common.dto.BlogCountByBlogSortDTO;
+import com.lee.common.dto.BlogCountByTagDTO;
 import com.lee.common.entity.User;
 import com.lee.common.vo.InitVO;
 import com.lee.domain.BlogContributeCountBO;
@@ -20,7 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Author: liyansong
@@ -88,6 +95,16 @@ public class IndexController {
     public CommonResult testSeata() throws Exception {
         final String result = userService.userTestSeata();
         return CommonResult.success("ok", result);
+    }
+
+    @GetMapping("/getBlogCountByBlogSort")
+    public BlogCountByBlogSortDTO getBlogCountByBlogSort() {
+        return articleFeignService.getBlogCountByBlogSort();
+    }
+
+    @GetMapping("/getBlogCountByTag")
+    public BlogCountByTagDTO getBlogCountByTag() {
+        return articleFeignService.getBlogCountByTag();
     }
 
     @GetMapping("/testSentinel")

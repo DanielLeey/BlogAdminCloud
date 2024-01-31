@@ -32,7 +32,6 @@ public class CustomHttpBasicServerAuthenticationEntryPoint extends HttpBasicServ
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON_UTF8);
         //放回401
         response.setStatusCode(HttpStatus.UNAUTHORIZED);
-        //RestResponse<String> res = new RestResponse<String>(RestStatusCode.BAD_REQUEST.code(), e.getMessage());
         CommonResult<Object> res = CommonResult.failed(ResultCode.UNAUTHORIZED, e.getMessage());
         String json = JSONUtil.toJsonStr(res);
         Mono<Void> ret = null;

@@ -1,5 +1,6 @@
 package com.lee.article.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.lee.article.service.CommentService;
 import com.lee.common.Request.BaseRequest;
@@ -94,6 +95,9 @@ public class CommentController {
     @GetMapping("/getUserReceiveCommentCount")
     public CommonResult getUserReceiveCommentCount() {
         User user = UserThreadHolder.get();
+        if (user == null) {
+            return CommonResult.success(0);
+        }
         final String userId = user.getUid();
         Integer count = commentService.getUserReceiveCommentCount(userId);
         return CommonResult.success(count);

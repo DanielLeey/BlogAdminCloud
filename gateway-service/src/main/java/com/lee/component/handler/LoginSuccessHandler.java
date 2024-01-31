@@ -42,7 +42,6 @@ public class LoginSuccessHandler implements ServerAuthenticationSuccessHandler {
         HashMap<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("token", "Bearer " + token);
 
-
         ServerWebExchange exchange = webFilterExchange.getExchange();
         ServerHttpResponse response = exchange.getResponse();
         exchange.getSession().flatMap(

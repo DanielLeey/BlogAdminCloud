@@ -1,12 +1,9 @@
 package com.lee.config;
 
 
+import com.lee.component.handler.*;
 import com.lee.component.security.CustReactiveAuthorizationManager;
 import com.lee.component.security.CustSecurityContextRepository;
-import com.lee.component.handler.CustomHttpBasicServerAuthenticationEntryPoint;
-import com.lee.component.handler.CustomServerAccessDeniedHandler;
-import com.lee.component.handler.LoginFailureHandler;
-import com.lee.component.handler.LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -20,6 +17,12 @@ public class WebfluxSecurityConfig {
     // 登录成功时调用的自定义处理类
     @Autowired
     private LoginSuccessHandler loginSuccessHandler;
+    // 退出登录时调用的自定义处理类
+    @Autowired
+    private LogoutHandler logoutHandler;
+    // 退出登录成功时调用的自定义处理类
+    @Autowired
+    private LogoutSuccessHandler logoutSuccessHandler;
 
     // 登录失败时调用的自定义处理类
     @Autowired
@@ -51,8 +54,9 @@ public class WebfluxSecurityConfig {
             "/v2/api-docs", "/webjars/**", "/doc.html",
             "/gateway/auth/login",
             "/admin/auth/getWebSiteName",
-            /*"/admin/auth/info",*/
             "/admin/auth/getMenu",
+            "/admin/auth/info",
+            /*"/admin/auth/**",*/
             "/admin/index/**",
             "/admin/sysDictData/**",
             "/admin/systemConfig/**",
@@ -65,14 +69,12 @@ public class WebfluxSecurityConfig {
             "/admin/role/**",
             "/admin/resource/**",
             "/admin/user/**",
-            "/admin/auth/info",
             "/admin/sysDictType/**",
             "/admin/sysParams/**",
             "/admin/webConfig/getWebConfig",
             "/admin/webNavbar/**",
             "/admin/todo/**",
             "/article/comment/**",
-
             "/web/sysDictData/**",
             "/web/index/**",
             "/article/link/**",
@@ -80,39 +82,40 @@ public class WebfluxSecurityConfig {
             "/article/content/**",
             "/article/sort/**",
             "/article/classify/**",
-            "/admin/oauth/**",
-
-            "/admin/auth/**"
+            "/article/article/recorderVisitPage",
+            "/admin/oauth/**"
 
     };
+
     // "/admin/auth/**"
     @Bean
     SecurityWebFilterChain webFluxSecurityFilterChain(ServerHttpSecurity http) throws Exception {
         http.csrf().disable()
-            .httpBasic().disable()
-            .formLogin().disable()
-            .securityContextRepository(custSecurityContextRepository)
-        //SecurityWebFiltersOrder枚举类定义了执行次序 请求拦截处理
-            .authorizeExchange(exchange -> exchange
+                .httpBasic().disable()
+                .formLogin().disable()
+                .securityContextRepository(custSecurityContextRepository)
+                //SecurityWebFiltersOrder枚举类定义了执行次序 请求拦截处理
+                .authorizeExchange(exchange -> exchange
                         .pathMatchers(excludedAuthPages).permitAll()
                         .pathMatchers(HttpMethod.OPTIONS).permitAll()
                         .anyExchange().access(custReactiveAuthorizationManager
-                    )//权限
-            )
+                        )//权限
+                )
                 // 未登录访问资源时的处理类，若无此处理类，前端页面会弹出登录窗口
                 .exceptionHandling().authenticationEntryPoint(customHttpBasicServerAuthenticationEntryPoint)
                 // 访问被拒绝时自定义处理器
                 .and().exceptionHandling().accessDeniedHandler(customServerAccessDeniedHandler)
 
-                // 认证成功
+                // 登录成功
                 .and().formLogin().loginPage("/auth/login").authenticationSuccessHandler(loginSuccessHandler)
-                // 登陆验证失败
-                .authenticationFailureHandler(loginFailureHandler);
+                // 登录验证失败
+                .authenticationFailureHandler(loginFailureHandler)
+                // 退出登录
+                .and().logout().logoutUrl("/auth/logout").logoutHandler(logoutHandler).logoutSuccessHandler(logoutSuccessHandler);
         // 为了支持jwt 自定义了这个类，从请求头中获取token
         http.securityContextRepository(custSecurityContextRepository);
         return http.build();
     }
-
 
 
 }

@@ -30,6 +30,9 @@ public interface ArticleFeignService {
     @GetMapping("/getBlogCountByTag")
     public BlogCountByTagDTO getBlogCountByTag();
 
+    @GetMapping("/recorderVisitPage")
+    public List<Article> recorderVisitPage();
+
     @PostMapping("/insert")
     CommonResult<Article>  testSeataInsertArtile();
 

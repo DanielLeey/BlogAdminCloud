@@ -42,6 +42,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         return articleMapper.getBlogCountByBlogSort();
     }
 
+    public List<Article> recorderVisitPage() {
+        LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
+        wrapper.orderByDesc(Article::getCreateTime);
+        final List<Article> articleList = list(wrapper);
+        return articleList;
+    }
+
     @Override
     @GlobalTransactional(rollbackFor = Exception.class)
     public boolean addArticle(Article article) throws Exception {

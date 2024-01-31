@@ -44,6 +44,11 @@ public class ArticleFeignServiceFallback implements ArticleFeignService {
     }
 
     @Override
+    public List<Article> recorderVisitPage() {
+        return new ArrayList<>();
+    }
+
+    @Override
     public CommonResult<Article> testSeataInsertArtile() {
         return CommonResult.failed("熔断中");
     }

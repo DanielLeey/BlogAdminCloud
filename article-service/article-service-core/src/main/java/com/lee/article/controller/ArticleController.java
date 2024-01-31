@@ -45,6 +45,7 @@ public class ArticleController {
     public List<Article> getArticleByUserId(@PathVariable(value = "uid") String uid, @PathVariable(value = "startDate") String startDate, @PathVariable(value = "endDate") String endDate) {
         return articleService.getArticleByUserId(uid, startDate, endDate);
     }
+
     @GetMapping("/getBlogCountByBlogSort")
     public BlogCountByBlogSortDTO getBlogCountByBlogSort() {
         List<BlogCountByBlogSortBO> list = articleService.getBlogCountByBlogSort();
@@ -69,6 +70,13 @@ public class ArticleController {
             return map;
         }).collect(Collectors.toList());
         return BlogCountByTagDTO.builder().list(mapList).build();
+    }
+
+    @GetMapping("/recorderVisitPage")
+    public List<Article> recorderVisitPage() {
+        LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
+        wrapper.orderByDesc(Article::getCreateTime);
+        return articleService.list(wrapper);
     }
 
     @PostMapping("/insert")
