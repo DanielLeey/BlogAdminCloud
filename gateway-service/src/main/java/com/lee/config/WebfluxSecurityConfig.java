@@ -4,12 +4,16 @@ package com.lee.config;
 import com.lee.component.handler.*;
 import com.lee.component.security.CustReactiveAuthorizationManager;
 import com.lee.component.security.CustSecurityContextRepository;
+import com.lee.filter.CorsWebFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+
 
 @EnableWebFluxSecurity
 public class WebfluxSecurityConfig {
@@ -46,6 +50,10 @@ public class WebfluxSecurityConfig {
      */
     @Autowired
     private CustReactiveAuthorizationManager custReactiveAuthorizationManager;
+
+    @Qualifier("myCorsWebFilter")
+    @Autowired
+    private CorsWebFilter corsWebFilter;
 
     // security的鉴权排除列表
     private static final String[] excludedAuthPages = {
@@ -90,7 +98,11 @@ public class WebfluxSecurityConfig {
     // "/admin/auth/**"
     @Bean
     SecurityWebFilterChain webFluxSecurityFilterChain(ServerHttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http                // 1. 开始跨域配置
+                .cors()
+                // 2. 指定一个 CorsConfigurationSource`
+                .and().addFilterBefore(corsWebFilter, SecurityWebFiltersOrder.CORS)
+                .csrf().disable()
                 .httpBasic().disable()
                 .formLogin().disable()
                 .securityContextRepository(custSecurityContextRepository)
@@ -98,8 +110,7 @@ public class WebfluxSecurityConfig {
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers(excludedAuthPages).permitAll()
                         .pathMatchers(HttpMethod.OPTIONS).permitAll()
-                        .anyExchange().access(custReactiveAuthorizationManager
-                        )//权限
+                        .anyExchange().access(custReactiveAuthorizationManager)//权限
                 )
                 // 未登录访问资源时的处理类，若无此处理类，前端页面会弹出登录窗口
                 .exceptionHandling().authenticationEntryPoint(customHttpBasicServerAuthenticationEntryPoint)
@@ -114,8 +125,7 @@ public class WebfluxSecurityConfig {
                 .and().logout().logoutUrl("/auth/logout").logoutHandler(logoutHandler).logoutSuccessHandler(logoutSuccessHandler);
         // 为了支持jwt 自定义了这个类，从请求头中获取token
         http.securityContextRepository(custSecurityContextRepository);
+        //http.addFilterAt(new CorsWebFilter(), SecurityWebFiltersOrder.SECURITY_CONTEXT_SERVER_WEB_EXCHANGE);
         return http.build();
     }
-
-
 }

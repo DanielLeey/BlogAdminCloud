@@ -25,6 +25,13 @@ spring:
     gateway:
       # 启用开关(默认开启)
       enabled: true
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allow-credentials: true
+            allowedOriginPatterns: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
       # 路由数组[路由 就是指定当请求满足什么条件的时候转到哪个微服务] --本质就是反向代理
       routes:
         # 当前路由的标识, 要求唯一
