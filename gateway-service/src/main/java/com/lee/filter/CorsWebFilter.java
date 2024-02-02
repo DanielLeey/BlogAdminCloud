@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 /**
  * 本类为SpringCloud Gateway中设置允许跨域请求的过滤器。
  */
+// 此配置无效，放在WebfluxSecurityConfig中解决
 //SpringGateWay是基于WebFlux的，所以普通过滤器就算加上@Order优先级也不够
 //所以我们使用WebFilter，单独一个Component，加上@Order就起作用了
 //@Component("corsFilter")

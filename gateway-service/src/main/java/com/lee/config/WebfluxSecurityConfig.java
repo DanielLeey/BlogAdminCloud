@@ -4,15 +4,20 @@ package com.lee.config;
 import com.lee.component.handler.*;
 import com.lee.component.security.CustReactiveAuthorizationManager;
 import com.lee.component.security.CustSecurityContextRepository;
-import com.lee.filter.CorsWebFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+
+import javax.annotation.Resource;
 
 
 @EnableWebFluxSecurity
@@ -51,9 +56,6 @@ public class WebfluxSecurityConfig {
     @Autowired
     private CustReactiveAuthorizationManager custReactiveAuthorizationManager;
 
-    @Qualifier("myCorsWebFilter")
-    @Autowired
-    private CorsWebFilter corsWebFilter;
 
     // security的鉴权排除列表
     private static final String[] excludedAuthPages = {
@@ -101,7 +103,7 @@ public class WebfluxSecurityConfig {
         http                // 1. 开始跨域配置
                 .cors()
                 // 2. 指定一个 CorsConfigurationSource`
-                .and().addFilterBefore(corsWebFilter, SecurityWebFiltersOrder.CORS)
+                .and().addFilterBefore(corsFilter(), SecurityWebFiltersOrder.CORS)
                 .csrf().disable()
                 .httpBasic().disable()
                 .formLogin().disable()
@@ -127,5 +129,18 @@ public class WebfluxSecurityConfig {
         http.securityContextRepository(custSecurityContextRepository);
         //http.addFilterAt(new CorsWebFilter(), SecurityWebFiltersOrder.SECURITY_CONTEXT_SERVER_WEB_EXCHANGE);
         return http.build();
+    }
+
+    public CorsWebFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration configuration = new CorsConfiguration();
+        // 配置跨域的信息
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        // SpringBoot升级到2.4.0 之后需要使用该配置
+        configuration.addAllowedOriginPattern("*");
+        configuration.setAllowCredentials(true);
+        source.registerCorsConfiguration("/**", configuration);
+        return new CorsWebFilter(source);
     }
 }
