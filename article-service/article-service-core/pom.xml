@@ -84,6 +84,12 @@
             <artifactId>seata-spring-boot-starter</artifactId>
             <version>1.4.2</version>
         </dependency>
+        <!-- 引入redisson布隆过滤器 -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
+            <version>3.16.7</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -2,21 +2,21 @@ package com.lee.controller;
 
 
 import cn.hutool.core.util.ObjUtil;
-import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.lee.common.ThreadHolder.UserThreadHolder;
 import com.lee.common.api.CommonResult;
 import com.lee.common.dto.SecurityUserDTO;
 import com.lee.common.entity.Resource;
 import com.lee.common.entity.Role;
 import com.lee.common.entity.User;
-import com.lee.domain.MenuVO;
-import com.lee.domain.RoleDTO;
-import com.lee.domain.UserInfoVO;
-import com.lee.domain.UserQuery;
+import com.lee.common.vo.VerifyVO;
+import com.lee.domain.*;
 import com.lee.service.ResourceService;
 import com.lee.service.RoleService;
 import com.lee.service.UserService;
+import com.lee.utils.JwtTokenUtil;
 import com.lee.utils.RedisUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +40,9 @@ public class AuthController {
 
     @Autowired
     private RedisUtils redisUtils;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     /**
      * Content-Type 为 x-www-form-urlencoded
@@ -114,6 +117,9 @@ public class AuthController {
     @GetMapping("/getMenu")
     public CommonResult getMenu() {
         User user = UserThreadHolder.get();
+        if (ObjUtil.isEmpty(user)) {
+            return CommonResult.unauthorized("您还未登录，请先登录！");
+        }
         List<Resource> parentList = resourceService.getResourcesByUserIdAndLevel(user.getUid(), 1);
         List<Resource> sonList = resourceService.getResourcesByUserIdAndLevel(user.getUid(), 2);
         List<Resource> buttonList = resourceService.getResourcesByUserIdAndLevel(user.getUid(), 3);
@@ -123,6 +129,32 @@ public class AuthController {
                 .buttonList(buttonList)
                 .build();
         return CommonResult.success(data);
+    }
+
+    @GetMapping(value = "/verify/{token}")
+    public CommonResult verify(@PathVariable("token") String token) {
+        User user = UserThreadHolder.get();
+        if (ObjUtil.isEmpty(user)) {
+            return CommonResult.unauthorized("您还未登录，请先登录！");
+        }
+        String authToken = token.substring(7);
+        String username = jwtTokenUtil.getUserNameFromToken(authToken);
+        if (!user.getUserName().equals(username)) {
+            CommonResult.unauthorized("token过期或失效！");
+        }
+        VerifyVO verifyVO = new VerifyVO();
+        BeanUtils.copyProperties(user, verifyVO);
+        return CommonResult.success(verifyVO);
+    }
+
+    @PostMapping("/editUser")
+    public CommonResult editUser(@RequestBody UserEditQuery userEditQuery) {
+        UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.lambda().eq(User::getUid, userEditQuery.getUid());
+        User user = new User();
+        BeanUtils.copyProperties(userEditQuery, user, User.class);
+        final boolean flag = userService.update(user, updateWrapper);
+        return flag ? CommonResult.success("更新成功！") : CommonResult.failed("更新失败！");
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)

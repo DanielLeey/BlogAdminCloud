@@ -5,9 +5,7 @@ import com.lee.component.handler.*;
 import com.lee.component.security.CustReactiveAuthorizationManager;
 import com.lee.component.security.CustSecurityContextRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
@@ -16,8 +14,6 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
-
-import javax.annotation.Resource;
 
 
 @EnableWebFluxSecurity
@@ -66,7 +62,7 @@ public class WebfluxSecurityConfig {
             "/admin/auth/getWebSiteName",
             "/admin/auth/getMenu",
             "/admin/auth/info",
-            /*"/admin/auth/**",*/
+            "/admin/auth/**",
             "/admin/index/**",
             "/admin/sysDictData/**",
             "/admin/systemConfig/**",
@@ -87,6 +83,7 @@ public class WebfluxSecurityConfig {
             "/article/comment/**",
             "/web/sysDictData/**",
             "/web/index/**",
+            "/web/about/getMe",
             "/article/link/**",
             "/article/search/**",
             "/article/content/**",

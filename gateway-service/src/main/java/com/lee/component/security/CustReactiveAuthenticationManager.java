@@ -39,6 +39,7 @@ public class CustReactiveAuthenticationManager implements ReactiveAuthentication
                     if (user == null) {
                         throw new DisabledException("账户不可用");
                     }
+                    //if (StringUtils.hasLength(password) && !passwordEncoder.matches(password, user.getPassword())) {
                     if (StringUtils.hasLength(password) && !passwordEncoder.matches(password, user.getPassword())) {
                         throw new UsernameNotFoundException("用户名或密码错误");
                     } else if (!user.isEnabled()) {

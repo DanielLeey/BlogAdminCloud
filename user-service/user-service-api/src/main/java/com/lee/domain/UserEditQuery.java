@@ -1,38 +1,63 @@
-package com.lee.common.vo;
+package com.lee.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 /**
- * @Author : liyansong
- * @Date : 2023/2/8 20:58
- * @Version : 1.0
+ * @Author: liyansong
+ * @Date: 2024/2/4 20:25
+ * @Version: 1.0
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VerifyVO {
+public class UserEditQuery {
+
     private String avatar;
-    private String birthday;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private Date birthday;
+
     private String browser;
+
     private Integer commentStatus;
-    private String createTime;
+
+    private Date createTime;
+
     private String email;
-    private String gender;
+
+    private Integer gender;
+
     private String lastLoginIp;
-    private String lastLoginTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private Date lastLoginTime;
+
     private Integer loginCount;
+
     private String nickName;
+
     private String os;
-    private String password;
-    private String photoUrl;
+
     private String source;
+
     private Integer startEmailNotification;
+
     private Integer status;
+
     private String summary;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    private Date updateTime;
+
     private String uid;
-    private String updateTime;
+
     private String userName;
+
     private Integer userTag;
+
 }
